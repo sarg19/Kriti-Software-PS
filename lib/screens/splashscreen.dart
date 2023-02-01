@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   final bool isLogin;
@@ -12,26 +13,40 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 100,
-              width: 92,
-              child: Image.asset('assets/images/logo.png'),
-            ),
-            Text(
-              'WellBe',
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontWeight: FontWeight.w600,
-                fontSize: 20,
+      backgroundColor: const Color.fromRGBO(90,183,212,30),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                  color: const Color.fromRGBO(206,232,240,40),
+                  borderRadius: BorderRadius.circular(60),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 10,
+                        spreadRadius: 2,
+                        offset: const Offset(2,2)
+                    )
+                  ]
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+          const SizedBox(height: 35 ,),
+          Text(
+            style: GoogleFonts.sansitaSwashed(
+              textStyle: const TextStyle(
+                  fontSize: 50,
+                  color: Color.fromRGBO(206,232,240,40)
+              )
+            ),
+            'Know Shop'
+          )
+        ]
+      )
     );
   }
 }
