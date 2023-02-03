@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kriti/screens/welcomscreen.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   final bool isLogin;
@@ -20,9 +18,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _navigateToHome() async {
-    final prefs = await SharedPreferences.getInstance();
-    // prefs.clear();
-    //TODO: remove this line , inserted only for testing
     await Future.delayed(const Duration(seconds: 2), () {});
     if (!mounted) return;
 
