@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 
-class homescreen extends StatefulWidget {
-  const homescreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<homescreen> createState() => _homescreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _homescreenState extends State<homescreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final searchquery=TextEditingController();
   var discountlist=['1','2','3','4','5'];
   var _selectedindex=0;
@@ -22,21 +22,20 @@ class _homescreenState extends State<homescreen> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Row(
               children:[
-                SizedBox(width:20),
+                const SizedBox(width:20),
                 SizedBox(
                   width: 300,
                   height: 40,
-
                   child: TextField(
                     controller: searchquery,
-                    style: TextStyle(fontWeight: FontWeight.w500,fontStyle: FontStyle.italic),
+                    style: const TextStyle(fontWeight: FontWeight.w500,fontStyle: FontStyle.italic),
                     decoration: InputDecoration(
-                      hintStyle: TextStyle(color: Colors.blueAccent),
-                      prefixIcon:Icon(Icons.search, color: Colors.blue,),
-                      border: OutlineInputBorder(
+                      hintStyle: const TextStyle(color: Colors.blueAccent),
+                      prefixIcon:const Icon(Icons.search, color: Colors.blue,),
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide(width: 5),
                       ),
                       filled: true,
@@ -45,7 +44,7 @@ class _homescreenState extends State<homescreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 Container(
@@ -56,15 +55,15 @@ class _homescreenState extends State<homescreen> {
                     ),
                     child:IconButton(
                       onPressed: (){},
-                      icon: Icon(Icons.shopping_cart,color:Colors.white),
+                      icon: const Icon(Icons.shopping_cart,color:Colors.white),
                     )
                 ),
               ]
           ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
           Row(
             children: [
-              SizedBox(width: 20,),
+              const SizedBox(width: 20,),
               Container(
                 alignment: Alignment.centerLeft,
                 child:Text(
@@ -79,15 +78,15 @@ class _homescreenState extends State<homescreen> {
               ),
             ],
           ),
-          SizedBox(height: 15,),
-          Container(
+          const SizedBox(height: 15,),
+          SizedBox(
             width:double.infinity,
             height:200,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemBuilder: (context,index){
                 if(discountlist==null){
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
                 return SingleChildScrollView(
                   child: Column(
@@ -95,7 +94,7 @@ class _homescreenState extends State<homescreen> {
                       Container(
                         width:340,
                         height: 200,
-                        padding: EdgeInsets.fromLTRB(15, 0,0, 0),
+                        padding: const EdgeInsets.fromLTRB(15, 0,0, 0),
                         child: ListTile(
                           shape: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -104,7 +103,7 @@ class _homescreenState extends State<homescreen> {
                           title: ClipRRect(
                             child:InkWell(
                               onTap: (){},
-                              child: Text(""),
+                              child: const Text(""),
                             ),
                           ),
                         ),
@@ -115,34 +114,34 @@ class _homescreenState extends State<homescreen> {
               },
               itemCount: discountlist==null? 0:discountlist.length,
               separatorBuilder: (context,index){
-                return SizedBox(height: 30,);
+                return const SizedBox(height: 30,);
               },
             ),
           ),
-          SizedBox(height: 15,),
-          Container(
+          const SizedBox(height: 15,),
+          SizedBox(
             height: 260,
             child: GridView.count(crossAxisCount: 2,
-              padding:EdgeInsets.all(20),
+              padding:const EdgeInsets.all(20),
               crossAxisSpacing: 20,
               mainAxisSpacing: 10,
               childAspectRatio:1.5,
               children: [
                 Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle,color:Colors.blue ),
-                  child:Text(""),
+                  decoration: const BoxDecoration(shape: BoxShape.circle,color:Colors.blue ),
+                  child:const Text(""),
                 ),
                 Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle,color:Colors.green,),
-                  child:Text(""),
+                  decoration: const BoxDecoration(shape: BoxShape.circle,color:Colors.green,),
+                  child:const Text(""),
                 ),
                 Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle, color:Colors.yellow,),
-                  child:Text(""),
+                  decoration: const BoxDecoration(shape: BoxShape.circle, color:Colors.yellow,),
+                  child:const Text(""),
                 ),
                 Container(
-                  decoration: BoxDecoration(shape: BoxShape.circle,color:Colors.grey,),
-                  child:Text(""),
+                  decoration: const BoxDecoration(shape: BoxShape.circle,color:Colors.grey,),
+                  child:const Text(""),
                 ),
               ],
             ),

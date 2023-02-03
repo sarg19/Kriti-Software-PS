@@ -17,6 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      theme: ThemeData(
+        canvasColor: Colors.transparent,
+        bottomSheetTheme: BottomSheetThemeData(
+          modalBackgroundColor: Colors.black.withOpacity(0.0),),
+      ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) => snapshot.hasData
