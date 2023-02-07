@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/bottom_nav_bar.dart';
+import '../database.dart';
 
 class menuscreen extends StatefulWidget {
   const menuscreen({Key? key}) : super(key: key);
@@ -9,12 +10,27 @@ class menuscreen extends StatefulWidget {
 }
 
 class _menuscreenState extends State<menuscreen> {
-  List menuItems = [["Aloo Seez Paratha",20],["Bhezz Fried Rice",25],["Seez Maggi",30],["Duck Curry",50],["Bread Omelette",30],["Chips",10],["Siken Biriyani",160]];
-  var _selectedindex = 0,
-      size,
+  var size,
       height,
       width;
-
+  var listlength=0;
+  late Databases db;
+  Map Menu={};
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState(){
+    super.initState();
+    initialise();
+    db.retrieve_menu().then((value){
+      setState(() {
+        Menu=value;
+        listlength=Menu['menu'].length;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -90,17 +106,21 @@ class _menuscreenState extends State<menuscreen> {
                       height: 10,
                     ),
                     Container(
-                      height: 580.5,
+                      height: 550,
                       child: ListView.builder(
-                        itemCount: menuItems.length,
+                        itemCount: listlength,
                         itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 0),
-                            child: MyCard(
-                              name: menuItems[index][0],
-                              price: menuItems[index][1],
-                            ),
-                          );
+                          if(Menu['menu'][index]['Available']==1) {
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 0),
+                              child: MyCard(
+                                name: Menu['menu'][index]['Name'],
+                                price: Menu['menu'][index]['Price'],
+                              ),
+                            );
+                          }else{
+                            return Container();
+                          }
                         },
                       ),
                     ),
