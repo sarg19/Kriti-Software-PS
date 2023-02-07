@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
+import '../components/bottom_nav_bar.dart';
 
-// void main()=>{
-//   runApp(MaterialApp(
-//       home: menuscreen()
-//   ))
-// };
 class menuscreen extends StatefulWidget {
   const menuscreen({Key? key}) : super(key: key);
 
@@ -13,118 +9,195 @@ class menuscreen extends StatefulWidget {
 }
 
 class _menuscreenState extends State<menuscreen> {
+  List menuItems = [["Aloo Seez Paratha",20],["Bhezz Fried Rice",25],["Seez Maggi",30],["Duck Curry",50],["Bread Omelette",30],["Chips",10],["Siken Biriyani",160]];
   var _selectedindex = 0,
       size,
       height,
       width;
-  var menulistitemname = ['1', '2', '3', '4', '5','6','7','8','9','10'],
-      menulistitemprice = [];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedindex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    height = size.height;
-    width = size.width;
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title:  Stack(
-            children: [
-              ListTile(
-                title: Text("Kapili Canteen",style: TextStyle(fontSize: 20,letterSpacing: 1,fontWeight:FontWeight.bold,color: Colors.blue[300]),),
-                subtitle: Text("Now Open"),
-              ),
-              Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.blue,
-                  ),
-                  margin: EdgeInsets.fromLTRB((width*75)/100, height/60, 0, 0),
-                  child: IconButton
-                    (onPressed: (){}, icon: Icon(Icons.shopping_cart,color: Colors.white,))),
-            ],
-          ),
-          shadowColor: Colors.blue,
+    double h = size.height;
+    double w = size.width;
+    return Stack(
+      children: [
+        Image.asset(
+          height: h,
+          width: w,
+          fit: BoxFit.cover,
+          "assets/images/bgImage1.png",
         ),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Container(
-            padding:EdgeInsets.fromLTRB(0, 10, 0, 10),
-            child: ListView.separated(
-              physics: ClampingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                if (menulistitemname == null) {
-                  return CircularProgressIndicator();
-                }
-                return Stack(
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 20,
+          ),
+          child: Scaffold(
+            appBar: AppBar(
+              title: Center(
+                child: Container(
+                  height:50,
+                  width:50,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+
+                  child: const Image(
+                    image: AssetImage("assets/images/appLogo.png"),
+                  ),
+                ),
+              ),
+              backgroundColor: Colors.transparent,
+              elevation: 100.0,
+              leading: IconButton(
+                onPressed: (){},
+                icon: const Icon(Icons.arrow_back_ios_new , color: Colors.black ),
+              ),
+              actions: [
+                Transform.scale(
+                  scale: 1.5,
+                  child: IconButton(
+                    onPressed: (){},
+                    icon: const Icon(Icons.account_circle_outlined , color: Colors.black),
+                  ),
+                ),
+              ],
+            ),
+            body: Center(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    Container(
-                      width: (width*98)/100,
-                      height: (height*9)/100,
-                      padding: EdgeInsets.fromLTRB(width/12, 0, width/12, 0),
-                      child: ListTile(
-                        shape: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    Padding(
+                    padding: const EdgeInsets.fromLTRB(70.0,10.0,70.0,10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                      ),
+                      height: 40,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(0, 7, 0, 5),
+                          prefixIcon: Icon(Icons.search_outlined , color: Colors.black),
+                          border: InputBorder.none,
+                          fillColor: Colors.white,
+                          hintText: 'Search...',
+                          ),
                         ),
-                        tileColor: Colors.blue[200],
-                        title: Text("Seez Maggi",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 17),),
-                        subtitle: Text("Rs 20",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
                       ),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Container(
-                      margin:EdgeInsets.fromLTRB((width*55)/100, (height*2)/100, 0, 0),
-                      child: ElevatedButton(
-                        onPressed: (){},
-                        child: Text("Add to Cart",style: TextStyle(color:Colors.white,),),
+                      height: 580.5,
+                      child: ListView.builder(
+                        itemCount: menuItems.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 0),
+                            child: MyCard(
+                              name: menuItems[index][0],
+                              price: menuItems[index][1],
+                            ),
+                          );
+                        },
                       ),
-                    )
+                    ),
                   ],
-                );
-              },
-              itemCount: menulistitemname == null ? 0 : menulistitemname.length,
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 30,);
-              },
+                ),
+              ),
             ),
+            bottomNavigationBar: const BottomNavBar(),
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.food_bank_rounded),
-              label: "Food",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: "Favourites",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_box),
-              label: "Account",
-            ),
-          ],
-
-          selectedItemColor: Colors.blue[800],
-          unselectedItemColor: Colors.blue[600],
-          backgroundColor: Colors.blue[500],
-          elevation: 10,
-          currentIndex: _selectedindex,
-          onTap: _onItemTapped,
-
         )
+      ],
+    );
+  }
+}
+
+class MyCard extends StatelessWidget {
+  final name;
+  int price;
+
+  MyCard({
+    this.name = "",
+    this.price = 0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+        height: 170,
+        child: Column(
+          children: [
+            Container(
+                decoration: const BoxDecoration(
+                    color: Color.fromRGBO(255, 249, 240, 1.0),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      topRight: Radius.circular(15),
+                    )
+                ),
+                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                height: 80,
+                width: 280,
+                child: Text.rich(
+                    TextSpan(
+                        style: TextStyle(
+                          fontFamily: 'DMSans',
+                          fontSize: 20,
+                        ),
+                        children: [
+                          TextSpan(text: name),
+                          TextSpan(text: '\n'),
+                          TextSpan(text: '\n'),
+                          TextSpan(text: "₹ "),
+                          TextSpan(text: price.toString()),
+                        ]
+                    )
+                )
+            ),
+            Container(
+                height: 60,
+                width: 280,
+                decoration: const BoxDecoration(
+                    color: Color.fromRGBO(255, 249, 240, 1.0),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15)
+                    )
+                ),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 10, 10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: StadiumBorder(),
+                            backgroundColor: Color.fromRGBO(188, 157, 255, 1),
+                          ),
+                          child: const Text(
+                            'Add to Cart',
+                            style: TextStyle(
+                              fontFamily: 'DMSans',
+                              fontSize: 15,
+                            ),
+                          ),
+                          onPressed: (){},
+                        ),
+                      )
+                    ]
+                )
+            )
+          ],
+        ),
+      ),
     );
   }
 }
