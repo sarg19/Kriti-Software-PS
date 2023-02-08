@@ -49,6 +49,7 @@ class _menuscreenState extends State<menuscreen> {
             top: 20,
           ),
           child: Scaffold(
+            backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: Center(
                 child: Container(
