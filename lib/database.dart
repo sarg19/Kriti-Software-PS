@@ -33,26 +33,54 @@ class Databases{
     user_info=snapshot.data();
     return user_info;
   }
-  void Add_to_Cart(String _item,num _price) async {
+  void create_user(String userId) async {
+    final CollectionReference usersCollection = firestore.collection('users');
+    usersCollection.doc(userId).set({
+      'Active_Orders':[],
+      'Cart':[],
+      'Favourites':[],
+      'Location':'Kapili',
+      'Mail':'k.tarun@iitg.ac.in',
+      'Name':'Tarun Kumar',
+      'Recent_Orders':[]
+    });
+  }
+  void Add_to_Cart(String _item,num _price,String _shopkey,String _shopname,String userId) async {
     late Map? user_info;
     final CollectionReference usersCollection = firestore.collection('users');
-    var snapshot=await firestore.collection("users").doc("01li51cY9718Ns75HOa9").get();
+    var snapshot=await firestore.collection("users").doc(userId).get();
     user_info=snapshot.data();
+    if(user_info==null){
+      print('first login');
+      return;
+    }
+    if(!user_info.containsKey('Cart')){
+      user_info['Cart']=[];
+    }
     for(Map shop in user_info!['Cart']){
-      if(shop['Shop_Key']=="kOFNcRZ9JnFFiW3AtXzj"){
+      if(shop['Shop_Key']==_shopkey){
         for(Map item in shop['Items']){
           if(item['Item_Name']==_item){
             item['Quantity']=item['Quantity']+1;
             shop['Total_Amount']=shop['Total_Amount']+item['Price'];
-            usersCollection.doc("01li51cY9718Ns75HOa9").update({'Cart':user_info!['Cart']});
+            usersCollection.doc(userId).update({'Cart':user_info!['Cart']});
             return;
           }
         }
         shop['Items'].add({'Item_Name':_item,'Price':_price,'Quantity':1});
         shop['Total_Amount']=shop['Total_Amount']+_price;
-        usersCollection.doc("01li51cY9718Ns75HOa9").update({'Cart':user_info!['Cart']});
+        usersCollection.doc(userId).update({'Cart':user_info!['Cart']});
+        return;
       }
     }
+    user_info!['Cart'].add({
+      'Shop_Key':_shopkey,
+      'Shop_Name':_shopname,
+      'Total_Amount':_price,
+      'Items':[{'Item_Name':_item,'Price':_price,'Quantity':1}]
+    });
+    usersCollection.doc(userId).update({'Cart':user_info!['Cart']});
     print(user_info!['Cart']);
+    return;
   }
 }
