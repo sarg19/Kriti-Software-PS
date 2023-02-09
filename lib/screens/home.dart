@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
+import 'package:kriti/popups/profilepopup.dart';
 class homescreen extends StatefulWidget {
   const homescreen({Key? key}) : super(key: key);
 
@@ -63,7 +64,12 @@ class _homescreenState extends State<homescreen> {
               Transform.scale(
                 scale: 1.5,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => const ProfilePopup(),
+                    );
+                  },
                   icon: const Icon(
                       Icons.account_circle_outlined, color: Colors.black),
                 ),
