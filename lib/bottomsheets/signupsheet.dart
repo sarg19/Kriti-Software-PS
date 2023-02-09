@@ -1,8 +1,9 @@
 import 'dart:ui';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kriti/bottomsheets/loginsheet.dart';
+import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
 
 class SignUpSheet extends StatefulWidget {
@@ -15,10 +16,105 @@ class SignUpSheet extends StatefulWidget {
 class _SignUpSheetState extends State<SignUpSheet> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _hostelController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+
+  String _nameError = "";
+  String _emailError = "";
+  String _phoneError = "";
+  String _passwordError = "";
+  String _confirmError = "";
+
+  Future<void> signup() async {
+    String name = _nameController.text;
+    String email = _emailController.text;
+    String phone = _phoneController.text;
+    String password = _passwordController.text;
+    String confirm = _confirmPasswordController.text;
+
+    if (name.isEmpty) {
+      setState(() {
+        _nameError = "Name is required.";
+      });
+      return;
+    } else {
+      setState(() {
+        _nameError = "";
+      });
+    }
+    if (email.isEmpty) {
+      setState(() {
+        _emailError = "Email is required.";
+      });
+      return;
+    } else if (!RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@iitg.ac.in")
+        .hasMatch(email)) {
+      setState(() {
+        _emailError = "Enter valid IITG email";
+      });
+      return;
+    } else {
+      setState(() {
+        _emailError = "";
+      });
+    }
+    if (phone.isEmpty) {
+      setState(() {
+        _phoneError = "Phone number is required.";
+      });
+      return;
+    } else if (phone.length !=10){
+      setState(() {
+        _phoneError = "Enter valid phone number";
+      });
+    } else {
+      setState(() {
+        _phoneError = "";
+      });
+    }
+    if (password.isEmpty) {
+      setState(() {
+        _passwordError = "Password can't be empty";
+      });
+    } else if (confirm.isEmpty) {
+      setState(() {
+        _passwordError = "";
+        _confirmError = "Password can't be empty";
+      });
+    } else if (password != confirm) {
+      setState(() {
+        _passwordError = "";
+        _confirmError = "Passwords don't match.";
+      });
+      return;
+    }
+    try {
+      FocusManager.instance.primaryFocus?.unfocus();
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Sign up successful")));
+      Navigator.pop(context);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const homescreen()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "weak-password") {
+        setState(() {
+          _passwordError = "Password too weak.";
+        });
+      } else if (e.code == "email-already-in-use") {
+        setState(() {
+          _emailError = "Email already registered.";
+        });
+      }
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Some error occurred")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +148,15 @@ class _SignUpSheetState extends State<SignUpSheet> {
                         fontSize: 30),
                   ),
                 ),
-                CustomTextField(controller: _nameController, labelText: "Name", hintText: "", inputType: TextInputType.text),
-                CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress),
-                CustomTextField(controller: _hostelController, labelText: "Hostel/Quarter", hintText: "", inputType: TextInputType.text),
-                CustomTextField(controller: _phoneController, labelText: "Phone number", hintText: "", inputType: TextInputType.phone),
-                CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true,),
-                CustomTextField(controller: _confirmPasswordController, labelText: "Confirm Password", hintText: "", inputType: TextInputType.text, obscureText: true,),
+                CustomTextField(controller: _nameController, labelText: "Name", hintText: "", inputType: TextInputType.text, errorText: _nameError,),
+                CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
+                CustomTextField(controller: _phoneController, labelText: "Phone number", hintText: "", inputType: TextInputType.phone, errorText: _phoneError,),
+                CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
+                CustomTextField(controller: _confirmPasswordController, labelText: "Confirm Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _confirmError,),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    signup();
+                  },
                   style: ButtonStyle(
                       backgroundColor:
                       MaterialStateProperty.all(const Color(0xFFBC9DFF)),
