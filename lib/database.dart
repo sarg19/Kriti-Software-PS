@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 class Databases{
   late FirebaseFirestore firestore;
@@ -100,10 +102,15 @@ class Databases{
       return;
     }
     late Map? Cart;
+    var counter=0;
     for(Map shopcart in user_info['Cart']){
       if(shopcart['Shop_Key']==shop_key){
         Cart=shopcart;
+        counter=1;
       }
+    }
+    if(counter==0){
+      return;
     }
     user_info['Cart'].remove(Cart);
     if(Cart==null){
@@ -143,5 +150,14 @@ class Databases{
     });
     usersCollection.doc(userId).update({'Active_Orders':user_info['Active_Orders'],'Cart':user_info['Cart']});
     shopsCollection.doc(shop_key).update({'Pending_Order':shop_info['Pending_Order']});
+  }
+  Future checkUser(String userId) async{
+    final CollectionReference usersCollection = firestore.collection('users');
+    var usersnapshot= await usersCollection.doc(userId).get();
+    if(usersnapshot.exists){
+      return 1;
+    }else{
+      return 0;
+    }
   }
 }
