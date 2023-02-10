@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore: ^4.2.0
   shared_preferences: ^2.0.15
   page_transition: ^2.0.9
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   flutter_test:
