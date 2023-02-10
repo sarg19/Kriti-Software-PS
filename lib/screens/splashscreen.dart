@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kriti/screens/home.dart';
 import 'package:kriti/screens/welcomscreen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -30,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context,
           PageTransition(
-              child: const WelcomeScreen(), type: PageTransitionType.fade));
+              child: const homescreen(), type: PageTransitionType.fade));
     }
   }
 

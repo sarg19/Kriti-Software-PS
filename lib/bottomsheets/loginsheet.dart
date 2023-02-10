@@ -1,8 +1,10 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:kriti/bottomsheets/signupsheet.dart';
+import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
 
 class LoginSheet extends StatefulWidget {
@@ -15,6 +17,53 @@ class LoginSheet extends StatefulWidget {
 class _LoginSheetState extends State<LoginSheet> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  String _emailError = "";
+  String _passwordError = "";
+
+  Future<void> submit() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    if (email.isEmpty) {
+      setState(() {
+        _emailError = "Email required.";
+      });
+      return;
+    } else {
+      setState(() {
+        _emailError = "";
+      });
+    }
+    if (password.isEmpty) {
+      setState(() {
+        _passwordError = "Password required.";
+      });
+      return;
+    }
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      if (!mounted) return;
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const homescreen()),
+              (Route route) => false);
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      if (e.code == 'user-not-found' || e.code == 'invalid-email') {
+        setState(() {
+          _emailError = "Invalid email";
+        });
+      } else if (e.code == 'wrong-password') {
+        setState(() {
+          _passwordError = "Incorrect password";
+        });
+      } else {
+        setState(() {
+          _emailError = e.code;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,10 +96,12 @@ class _LoginSheetState extends State<LoginSheet> {
                       fontSize: 30),
                 ),
               ),
-              CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress),
-              CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true,),
+              CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
+              CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  submit();
+                },
                 style: ButtonStyle(
                     backgroundColor:
                     MaterialStateProperty.all(const Color(0xFFBC9DFF)),

@@ -27,7 +27,7 @@ class CustomTextField extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SizedBox(
-              height: 35,
+              height: errorText==""? 35 : 50,
               child: TextField(
                 textAlignVertical: TextAlignVertical.center,
                 controller: controller,
