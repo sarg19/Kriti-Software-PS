@@ -1,0 +1,303 @@
+import 'package:flutter/material.dart';
+import 'package:kriti/components/bottom_nav_bar.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+
+void main()=>{
+  runApp(MaterialApp(
+      home: cartscreen()
+  ))
+};
+
+class cartscreen extends StatefulWidget {
+  const cartscreen({Key? key}) : super(key: key);
+
+  @override
+  State<cartscreen> createState() => _cartscreenState();
+}
+
+class _cartscreenState extends State<cartscreen> {
+  int _currentIndex=0;
+  var cartitemname=['Seez Maggi','Seez Maggi','Paratha','Seez Maggi','Seez Maggi','Paratha'];
+  var cartitemprice=['100','100','50','100','100','50'];
+  var cartitemnumber=['01','01','01','01','01','01'];
+  var canteenname = ['Subansiri Canteen', 'Kapili Canteen', 'Lohit Canteen', 'Barak Canteen', 'Manas Canteen',];
+  String dropdownvalue='Subansiri Canteen';
+  var currentprice=0;
+  void getprice(){
+    currentprice=0;
+    for(var i=0;i<cartitemprice.length;i++){
+      currentprice=currentprice+int.parse(cartitemprice[i])*int.parse(cartitemnumber[i]);
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    getprice();
+    var size=MediaQuery.of(context).size;
+    var width=size.width;
+    var height=size.height;
+    return Stack(
+      children: [
+        Image.asset(
+          'assets/images/bgImage1.png',
+          height: height,
+          width: width,
+          fit: BoxFit.cover,
+        ),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: Center(
+              child: Container(
+                height: 50,
+                width: 50,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: const Image(
+                  image: AssetImage("assets/images/appLogo.png"),
+                ),
+              ),
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 100.0,
+            leading: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
+            ),
+            actions: [
+              Transform.scale(
+                scale: 1.5,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.account_circle_outlined,
+                      color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+          body:Column(
+            children: [
+              Center(
+                child: Container(
+                  margin:EdgeInsets.fromLTRB(8, 0, 0, 10),
+                  child:Text("Cart",style:TextStyle(fontSize: 30,fontWeight: FontWeight.w300)),
+                ),
+              ),
+              Container(
+                height: height*0.07,
+                width: width*0.8,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
+                decoration: const BoxDecoration(
+                  color: Color.fromRGBO(188, 157, 255, 1.0),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    items: canteenname.map((item) =>
+                        DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              fontSize: 25,
+                              letterSpacing: 1,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ))
+                        .toList(),
+                    value: dropdownvalue,
+                    onChanged: (value) {
+                      setState(() {
+                        dropdownvalue = value as String;
+                      });
+                    },
+                    dropdownDecoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                    ),
+                    iconOnClick: Icon(Icons.arrow_drop_up,color: Colors.white),
+                    icon: Icon(Icons.arrow_drop_down,color:Colors.white),
+                    dropdownWidth: width*0.7,
+                    buttonHeight: 40,
+                    buttonWidth: width*0.8,
+                    itemHeight: 40,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ListView.separated(
+                        physics: ClampingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index)=>
+                            Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(15)),
+                                color:Color.fromRGBO(255, 249, 240, 1.0),
+                              ),
+                              height: height*0.1,
+                              margin: EdgeInsets.fromLTRB(width*0.11, 10, width*0.11, 0),
+                              child: Stack(
+                                children: [
+                                  Container(
+                                      padding: EdgeInsets.fromLTRB(width*0.0636, height*0.017, 0, height*0.0235),
+                                      child:Text(cartitemname[index],style:TextStyle(fontSize: 20,))
+                                  ),
+                                  Container(
+                                      padding: EdgeInsets.fromLTRB(width*0.0636, height*0.049, 0, 0),
+                                      child:Text("Rs. "+cartitemprice[index],style:TextStyle(fontSize: 20),)
+                                  ),
+                                  Container(
+                                    width: width*0.09669,
+                                    height: height*0.047,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: Color.fromRGBO(188, 157, 255, 1.0),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(30),
+                                          topLeft:Radius.circular(30),
+                                        )
+                                    ),
+                                    margin: EdgeInsets.fromLTRB(width*0.40, 20, 0, 0),
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, height*0.00336),
+                                    child: TextButton(
+                                      style: ButtonStyle(
+                                        overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+                                      ),
+                                      child: Center(child: Text("+",style:TextStyle(color:Colors.white,fontSize: 20 ))),
+                                      onPressed: (){
+                                        setState(() {
+                                          var currentvalue=int.parse(cartitemnumber[index]);
+                                          currentvalue=currentvalue+1;
+                                          if(currentvalue>=0 && currentvalue<=9) {
+                                            cartitemnumber[index] =
+                                                "0"+currentvalue.toString();
+                                          }
+                                          else{
+                                            cartitemnumber[index]=currentvalue.toString();
+                                          }
+                                          getprice();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    width: width*0.09669,
+                                    height: height*0.047,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: Color.fromRGBO(188, 157, 255, 1.0),
+                                        borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(30),
+                                          topRight:Radius.circular(30),
+                                        )
+                                    ),
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, height*0.00783),
+                                    margin: EdgeInsets.fromLTRB(width*0.6361, 20, 0, 0),
+                                    child: TextButton(
+                                      style: ButtonStyle(
+                                        overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent),
+                                      ),
+                                      child: Center(child: Text("-",style:TextStyle(color:Colors.white,fontSize: 20 ))),
+                                      onPressed: (){
+                                        setState(() {
+                                          var currentvalue=int.parse(cartitemnumber[index]);
+                                          if(currentvalue==0){
+                                            currentvalue=currentvalue;
+                                          }
+                                          else {
+                                            currentvalue = currentvalue - 1;
+                                            currentprice=currentprice-int.parse(cartitemprice[index]);
+                                          }
+                                          if(currentvalue>=0 && currentvalue<=9) {
+                                            cartitemnumber[index] =
+                                                "0"+currentvalue.toString();
+                                          }
+                                          else{
+                                            cartitemnumber[index]=currentvalue.toString();
+                                          }
+                                          getprice();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    width: width*0.09669,
+                                    height: height*0.047,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    margin: EdgeInsets.fromLTRB(width*0.5216, 20, 0, 0),
+                                    padding: EdgeInsets.fromLTRB(0, 0, 0, height*0.00336),
+                                    child: Center(child: Text(cartitemnumber[index],style:TextStyle(color:Colors.white,fontSize: 20 ))),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        separatorBuilder: (context,index)=>SizedBox(height: 15,),
+                        itemCount: cartitemname == null ? 0 : cartitemname.length,
+                      ),
+                      Container(
+                          height: height*0.05,
+                          width: width*0.78,
+                          margin: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color:Color.fromRGBO(255, 249, 240, 1.0),
+                          ),
+                          alignment: Alignment.center,
+
+                          child:Text("Total:Rs. "+currentprice.toString(),style: TextStyle(color: Color.fromRGBO(
+                              58, 58, 58, 1.0),fontSize: 20),)
+                      ),
+                      Container(
+                          height: height*0.05,
+                          width: width*0.5,
+                          margin: EdgeInsets.fromLTRB(0, 35, 0, 10),
+                          padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color:Color.fromRGBO(188, 157, 255, 1.0),
+                          ),
+                          alignment: Alignment.center,
+
+                          child:Text("Add more items",style: TextStyle(color: Color.fromRGBO(
+                              255, 255, 255, 1.0),fontSize: 20),)
+                      ),
+                      Container(
+                          height: height*0.05,
+                          width: width*0.5,
+                          margin: EdgeInsets.fromLTRB(0, 5, 0, 20),
+                          padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color:Color.fromRGBO(188, 157, 255, 1.0),
+                          ),
+                          alignment: Alignment.center,
+
+                          child:TextButton(
+                            child: Text("Request Order",style: TextStyle(color: Color.fromRGBO(
+                                255, 255, 255, 1.0),fontSize: 20))
+                            ,onPressed: (){},)
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: BottomNavBar(),
+        ),
+
+      ],
+    );
+  }
+}
