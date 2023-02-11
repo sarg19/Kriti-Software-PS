@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kriti/components/edititem.dart';
+import 'package:kriti/popups/profilepopup.dart';
 import '../components/bottom_nav_bar.dart';
+import '../database.dart';
 // import '../database.dart';
 
 class shopmenuscreen extends StatefulWidget {
@@ -15,24 +20,23 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
       width;
 
   List shopkeepermenuitems = [["Seez Maggi", 22],["Plain Maggi",20],["Parotha",20],["Duck Curry",200],["Kabootar",100]];
-  // var listlength=0;
-  // late Databases db;
-  // Map Menu={};
-  // initialise(){
-  //   db=Databases();
-  //   db.initialise();
-  // }
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   initialise();
-  //   db.retrieve_menu("kOFNcRZ9JnFFiW3AtXzj").then((value){
-  //     setState(() {
-  //       Menu=value;
-  //       listlength=Menu['menu'].length;
-  //     });
-  //   });
-  // }
+  var listlength=0;
+  late Databases db;
+  Map Menu={};
+  late Timer timer;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState(){
+    super.initState();
+    initialise();
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      Reload();
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -123,13 +127,17 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                     Container(
                       height: 550,
                       child: ListView.builder(
-                        itemCount: shopkeepermenuitems.length,
+                        itemCount: listlength,
                         itemBuilder: (context, index) {
                           return Container(
                             margin: EdgeInsets.only(bottom: 0),
                             child: ShopkeeperMenuCard(
-                              name: shopkeepermenuitems[index][0],
-                              price: shopkeepermenuitems[index][1],
+                              name: Menu['menu'][index]['Name'],
+                              price: Menu['menu'][index]['Price'],
+                              availability: Menu['menu'][index]['Available']==1?"Available":"Unavailable",
+                              index: index,
+                              Shop_Key: "kOFNcRZ9JnFFiW3AtXzj",
+                              Menu: Menu,
                             )
                           );
                           // if(Menu['menu'][index]['Available']==1) {
@@ -162,15 +170,30 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
       ],
     );
   }
+  Future<void> Reload() async {
+    db.retrieve_menu("kOFNcRZ9JnFFiW3AtXzj").then((value){
+      setState(() {
+        Menu=value;
+        listlength=Menu['menu'].length;
+      });
+    });
+  }
 }
 
 class ShopkeeperMenuCard extends StatelessWidget {
   final name;
   int price;
-
+  final availability;
+  int index;
+  final Shop_Key;
+  Map Menu;
   ShopkeeperMenuCard({
     this.name = "",
     this.price = 0,
+    this.availability="",
+    this.index=0,
+    this.Shop_Key="",
+    required this.Menu
   });
 
   @override
@@ -215,7 +238,7 @@ class ShopkeeperMenuCard extends StatelessWidget {
                       right: 12,
                       child: Container(
                         child: Text(
-                          "Available",
+                          availability,
                           style: TextStyle(
                             fontFamily: 'DMSans',
                             fontSize: 13,
@@ -255,7 +278,11 @@ class ShopkeeperMenuCard extends StatelessWidget {
                               fontSize: 15,
                             ),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            showDialog(context: context, builder: (BuildContext context){
+                              return ProfilePopup(widgetcontent: EditItem(name: name,price: price,availability: availability,index: index,Shop_Key: Shop_Key,Menu: Menu,));
+                            });
+                          },
                         ),
                       )
                     ]

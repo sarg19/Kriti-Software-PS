@@ -16,7 +16,7 @@ class Databases{
       }
     }
   }
-  void update_menu(String shop_key,int index,Map Menu,String _name,num _price,num _available) async {
+  void update_menu(String shop_key,int index,Map Menu,String _name,num? _price,num _available) async {
     final CollectionReference usersCollection = firestore.collection('shops');
 
     Menu['menu'][index]['Price']=_price;
