@@ -24,7 +24,7 @@ class Databases{
     Menu['menu'][index]['Available']=_available;
     usersCollection.doc(shop_key).update({'Menu':Menu['menu']});
   }
-  void add_menu_item(String shop_key,Map Menu,String _name,num _price) async {
+  void add_menu_item(String shop_key,Map Menu,String _name,num? _price) async {
     final CollectionReference usersCollection = firestore.collection('shops');
     Menu['menu'].add({'Price':_price,'Name':_name,'Available':1});
     usersCollection.doc(shop_key).update({'Menu':Menu['menu']});
