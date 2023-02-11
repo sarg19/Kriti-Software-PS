@@ -10,29 +10,26 @@ class favouritesscreen extends StatefulWidget {
 }
 
 class _favouritesscreenState extends State<favouritesscreen> {
-  var size,
-      height,
-      width;
+  var size;
   var listlength=0;
   late Databases db;
   List favouriteItems = [["Kapili Canteen","Aloo Seez Paratha",25],["Disang Canteen","Duck Curry",60],["Lohit Canteen","Lays Masala Dosa",40]];
-
-  // Map Menu={};
-  // initialise(){
-  //   db=Databases();
-  //   db.initialise();
-  // }
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   initialise();
-  //   db.retrieve_menu("").then((value){
-  //     setState(() {
-  //       Menu=value;
-  //       listlength=Menu['menu'].length;
-  //     });
-  //   });
-  // }
+  Map Favouites={};
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState(){
+    super.initState();
+    initialise();
+    db.retrieve_user_info("01li51cY9718Ns75HOa9").then((value){
+      setState(() {
+        Favouites=value;
+        listlength=Favouites['Favourites'].length;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -101,14 +98,16 @@ class _favouritesscreenState extends State<favouritesscreen> {
                     Container(
                       height: 550,
                       child: ListView.builder(
-                        itemCount: favouriteItems.length,
+                        itemCount: listlength,
                         itemBuilder: (context, index) {
                           return Container(
                             margin: EdgeInsets.only(top: 20),
                             child: FavouritesCard(
-                              name: favouriteItems[index][1],
-                              price: favouriteItems[index][2],
-                              shopName: favouriteItems[index][0],
+                              name: Favouites['Favourites'][index]['Item_Name'],
+                              price: Favouites['Favourites'][index]['Price'],
+                              shopName: Favouites['Favourites'][index]['Shop_Name'],
+                              Shop_Key: Favouites['Favourites'][index]['Shop_Key'],
+                              db: db,
                             ),
                           );
                           // if(Menu['menu'][index]['Available']==1) {
@@ -141,11 +140,14 @@ class FavouritesCard extends StatelessWidget {
   final String name;
   num price;
   final String shopName;
-
+  final String Shop_Key;
+  Databases db;
   FavouritesCard({
     this.name = "",
     this.price = 0,
     this.shopName = "",
+    this.Shop_Key="",
+    required this.db
   });
 
   @override
@@ -230,21 +232,7 @@ class FavouritesCard extends StatelessWidget {
                             ),
                           ),
                           onPressed: (){
-                            showDialog(context: context, builder: (BuildContext context){
-                              return AlertDialog(
-                                contentPadding: EdgeInsets.all(0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(20))
-                                ),
-                                content: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.indigo,
-                                    borderRadius: BorderRadius.all(Radius.circular(20))
-                                  ),
-                                  height: 400,
-                                ),
-                              );
-                            });
+                            db.Add_to_Cart(name, price, Shop_Key, shopName, "01li51cY9718Ns75HOa9");
                           },
                         ),
                       )
