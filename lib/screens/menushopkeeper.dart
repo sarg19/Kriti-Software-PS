@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:kriti/components/additem.dart';
 import 'package:kriti/components/edititem.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import '../components/bottom_nav_bar.dart';
@@ -19,7 +20,6 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
       height,
       width;
 
-  List shopkeepermenuitems = [["Seez Maggi", 22],["Plain Maggi",20],["Parotha",20],["Duck Curry",200],["Kabootar",100]];
   var listlength=0;
   late Databases db;
   Map Menu={};
@@ -32,7 +32,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
   void initState(){
     super.initState();
     initialise();
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
       Reload();
     });
 
@@ -163,7 +163,11 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               child: Image.asset('assets/icons/circleplus.png'),
-              onPressed: (){},
+              onPressed: (){
+                showDialog(context: context, builder: (BuildContext context){
+                  return ProfilePopup(widgetcontent: AddItem(Shop_Key: "kOFNcRZ9JnFFiW3AtXzj",Menu: Menu,));
+                });
+              },
             ),
           ),
         )
