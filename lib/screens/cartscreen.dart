@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+
+import '../database.dart';
 
 void main()=>{
   runApp(MaterialApp(
@@ -21,8 +25,39 @@ class _cartscreenState extends State<cartscreen> {
   var cartitemprice=['100','100','50','100','100','50'];
   var cartitemnumber=['01','01','01','01','01','01'];
   var canteenname = ['Subansiri Canteen', 'Kapili Canteen', 'Lohit Canteen', 'Barak Canteen', 'Manas Canteen',];
-  String dropdownvalue='Subansiri Canteen';
+  int itemlength=0;
+  String dropdownvalue='';
   var currentprice=0;
+  late Databases db;
+  late Map user_data;
+  int ind=0;
+  var canteen=[];
+  num total=0;
+  late Timer timer;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState(){
+    super.initState();
+    initialise();
+    db.retrieve_user_info("01li51cY9718Ns75HOa9").then((value){
+      setState(() {
+        user_data=value;
+        for(Map item in user_data['Cart']){
+          canteen.add(item['Shop_Name']);
+        }
+        itemlength=value['Cart'][0]['Items'].length;
+        dropdownvalue=canteen[0];
+        total=value['Cart'][0]['Total_Amount'];
+      });
+    });
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      Reload();
+    });
+
+  }
   void getprice(){
     currentprice=0;
     for(var i=0;i<cartitemprice.length;i++){
@@ -94,7 +129,7 @@ class _cartscreenState extends State<cartscreen> {
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton2(
-                    items: canteenname.map((item) =>
+                    items: canteen.map((item) =>
                         DropdownMenuItem<String>(
                           value: item,
                           child: Text(
@@ -110,7 +145,10 @@ class _cartscreenState extends State<cartscreen> {
                     value: dropdownvalue,
                     onChanged: (value) {
                       setState(() {
+                        ind=canteen.indexOf(value as String);
                         dropdownvalue = value as String;
+                        itemlength=user_data['Cart'][ind]['Items'].length;
+                        total=user_data['Cart'][ind]['Total_Amount'];
                       });
                     },
                     dropdownDecoration: const BoxDecoration(
@@ -146,11 +184,11 @@ class _cartscreenState extends State<cartscreen> {
                                 children: [
                                   Container(
                                       padding: EdgeInsets.fromLTRB(width*0.0636, height*0.017, 0, height*0.0235),
-                                      child:Text(cartitemname[index],style:TextStyle(fontSize: 20,))
+                                      child:Text(user_data['Cart'][ind]['Items'][index]['Item_Name'],style:TextStyle(fontSize: 20,))
                                   ),
                                   Container(
                                       padding: EdgeInsets.fromLTRB(width*0.0636, height*0.049, 0, 0),
-                                      child:Text("Rs. "+cartitemprice[index],style:TextStyle(fontSize: 20),)
+                                      child:Text("Rs. "+user_data['Cart'][ind]['Items'][index]['Price'].toString(),style:TextStyle(fontSize: 20),)
                                   ),
                                   Container(
                                     width: width*0.09669,
@@ -172,16 +210,7 @@ class _cartscreenState extends State<cartscreen> {
                                       child: Center(child: Text("+",style:TextStyle(color:Colors.white,fontSize: 20 ))),
                                       onPressed: (){
                                         setState(() {
-                                          var currentvalue=int.parse(cartitemnumber[index]);
-                                          currentvalue=currentvalue+1;
-                                          if(currentvalue>=0 && currentvalue<=9) {
-                                            cartitemnumber[index] =
-                                                "0"+currentvalue.toString();
-                                          }
-                                          else{
-                                            cartitemnumber[index]=currentvalue.toString();
-                                          }
-                                          getprice();
+                                          db.incrementcart(ind,index,user_data['Cart'],"01li51cY9718Ns75HOa9");
                                         });
                                       },
                                     ),
@@ -206,22 +235,7 @@ class _cartscreenState extends State<cartscreen> {
                                       child: Center(child: Text("-",style:TextStyle(color:Colors.white,fontSize: 20 ))),
                                       onPressed: (){
                                         setState(() {
-                                          var currentvalue=int.parse(cartitemnumber[index]);
-                                          if(currentvalue==0){
-                                            currentvalue=currentvalue;
-                                          }
-                                          else {
-                                            currentvalue = currentvalue - 1;
-                                            currentprice=currentprice-int.parse(cartitemprice[index]);
-                                          }
-                                          if(currentvalue>=0 && currentvalue<=9) {
-                                            cartitemnumber[index] =
-                                                "0"+currentvalue.toString();
-                                          }
-                                          else{
-                                            cartitemnumber[index]=currentvalue.toString();
-                                          }
-                                          getprice();
+                                          db.decrementcart(ind,index,user_data['Cart'],"01li51cY9718Ns75HOa9");
                                         });
                                       },
                                     ),
@@ -236,13 +250,13 @@ class _cartscreenState extends State<cartscreen> {
                                     ),
                                     margin: EdgeInsets.fromLTRB(width*0.5216, 20, 0, 0),
                                     padding: EdgeInsets.fromLTRB(0, 0, 0, height*0.00336),
-                                    child: Center(child: Text(cartitemnumber[index],style:TextStyle(color:Colors.white,fontSize: 20 ))),
+                                    child: Center(child: Text(user_data['Cart'][ind]['Items'][index]['Quantity'].toString(),style:TextStyle(color:Colors.white,fontSize: 20 ))),
                                   ),
                                 ],
                               ),
                             ),
                         separatorBuilder: (context,index)=>SizedBox(height: 15,),
-                        itemCount: cartitemname == null ? 0 : cartitemname.length,
+                        itemCount: itemlength,
                       ),
                       Container(
                           height: height*0.05,
@@ -255,7 +269,7 @@ class _cartscreenState extends State<cartscreen> {
                           ),
                           alignment: Alignment.center,
 
-                          child:Text("Total:Rs. "+currentprice.toString(),style: TextStyle(color: Color.fromRGBO(
+                          child:Text("Total:Rs. "+total.toString(),style: TextStyle(color: Color.fromRGBO(
                               58, 58, 58, 1.0),fontSize: 20),)
                       ),
                       Container(
@@ -299,5 +313,19 @@ class _cartscreenState extends State<cartscreen> {
 
       ],
     );
+  }
+  Future<void> Reload() async {
+    db.retrieve_user_info("01li51cY9718Ns75HOa9").then((value){
+      setState(() {
+        user_data=value;
+        for(Map item in user_data['Cart']){
+          if(!canteen.contains(item['Shop_Name'])){
+            canteen.add(item['Shop_Name']);
+          }
+        }
+        itemlength=value['Cart'][ind]['Items'].length;
+        total=value['Cart'][ind]['Total_Amount'];
+      });
+    });
   }
 }

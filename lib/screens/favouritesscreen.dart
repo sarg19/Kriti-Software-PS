@@ -13,7 +13,6 @@ class _favouritesscreenState extends State<favouritesscreen> {
   var size;
   var listlength=0;
   late Databases db;
-  List favouriteItems = [["Kapili Canteen","Aloo Seez Paratha",25],["Disang Canteen","Duck Curry",60],["Lohit Canteen","Lays Masala Dosa",40]];
   Map Favouites={};
   initialise(){
     db=Databases();

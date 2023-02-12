@@ -49,8 +49,12 @@ class Databases{
   }
   void Add_to_Cart(String _item,num _price,String _shopkey,String _shopname,String userId) async {
     late Map? user_info;
+    late Map? shop_info;
+    final CollectionReference shopCollection = firestore.collection('shops');
+    var shopsnapshot=await firestore.collection('shops').doc(_shopkey).get();
     final CollectionReference usersCollection = firestore.collection('users');
     var snapshot=await firestore.collection("users").doc(userId).get();
+    shop_info=shopsnapshot.data();
     user_info=snapshot.data();
     if(user_info==null){
       print('first login');
@@ -58,6 +62,25 @@ class Databases{
     }
     if(!user_info.containsKey('Cart')){
       user_info['Cart']=[];
+    }
+    int counter=0;
+    for(Map item in shop_info!['Menu']){
+      if(item['Name']==_item){
+        if(item['Available']==0){
+          counter=2;
+        }else{
+          _price=item['Price'];
+          counter=1;
+        }
+      }
+    }
+    if(counter==0){
+      print('No item found in menu');
+      return;
+    }
+    if(counter==2){
+      print('Item currently unavailable');
+      return;
     }
     for(Map shop in user_info!['Cart']){
       if(shop['Shop_Key']==_shopkey){
@@ -159,5 +182,23 @@ class Databases{
     }else{
       return 0;
     }
+  }
+  void incrementcart(int ind1,int ind2,List Cart,String userId) async {
+    final CollectionReference usersCollection = firestore.collection('users');
+    Cart[ind1]['Items'][ind2]['Quantity']=Cart[ind1]['Items'][ind2]['Quantity']+1;
+    Cart[ind1]['Total_Amount']=Cart[ind1]['Total_Amount']+Cart[ind1]['Items'][ind2]['Price'];
+
+    usersCollection.doc(userId).update({
+      'Cart':Cart
+    });
+  }
+  void decrementcart(int ind1,int ind2,List Cart,String userId) async {
+    final CollectionReference usersCollection = firestore.collection('users');
+    Cart[ind1]['Items'][ind2]['Quantity']=Cart[ind1]['Items'][ind2]['Quantity']-1;
+    Cart[ind1]['Total_Amount']=Cart[ind1]['Total_Amount']-Cart[ind1]['Items'][ind2]['Price'];
+
+    usersCollection.doc(userId).update({
+      'Cart':Cart
+    });
   }
 }
