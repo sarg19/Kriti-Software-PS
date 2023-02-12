@@ -1,6 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
+  final Color? labelColor;
+  final double? padding;
   final String labelText;
   final TextEditingController controller;
   final String hintText;
@@ -8,19 +12,19 @@ class CustomTextField extends StatelessWidget {
   final String? errorText;
   final bool? obscureText;
 
-  const CustomTextField({Key? key, required this.controller, required this.labelText, required this.hintText, required this.inputType, this.errorText, this.obscureText}) : super(key: key);
+  const CustomTextField({Key? key, required this.controller, required this.labelText, required this.hintText, required this.inputType, this.errorText, this.obscureText, this.labelColor, this.padding}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 60),
+      padding: EdgeInsets.symmetric(horizontal: padding ?? 60),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             labelText,
-            style: const TextStyle(
-                color: Colors.white,
+            style: TextStyle(
+                color: labelColor ?? Colors.white,
                 fontSize: 13
             ),
           ),

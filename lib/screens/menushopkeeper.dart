@@ -6,6 +6,7 @@ import 'package:kriti/components/edititem.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import '../components/bottom_nav_bar.dart';
 import '../database.dart';
+import '../popups/showPopUp.dart';
 // import '../database.dart';
 
 class shopmenuscreen extends StatefulWidget {
@@ -165,7 +166,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
               child: Image.asset('assets/icons/circleplus.png'),
               onPressed: (){
                 showDialog(context: context, builder: (BuildContext context){
-                  return ProfilePopup(widgetcontent: AddItem(Shop_Key: "kOFNcRZ9JnFFiW3AtXzj",Menu: Menu,));
+                  return ShowPopUp(widgetcontent: AddItem(Shop_Key: "kOFNcRZ9JnFFiW3AtXzj",Menu: Menu,));
                 });
               },
             ),
@@ -284,7 +285,7 @@ class ShopkeeperMenuCard extends StatelessWidget {
                           ),
                           onPressed: (){
                             showDialog(context: context, builder: (BuildContext context){
-                              return ProfilePopup(widgetcontent: EditItem(name: name,price: price,availability: availability,index: index,Shop_Key: Shop_Key,Menu: Menu,));
+                              return ShowPopUp(widgetcontent: EditItem(name: name,price: price,availability: availability,index: index,Shop_Key: Shop_Key,Menu: Menu,));
                             });
                           },
                         ),

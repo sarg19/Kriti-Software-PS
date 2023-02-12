@@ -51,7 +51,9 @@ class _AddItemState extends State<AddItem> {
               children: [
                 IconButton(
                   icon: Icon(Icons.arrow_back),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                 ),
                 Expanded(
                   child: Align(
