@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:kriti/screens/welcomescreen2.dart';
+import 'package:kriti/screens/welcomscreen.dart';
 
-class choicescreen extends StatefulWidget {
-  const choicescreen({Key? key}) : super(key: key);
+class ChoiceScreen extends StatefulWidget {
+  const ChoiceScreen({Key? key}) : super(key: key);
 
   @override
-  State<choicescreen> createState() => _choicescreenState();
+  State<ChoiceScreen> createState() => _ChoiceScreenState();
 }
 
-class _choicescreenState extends State<choicescreen> {
+class _ChoiceScreenState extends State<ChoiceScreen> {
   @override
   Widget build(BuildContext context) {
     var size=MediaQuery.of(context).size;
@@ -17,10 +19,13 @@ class _choicescreenState extends State<choicescreen> {
         body:Stack(
           children: [
             ClipPath(
-              clipper: upwardtrapeziumclipper(),
-              child: GestureDetector(
-                onTap: ()=>print("Owner"),
-                child: Container(color: Color.fromRGBO(244, 233, 255, 1.0),
+              clipper: UpwardTrapeziumClipper(),
+              child: InkWell(
+                highlightColor: const Color.fromRGBO(255, 222, 158, 1.0),
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ShopkeeperWelcomeScreen()));
+                },
+                child: Container(color: const Color.fromRGBO(244, 233, 255, 1.0),
                   // child: Text("Owner",style: TextStyle(color: Color.fromRGBO(
                   // 206, 232, 240, 1.0)),)
                 ),
@@ -28,10 +33,13 @@ class _choicescreenState extends State<choicescreen> {
 
             ),
             ClipPath(
-              clipper: downwardtrapeziumclipper(),
-              child: GestureDetector(
-                onTap: ()=>print("Customer"),
-                child: Container(color: Color.fromRGBO(255, 222, 158, 1.0),
+              clipper: DownwardTrapeziumClipper(),
+              child: InkWell(
+                splashColor: const Color.fromRGBO(244, 233, 255, 1.0),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomerWelcomeScreen()));
+                },
+                child: Container(color: const Color.fromRGBO(255, 222, 158, 1.0),
                   // child:Text("Customer",style: TextStyle(color: Color.fromRGBO(
                   //     90, 183, 212, 1.0)),)
                 ),
@@ -39,14 +47,17 @@ class _choicescreenState extends State<choicescreen> {
 
             ),
             Container(
-                padding: EdgeInsets.fromLTRB(width/3,height/3.2,0 ,0),
+                padding: EdgeInsets.fromLTRB(width/3,height/4,0 ,0),
                 child: TextButton(
-                  onPressed: ()=>print("Owner"),
+                  onPressed: () {
+                    // print("Owner");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ShopkeeperWelcomeScreen()));
+                  },
                   style: ButtonStyle(
                       overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent)
                   ),
                   child: Text("Owner",style: TextStyle(
-                    color: Color.fromRGBO(1, 1, 1, 1.0),
+                    color: const Color.fromRGBO(1, 1, 1, 1.0),
                     fontSize: size.width*0.10,
                   ),
                   ),
@@ -54,21 +65,24 @@ class _choicescreenState extends State<choicescreen> {
             ),
             Container(
                 color: null,
-                padding: EdgeInsets.fromLTRB(width/3.6,height*0.85,0 ,0),
+                padding: EdgeInsets.fromLTRB(width/3.6,height*0.70,0 ,0),
                 child:TextButton(
                     style: ButtonStyle(
                         overlayColor: MaterialStateColor.resolveWith((states) => Colors.transparent)
                     ),
-                    onPressed:()=>print("Customer"),
+                    onPressed:() {
+                      // print("Customer");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomerWelcomeScreen()));
+                    },
                     child: Text("Customer",
-                      style: TextStyle(color: Color.fromRGBO(1, 1, 1, 1.0),fontSize: size.width*0.10),))
+                      style: TextStyle(color: const Color.fromRGBO(1, 1, 1, 1.0),fontSize: size.width*0.10),))
             ),
           ],
         )
     );
   }
 }
-class upwardtrapeziumclipper extends CustomClipper<Path>{
+class UpwardTrapeziumClipper extends CustomClipper<Path>{
 
   @override
   Path getClip(Size size){
@@ -84,7 +98,7 @@ class upwardtrapeziumclipper extends CustomClipper<Path>{
 }
 
 
-class downwardtrapeziumclipper extends CustomClipper<Path>{
+class DownwardTrapeziumClipper extends CustomClipper<Path>{
 
   @override
   Path getClip(Size size){

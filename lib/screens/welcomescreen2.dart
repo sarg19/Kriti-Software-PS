@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:kriti/bottomsheets/loginsheet.dart';
-import 'package:kriti/bottomsheets/signupsheet.dart';
-import 'package:kriti/screens/home.dart';
+import 'package:kriti/bottomsheets/skloginsheet.dart';
+import 'package:kriti/bottomsheets/sksignupsheet.dart';
 
-class CustomerWelcomeScreen extends StatefulWidget {
-  const CustomerWelcomeScreen({Key? key}) : super(key: key);
+class ShopkeeperWelcomeScreen extends StatefulWidget {
+  const ShopkeeperWelcomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<CustomerWelcomeScreen> createState() => _CustomerWelcomeScreenState();
+  State<ShopkeeperWelcomeScreen> createState() => _ShopkeeperWelcomeScreenState();
 }
 
-class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen> {
+class _ShopkeeperWelcomeScreenState extends State<ShopkeeperWelcomeScreen> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Stack(children: [
       Image.asset(
         'assets/images/bgImage1.png',
@@ -71,7 +69,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen> {
                   ElevatedButton(
                     onPressed: () {
                       showModalBottomSheet(
-                        context: context, builder: (context) => const SignUpSheet(),
+                        context: context, builder: (context) => const SkSignupSheet(),
                         backgroundColor: Colors.transparent,
                         barrierColor: Colors.transparent,
                         shape: const RoundedRectangleBorder(
@@ -96,7 +94,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen> {
                   ElevatedButton(
                     onPressed: () {
                       showModalBottomSheet(
-                        context: context, builder: (context) => const LoginSheet(),
+                        context: context, builder: (context) => const SkLoginSheet(),
                         backgroundColor: Colors.transparent,
                         barrierColor: Colors.transparent,
                         shape: const RoundedRectangleBorder(
@@ -120,29 +118,6 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20,),
-              Divider(
-                thickness: 1.5,
-                indent: (width-150)/2,
-                endIndent: (width-150)/2,
-                color: Colors.black,
-                // height: 150,
-              ),
-              // const SizedBox(height: 15,),
-              TextButton(
-                onPressed: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const homescreen()));
-                },
-                child: const Text(
-                  'Continue as Guest',
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              // const SizedBox(
-              //   height: 40,
-              // )
             ],
           ),
         ),

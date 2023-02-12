@@ -75,104 +75,112 @@ class _LoginSheetState extends State<LoginSheet> {
             sigmaX: 20,
             sigmaY: 20
         ),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-              color: Colors.black.withOpacity(0.15)
-          ),
-          width: MediaQuery.of(context).size.width,
-          height: 380.0,
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30),
-                ),
+        child: Padding(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Container(
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+                  color: Colors.black.withOpacity(0.15)
               ),
-              CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
-              CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
-              ElevatedButton(
-                onPressed: () {
-                  submit();
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFFBC9DFF)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(22.0),
-                        )),
-                    textStyle: MaterialStateProperty.all(
-                        const TextStyle(fontWeight: FontWeight.w600))),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                        fontSize: 20
+              width: MediaQuery.of(context).size.width,
+              // height: MediaQuery.of(context).size.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30),
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 7,),
-              Padding(
-                padding: const EdgeInsets.only(right: 60),
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  child: const Text(
-                    'Forgot password?',
-                  ),
-                ),
-              ),
-              const SizedBox(height: 7,),
-              Divider(
-                thickness: 2,
-                indent: (width-150)/2,
-                endIndent: (width-150)/2,
-                color: Colors.white,
-                // height: 150,
-              ),
-              const SizedBox(height: 15,),
-              RichText(
-                text: TextSpan(
-                    children: [
-                      const TextSpan(
-                          text: 'Don\'t have an account? ',
-                          style: TextStyle(
-                              color: Colors.white
-                          )
+                  CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
+                  CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
+                  ElevatedButton(
+                    onPressed: () {
+                      submit();
+                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(const Color(0xFFBC9DFF)),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(22.0),
+                            )),
+                        textStyle: MaterialStateProperty.all(
+                            const TextStyle(fontWeight: FontWeight.w600))),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Log In',
+                        style: TextStyle(
+                            fontSize: 20
+                        ),
                       ),
-                      TextSpan(
-                          text: 'signup',
-                          style: const TextStyle(
-                            color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 7,),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 60),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: const Text(
+                        'Forgot password?',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 7,),
+                  Divider(
+                    thickness: 2,
+                    indent: (width-150)/2,
+                    endIndent: (width-150)/2,
+                    color: Colors.white,
+                    // height: 150,
+                  ),
+                  const SizedBox(height: 15,),
+                  RichText(
+                    text: TextSpan(
+                        children: [
+                          const TextSpan(
+                              text: 'Don\'t have an account? ',
+                              style: TextStyle(
+                                  color: Colors.white
+                              )
                           ),
-                          recognizer: TapGestureRecognizer()..onTap = (){
-                            Navigator.of(context).pop();
-                            showModalBottomSheet(
-                              context: context, builder: (context) => const SignUpSheet(),
-                              backgroundColor: Colors.transparent,
-                              barrierColor: Colors.transparent,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20 ),
-                                  )
+                          TextSpan(
+                              text: 'signup',
+                              style: const TextStyle(
+                                color: Colors.black,
                               ),
-                              isScrollControlled: true,
-                            );
-                          }
-                      )
-                    ]
-                ),
+                              recognizer: TapGestureRecognizer()..onTap = (){
+                                Navigator.of(context).pop();
+                                showModalBottomSheet(
+                                  context: context, builder: (context) => const SignUpSheet(),
+                                  backgroundColor: Colors.transparent,
+                                  barrierColor: Colors.transparent,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(20 ),
+                                      )
+                                  ),
+                                  isScrollControlled: true,
+                                );
+                              }
+                          )
+                        ]
+                    ),
+                  ),
+                  const SizedBox(height: 20,)
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

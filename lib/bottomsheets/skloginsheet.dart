@@ -1,58 +1,31 @@
 import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:kriti/bottomsheets/loginsheet.dart';
-import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
+import 'sksignupsheet.dart';
 
-class SignUpSheet extends StatefulWidget {
-  const SignUpSheet({Key? key}) : super(key: key);
+class SkLoginSheet extends StatefulWidget {
+  const SkLoginSheet({Key? key}) : super(key: key);
 
   @override
-  State<SignUpSheet> createState() => _SignUpSheetState();
+  State<SkLoginSheet> createState() => _SkLoginSheetState();
 }
 
-class _SignUpSheetState extends State<SignUpSheet> {
-  final TextEditingController _nameController = TextEditingController();
+class _SkLoginSheetState extends State<SkLoginSheet> {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
 
-  String _nameError = "";
   String _emailError = "";
-  String _phoneError = "";
   String _passwordError = "";
-  String _confirmError = "";
 
-  Future<void> signup() async {
-    String name = _nameController.text;
+  Future<void> submit() async {
     String email = _emailController.text;
-    String phone = _phoneController.text;
     String password = _passwordController.text;
-    String confirm = _confirmPasswordController.text;
-
-    if (name.isEmpty) {
-      setState(() {
-        _nameError = "Name is required.";
-      });
-      return;
-    } else {
-      setState(() {
-        _nameError = "";
-      });
-    }
     if (email.isEmpty) {
       setState(() {
-        _emailError = "Email is required.";
-      });
-      return;
-    } else if (!RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@iitg.ac.in")
-        .hasMatch(email)) {
-      setState(() {
-        _emailError = "Enter valid IITG email";
+        _emailError = "Email required.";
       });
       return;
     } else {
@@ -60,62 +33,34 @@ class _SignUpSheetState extends State<SignUpSheet> {
         _emailError = "";
       });
     }
-    if (phone.isEmpty) {
-      setState(() {
-        _phoneError = "Phone number is required.";
-      });
-      return;
-    } else if (phone.length !=10){
-      setState(() {
-        _phoneError = "Enter valid phone number";
-      });
-      return;
-    } else {
-      setState(() {
-        _phoneError = "";
-      });
-    }
     if (password.isEmpty) {
       setState(() {
-        _passwordError = "Password can't be empty";
-      });
-      return;
-    } else if (confirm.isEmpty) {
-      setState(() {
-        _passwordError = "";
-        _confirmError = "Password can't be empty";
-      });
-      return;
-    } else if (password != confirm) {
-      setState(() {
-        _passwordError = "";
-        _confirmError = "Passwords don't match.";
+        _passwordError = "Password required.";
       });
       return;
     }
     try {
-      FocusManager.instance.primaryFocus?.unfocus();
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password);
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Sign up successful")));
-      Navigator.pop(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const homescreen()));
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     MaterialPageRoute(builder: (context) => const homescreen()),
+      //         (Route route) => false);
     } on FirebaseAuthException catch (e) {
-      if (e.code == "weak-password") {
+      print(e);
+      if (e.code == 'user-not-found' || e.code == 'invalid-email') {
         setState(() {
-          _passwordError = "Password too weak.";
+          _emailError = "Invalid email";
         });
-      } else if (e.code == "email-already-in-use") {
+      } else if (e.code == 'wrong-password') {
         setState(() {
-          _emailError = "Email already registered.";
+          _passwordError = "Incorrect password";
+        });
+      } else {
+        setState(() {
+          _emailError = e.code;
         });
       }
-    } catch (e) {
-      print(e);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Some error occurred")));
     }
   }
 
@@ -144,26 +89,22 @@ class _SignUpSheetState extends State<SignUpSheet> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(15.0),
                     child: Text(
-                      'Sign Up',
+                      'Login',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 30),
                     ),
                   ),
-                  CustomTextField(controller: _nameController, labelText: "Name", hintText: "", inputType: TextInputType.text, errorText: _nameError,),
                   CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
-                  CustomTextField(controller: _phoneController, labelText: "Phone number", hintText: "", inputType: TextInputType.phone, errorText: _phoneError,),
                   CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
-                  CustomTextField(controller: _confirmPasswordController, labelText: "Confirm Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _confirmError,),
                   ElevatedButton(
                     onPressed: () {
-                      signup();
+                      submit();
                     },
                     style: ButtonStyle(
                         backgroundColor:
@@ -177,14 +118,24 @@ class _SignUpSheetState extends State<SignUpSheet> {
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
-                        'Sign Up',
+                        'Log In',
                         style: TextStyle(
                             fontSize: 20
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15,),
+                  const SizedBox(height: 7,),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 60),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: const Text(
+                        'Forgot password?',
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 7,),
                   Divider(
                     thickness: 2,
                     indent: (width-150)/2,
@@ -197,20 +148,20 @@ class _SignUpSheetState extends State<SignUpSheet> {
                     text: TextSpan(
                         children: [
                           const TextSpan(
-                              text: 'Already have an account? ',
+                              text: 'Don\'t have an account? ',
                               style: TextStyle(
                                   color: Colors.white
                               )
                           ),
                           TextSpan(
-                              text: 'login',
+                              text: 'signup',
                               style: const TextStyle(
                                 color: Colors.black,
                               ),
                               recognizer: TapGestureRecognizer()..onTap = (){
                                 Navigator.of(context).pop();
                                 showModalBottomSheet(
-                                  context: context, builder: (context) => const LoginSheet(),
+                                  context: context, builder: (context) => const SkSignupSheet(),
                                   backgroundColor: Colors.transparent,
                                   barrierColor: Colors.transparent,
                                   shape: const RoundedRectangleBorder(
