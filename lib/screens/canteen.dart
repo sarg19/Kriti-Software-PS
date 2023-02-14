@@ -311,8 +311,9 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                               ),
                                             ),
                                             onPressed: () {
-                                              print(marketcomplexshop[index-1]['id']);
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: marketcomplexshop[index-1]['id'],collection_name: "food-marketcomplex")));
+                                              if(marketcomplexshop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: marketcomplexshop[index-1]['id'],collection_name: "food-marketcomplex")));
+                                              }
                                             },
                                             style: OutlinedButton.styleFrom(
                                               side: BorderSide(
@@ -404,7 +405,11 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 ],
                                               ),
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              if(khokhashop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: khokhashop[index-1]['id'],collection_name: "food-khokha")));
+                                              }
+                                            },
                                             style: OutlinedButton.styleFrom(
                                               side: BorderSide(
                                                 color: Colors.transparent,
@@ -495,7 +500,11 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 ],
                                               ),
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              if(foodcourtshop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: foodcourtshop[index-1]['id'],collection_name: "food-foodcourt")));
+                                              }
+                                            },
                                             style: OutlinedButton.styleFrom(
                                               side: BorderSide(
                                                 color: Colors.transparent,
@@ -586,7 +595,11 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 ],
                                               ),
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              if(canteenshop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: canteenshop[index-1]['id'],collection_name: "food-canteen")));
+                                              }
+                                              },
                                             style: OutlinedButton.styleFrom(
                                               side: BorderSide(
                                                 color: Colors.transparent,
