@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
 
 
-class Canteen extends StatefulWidget {
-  @override
-  State<Canteen> createState() => _CanteenState();
-}
-
-class _CanteenState extends State<Canteen> {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: 'Flutter Demo',
-      home: new MyTabbedPage(),
-    );
-  }
-}
 
 class MyTabbedPage extends StatefulWidget {
   const MyTabbedPage({super.key});
