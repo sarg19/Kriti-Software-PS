@@ -6,28 +6,24 @@ class Databases{
   initialise(){
     firestore = FirebaseFirestore.instance;
   }
-  Future retrieve_menu(String shop_key) async {
-    final CollectionReference usersCollection = firestore.collection('shops');
-    final QuerySnapshot snapshots=await usersCollection.get();
-    for(var doc in snapshots.docs.toList()){
-      if(doc.id==shop_key){
-        Map Menu={"id":doc.id,"menu":doc["Menu"]};
-        return Menu;
-      }
-    }
+  Future retrieve_menu(String shop_key,String collection_name) async {
+    late Map? shop_info;
+    var snapshot = await firestore.collection(collection_name).doc(shop_key).get();
+    shop_info=snapshot.data();
+    return shop_info;
   }
   void update_menu(String shop_key,int index,Map Menu,String _name,num? _price,num _available) async {
     final CollectionReference usersCollection = firestore.collection('shops');
 
-    Menu['menu'][index]['Price']=_price;
-    Menu['menu'][index]['Name']=_name;
-    Menu['menu'][index]['Available']=_available;
-    usersCollection.doc(shop_key).update({'Menu':Menu['menu']});
+    Menu['Menu'][index]['Price']=_price;
+    Menu['Menu'][index]['Name']=_name;
+    Menu['Menu'][index]['Available']=_available;
+    usersCollection.doc(shop_key).update({'Menu':Menu['Menu']});
   }
   void add_menu_item(String shop_key,Map Menu,String _name,num? _price) async {
     final CollectionReference usersCollection = firestore.collection('shops');
-    Menu['menu'].add({'Price':_price,'Name':_name,'Available':1});
-    usersCollection.doc(shop_key).update({'Menu':Menu['menu']});
+    Menu['Menu'].add({'Price':_price,'Name':_name,'Available':1});
+    usersCollection.doc(shop_key).update({'Menu':Menu['Menu']});
   }
   Future retrieve_user_info(String userId) async {
     late Map? user_info;
@@ -200,5 +196,34 @@ class Databases{
     usersCollection.doc(userId).update({
       'Cart':Cart
     });
+  }
+  void create_food_shop(String shop_key,String collection_name,String _name,String _email,String _shopname,num _phone,String _location, String _type) async{
+    final CollectionReference shopsCollection = firestore.collection(collection_name);
+    shopsCollection.doc(shop_key).set({
+      'Menu':[],
+      'Pending_Order':[],
+      'UserName':_name,
+      'ShopName':_shopname,
+      'Email':_email,
+      'Number':_phone,
+      'Active_Order':[],
+      'Location':_location,
+      'type':_type,
+      'collection':collection_name,
+      'open':0
+    });
+  }
+  Future getfoodshop(String collection_name) async {
+    final CollectionReference shopsCollection = firestore.collection(collection_name);
+    final QuerySnapshot snapshots=await shopsCollection.get();
+    List shops=[];
+    for(var shop in snapshots.docs.toList()){
+      shops.add({
+        'id':shop.id,
+        'Name':shop['ShopName'],
+        'open':shop['open']
+      });
+    }
+    return shops;
   }
 }

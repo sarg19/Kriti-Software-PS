@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kriti/screens/menu.dart';
+
+import '../database.dart';
 
 
 
@@ -10,10 +15,31 @@ class MyTabbedPage extends StatefulWidget {
 }
 
 class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMixin {
-  int _currentIndex = 0;
-  List<String>_Stationary =['Subhansiri','Kapili','Barak','Umiam','Dhansiri','Lohit','Disang','Dihing','Kameng','Brahma','Manas','Core 1','Core 2','Core 3','Core 4'];
-  List<String>_Status=['Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open',];
+  late List marketcomplexshop;
+  late List khokhashop;
+  late List foodcourtshop;
+  late List canteenshop;
+  int marketcomplexsize=0;
+  int khokhasize=0;
+  int foodcourtsize=0;
+  int canteensize=0;
+  late Databases db;
+  late Timer timer;
+  initialise(){
+    db=Databases();
+    db.initialise();
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      Reload();
+    });
+    // db.create_food_shop("Aicy7Z7TrkJHVgwxrADB", "food-foodcourt", "Gholap Sarjerao", "sarvesh@gmail.com", "Bajerao since 1947", 1234567890, 'Food Court', 'Food');
 
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +235,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               Container(
                                 height: height*0.571,
                                 child: ListView.builder(
-                                  itemCount: _Stationary.length+1,
+                                  itemCount: marketcomplexsize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
@@ -265,7 +291,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    '${_Stationary[index-1]} Stationary',
+                                                    marketcomplexshop[index-1]['Name'],
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight: FontWeight.bold,
@@ -274,7 +300,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                     textAlign: TextAlign.left,
                                                   ),
                                                   Text(
-                                                    '${_Status[index-1]}',
+                                                    marketcomplexshop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white,
@@ -284,7 +310,10 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 ],
                                               ),
                                             ),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              print(marketcomplexshop[index-1]['id']);
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: marketcomplexshop[index-1]['id'],collection_name: "food-marketcomplex")));
+                                            },
                                             style: OutlinedButton.styleFrom(
                                               side: BorderSide(
                                                 color: Colors.transparent,
@@ -300,7 +329,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               Container(
                                 height: 420,
                                 child: ListView.builder(
-                                  itemCount: _Stationary.length+1,
+                                  itemCount: khokhasize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
@@ -356,7 +385,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    '${_Stationary[index-1]} Stationary',
+                                                    khokhashop[index-1]['Name'],
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight: FontWeight.bold,
@@ -365,7 +394,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                     textAlign: TextAlign.left,
                                                   ),
                                                   Text(
-                                                    '${_Status[index-1]}',
+                                                    khokhashop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white,
@@ -391,7 +420,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               Container(
                                 height: 420,
                                 child: ListView.builder(
-                                  itemCount: _Stationary.length+1,
+                                  itemCount: foodcourtsize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
@@ -447,7 +476,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    '${_Stationary[index-1]} Stationary',
+                                                    foodcourtshop[index-1]['Name'],
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight: FontWeight.bold,
@@ -456,7 +485,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                     textAlign: TextAlign.left,
                                                   ),
                                                   Text(
-                                                    '${_Status[index-1]}',
+                                                    foodcourtshop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white,
@@ -482,7 +511,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               Container(
                                 height: 420,
                                 child: ListView.builder(
-                                  itemCount: _Stationary.length+1,
+                                  itemCount: canteensize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
@@ -538,7 +567,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    '${_Stationary[index-1]} Stationary',
+                                                    canteenshop[index-1]['Name'],
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight: FontWeight.bold,
@@ -547,7 +576,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                     textAlign: TextAlign.left,
                                                   ),
                                                   Text(
-                                                    '${_Status[index-1]}',
+                                                    canteenshop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
                                                       fontSize: 13,
                                                       color: Colors.white,
@@ -683,5 +712,31 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
           ]
       ),
     );
+  }
+  Future<void> Reload() async {
+    db.getfoodshop('food-marketcomplex').then((value){
+      setState((){
+        marketcomplexshop=value;
+        marketcomplexsize=marketcomplexshop.length;
+      });
+    });
+    db.getfoodshop('food-canteen').then((value){
+      setState((){
+        canteenshop=value;
+        canteensize=canteenshop.length;
+      });
+    });
+    db.getfoodshop('food-foodcourt').then((value){
+      setState((){
+        foodcourtshop=value;
+        foodcourtsize=foodcourtshop.length;
+      });
+    });
+    db.getfoodshop('food-khokha').then((value){
+      setState((){
+        khokhashop=value;
+        khokhasize=khokhashop.length;
+      });
+    });
   }
 }

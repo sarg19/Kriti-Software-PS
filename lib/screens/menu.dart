@@ -3,7 +3,9 @@ import '../components/bottom_nav_bar.dart';
 import '../database.dart';
 
 class menuscreen extends StatefulWidget {
-  const menuscreen({Key? key}) : super(key: key);
+  String shop_key;
+  String collection_name;
+  menuscreen({Key? key,this.shop_key="",this.collection_name=""}) : super(key: key);
 
   @override
   State<menuscreen> createState() => _menuscreenState();
@@ -15,7 +17,8 @@ class _menuscreenState extends State<menuscreen> {
       width;
   var listlength=0;
   late Databases db;
-  Map Menu={};
+  String ShopName="";
+  Map shop={};
   initialise(){
     db=Databases();
     db.initialise();
@@ -24,10 +27,12 @@ class _menuscreenState extends State<menuscreen> {
   void initState(){
     super.initState();
     initialise();
-    db.retrieve_menu("kOFNcRZ9JnFFiW3AtXzj").then((value){
+    db.retrieve_menu(widget.shop_key,widget.collection_name).then((value){
       setState(() {
-        Menu=value;
-        listlength=Menu['menu'].length;
+        shop=value;
+        listlength=shop['Menu'].length;
+        ShopName=shop['ShopName'];
+
       });
     });
   }
@@ -104,19 +109,31 @@ class _menuscreenState extends State<menuscreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
+                    ),
+                    SizedBox(
+                      child: Text(
+                          ShopName,
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontFamily: 'DM Sans'
+                          )
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
                     ),
                     Container(
                       height: 550,
                       child: ListView.builder(
                         itemCount: listlength,
                         itemBuilder: (context, index) {
-                          if(Menu['menu'][index]['Available']==1) {
+                          if(shop['Menu'][index]['Available']==1) {
                             return Container(
                               margin: EdgeInsets.only(bottom: 0),
                               child: MyCard(
-                                name: Menu['menu'][index]['Name'],
-                                price: Menu['menu'][index]['Price'],
+                                name: shop['Menu'][index]['Name'],
+                                price: shop['Menu'][index]['Price'],
                               ),
                             );
                           }else{

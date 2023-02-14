@@ -133,9 +133,9 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                           return Container(
                             margin: EdgeInsets.only(bottom: 0),
                             child: ShopkeeperMenuCard(
-                              name: Menu['menu'][index]['Name'],
-                              price: Menu['menu'][index]['Price'],
-                              availability: Menu['menu'][index]['Available']==1?"Available":"Unavailable",
+                              name: Menu['Menu'][index]['Name'],
+                              price: Menu['Menu'][index]['Price'],
+                              availability: Menu['Menu'][index]['Available']==1?"Available":"Unavailable",
                               index: index,
                               Shop_Key: "kOFNcRZ9JnFFiW3AtXzj",
                               Menu: Menu,
@@ -176,10 +176,10 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
     );
   }
   Future<void> Reload() async {
-    db.retrieve_menu("kOFNcRZ9JnFFiW3AtXzj").then((value){
+    db.retrieve_menu("kOFNcRZ9JnFFiW3AtXzj",'shops').then((value){
       setState(() {
         Menu=value;
-        listlength=Menu['menu'].length;
+        listlength=Menu['Menu'].length;
       });
     });
   }
