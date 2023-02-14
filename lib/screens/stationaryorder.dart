@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class OrderPage extends StatefulWidget {
-  const OrderPage({Key? key}) : super(key: key);
+class StationaryOrderPage extends StatefulWidget {
+  const StationaryOrderPage({Key? key}) : super(key: key);
 
   @override
-  State<OrderPage> createState() => _OrderPageState();
+  State<StationaryOrderPage> createState() => _StationaryOrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage> {
+class _StationaryOrderPageState extends State<StationaryOrderPage> {
   int _currentIndex = 0;
   List GrandList=[["Sent an image on your Gmail"],
     ["Sent an image on your Gmail"],

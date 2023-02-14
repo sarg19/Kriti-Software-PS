@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
 
-class OrderPage extends StatefulWidget {
-  const OrderPage({Key? key}) : super(key: key);
+class ShopkeeperOrderPage extends StatefulWidget {
+  const ShopkeeperOrderPage({Key? key}) : super(key: key);
 
   @override
-  State<OrderPage> createState() => _OrderPageState();
+  State<ShopkeeperOrderPage> createState() => _ShopkeeperOrderPageState();
 }
 
-class _OrderPageState extends State<OrderPage> {
+class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
   int _currentIndex = 0;
   List GrandList = [
     ["aloo seez","alooseez maggi"],
