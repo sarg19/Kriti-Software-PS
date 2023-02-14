@@ -100,6 +100,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
               children: [
                 Text(
                   'Order Status',
+                  textAlign: TextAlign.left,
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 35,
@@ -161,7 +162,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                       Container(
                         height: 40,
                         width: 40,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1),
                           shape: BoxShape.circle,
                         ),

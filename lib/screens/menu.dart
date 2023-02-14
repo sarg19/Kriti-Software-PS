@@ -16,6 +16,8 @@ class _menuscreenState extends State<menuscreen> {
       height,
       width;
   var listlength=0;
+
+  // List testingList = [["Seez Maggi",23],["Aloo Paratha",20]];
   late Databases db;
   String ShopName="";
   Map shop={};
@@ -63,7 +65,6 @@ class _menuscreenState extends State<menuscreen> {
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                   ),
-
                   child: const Image(
                     image: AssetImage("assets/images/appLogo.png"),
                   ),
@@ -108,20 +109,52 @@ class _menuscreenState extends State<menuscreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      child: Text(
-                          ShopName,
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontFamily: 'DM Sans'
+                    PreferredSize(
+                      preferredSize: Size.fromHeight(90),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: w/6),
+                            child: Text(
+                              ShopName,  //change to ShopName
+                              style: TextStyle(
+                                  fontSize: 25,
+                                  fontFamily: 'DM-Sans'
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: listlength!=0,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: w/6),
+                                  child: Text(
+                                    'Now open',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: 'DM-Sans'
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: w/3),
+                                  child: TextButton(onPressed: (){}, child: Text(
+                                      'details',
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                  )),
+                                )
+                              ],
+                            ),
                           )
+                        ],
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: h/60,
                     ),
                     Container(
                       height: 550,
@@ -154,7 +187,7 @@ class _menuscreenState extends State<menuscreen> {
   }
 }
 
-class MyCard extends StatelessWidget {
+class MyCard extends StatefulWidget {
   final name;
   int price;
 
@@ -164,44 +197,76 @@ class MyCard extends StatelessWidget {
   });
 
   @override
+  State<MyCard> createState() => _MyCardState();
+}
+
+class _MyCardState extends State<MyCard> {
+  bool isFavorite = false;
+
+  @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    double h = size.height;
+    double w = size.width;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 60),
       child: Container(
+        decoration: BoxDecoration(
+            color: Color.fromRGBO(255, 249, 240, 1.0),
+            borderRadius: BorderRadius.all(Radius.circular(15))
+        ),
         margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-        height: 170,
+        height: h/5.89,
         child: Column(
           children: [
-            Container(
-                decoration: const BoxDecoration(
-                    color: Color.fromRGBO(255, 249, 240, 1.0),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                    height: 80,
+                    // width: 280,
+                    child: Text.rich(
+                        TextSpan(
+                            style: TextStyle(
+                              fontFamily: 'DMSans',
+                              fontSize: 20,
+                            ),
+                            children: [
+                              TextSpan(text: widget.name),
+                              TextSpan(text: '\n'),
+                              TextSpan(text: '\n'),
+                              TextSpan(text: "₹ "),
+                              TextSpan(text: widget.price.toString()),
+                            ]
+                        )
                     )
                 ),
-                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                height: 80,
-                width: 280,
-                child: Text.rich(
-                    TextSpan(
-                        style: TextStyle(
-                          fontFamily: 'DMSans',
-                          fontSize: 20,
+                Container(
+                  height: 30,
+                  // width: 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.black : Colors.grey,
                         ),
-                        children: [
-                          TextSpan(text: name),
-                          TextSpan(text: '\n'),
-                          TextSpan(text: '\n'),
-                          TextSpan(text: "₹ "),
-                          TextSpan(text: price.toString()),
-                        ]
-                    )
-                )
+                        onPressed: () {
+                          setState(() {
+                            isFavorite = !isFavorite;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Container(
                 height: 60,
-                width: 280,
+                // width: 280,
                 decoration: const BoxDecoration(
                     color: Color.fromRGBO(255, 249, 240, 1.0),
                     borderRadius: BorderRadius.only(
