@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/editprofilePopup.dart';
+import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/choicescreen.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -11,13 +16,13 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 271,
-      decoration:  const BoxDecoration(
+      height: 271.h,
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color.fromRGBO(253, 243, 223, 1.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: EdgeInsets.only(top: 8.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -26,84 +31,94 @@ class _ProfileState extends State<Profile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
+                  padding: EdgeInsets.only(left: 8.0.h),
                   child: IconButton(
                     icon: const ImageIcon(AssetImage('assets/icons/back.png')),
-                    onPressed: () => {
-                      Navigator.pop(context)
-                    },
+                    onPressed: () => {Navigator.pop(context)},
                   ),
                 ),
-                const Text('Profile',style: TextStyle(
-                  fontSize: 24,
-                ),
+                Text(
+                  'Profile',
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: EdgeInsets.only(right: 8.0.w),
                   child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/person.png')),
-                    onPressed: (){},
+                    icon:
+                        const ImageIcon(AssetImage('assets/icons/person.png')),
+                    onPressed: () {},
                   ),
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 22.0,top: 8),
+              padding: EdgeInsets.only(left: 22.0.w, top: 8.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Sarvesh Gholap',style: TextStyle(
-                    fontSize: 20,
-                  )),
+                children: [
+                  Text('Sarvesh Gholap',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                      )),
                   Padding(
-                    padding: EdgeInsets.only(top: 5.0,bottom: 14.0),
-                    child: Text('sarvesh.iitg.ac.in',style: TextStyle(
-                        fontSize: 16,
-                        color: Color.fromRGBO(
-                            114, 114, 114, 1.0)
-                    )),
+                    padding: EdgeInsets.only(top: 5.0.h, bottom: 14.0.h),
+                    child: Text('sarvesh.iitg.ac.in',
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            color: const Color.fromRGBO(114, 114, 114, 1.0))),
                   ),
-                  Text('2101010',style: TextStyle(
-                      fontSize: 20
-                  )),
+                  Text('2101010', style: TextStyle(fontSize: 20.sp)),
                   Padding(
-                    padding: EdgeInsets.only(top: 15.0,bottom: 15.0),
-                    child: Text('97547xxx',style: TextStyle(
-                        fontSize: 20
-                    )),
+                    padding: EdgeInsets.only(top: 15.0.h, bottom: 15.0.h),
+                    child: Text('97547xxx', style: TextStyle(fontSize: 20.sp)),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 18.0,right: 18.0),
+              padding: EdgeInsets.only(left: 18.0.w, right: 18.0.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   ElevatedButton(
                       style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            )
-                        ),
-                        backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        )),
+                        backgroundColor: MaterialStateProperty.all(
+                            const Color.fromRGBO(188, 157, 255, 1.0)),
                       ),
-                      onPressed: (){},
-                      child: const Text('Edit Profile')
-                  ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ShowPopUp(
+                            widgetcontent: EditProfile(),
+                          ),
+                        );
+                      },
+                      child: const Text('Edit Profile')),
                   ElevatedButton(
                       style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            )
-                        ),
-                        backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        )),
+                        backgroundColor: MaterialStateProperty.all(
+                            const Color.fromRGBO(188, 157, 255, 1.0)),
                       ),
-                      onPressed: (){},
-                      child: const Text('Log Out')
-                  )
+                      onPressed: () {
+                        FirebaseAuth.instance.signOut();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const ChoiceScreen()),
+                            (Route<dynamic> route) => false);
+                      },
+                      child: const Text('Log Out'))
                 ],
               ),
             ),

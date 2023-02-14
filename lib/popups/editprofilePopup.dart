@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/widgets/textfield.dart';
 
 class EditProfile extends StatefulWidget {
@@ -12,16 +14,17 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 370,
-      decoration:  const BoxDecoration(
+      height: 370.h,
+      decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color.fromRGBO(253, 243, 223, 1.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
+        padding: EdgeInsets.only(top: 8.0.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -30,76 +33,115 @@ class _EditProfileState extends State<EditProfile> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
+                  padding: EdgeInsets.only(left: 8.0.w),
                   child: IconButton(
                     icon: const ImageIcon(AssetImage('assets/icons/back.png')),
-                    onPressed: () => {
-                      Navigator.pop(context)
-                    },
+                    onPressed: () => {Navigator.pop(context)},
                   ),
                 ),
-                const Text('Edit Profile',style: TextStyle(
-                  fontSize: 24,
-                ),
+                Text(
+                  'Edit Profile',
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
+                  padding: EdgeInsets.only(right: 8.0.w),
                   child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/person.png')),
-                    onPressed: (){},
+                    icon:
+                        const ImageIcon(AssetImage('assets/icons/person.png')),
+                    onPressed: () {},
                   ),
                 ),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
+              children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: CustomTextField(controller: nameController, labelText: " Name", hintText: "", inputType: TextInputType.text, labelColor: Colors.black, padding: 15, errorText: "",),
+                  padding: EdgeInsets.only(top: 16.0.h),
+                  child: CustomTextField(
+                    controller: nameController,
+                    labelText: " Name",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    labelColor: Colors.black,
+                    padding: 15,
+                    errorText: "",
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: CustomTextField(controller: emailController, labelText: " Email", hintText: "", inputType: TextInputType.text, labelColor: Colors.black, padding: 15, errorText: "",),
+                  padding: EdgeInsets.only(top: 6.0.h),
+                  child: CustomTextField(
+                    controller: emailController,
+                    labelText: " Email",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    labelColor: Colors.black,
+                    padding: 15,
+                    errorText: "",
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: CustomTextField(controller: phoneController, labelText: " Phone Number", hintText: "", inputType: TextInputType.text, labelColor: Colors.black, padding: 15, errorText: "",),
+                  padding: EdgeInsets.only(top: 6.0.h),
+                  child: CustomTextField(
+                    controller: phoneController,
+                    labelText: " Phone Number",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    labelColor: Colors.black,
+                    padding: 15,
+                    errorText: "",
+                  ),
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 2,left: 10.0,right: 10.0),
+              padding: EdgeInsets.only(top: 2.h, left: 10.0.w, right: 10.0.w),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: 90,
+                    width: 90.w,
                     child: ElevatedButton(
                         style: ButtonStyle(
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                              )
-                          ),
-                          backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                          )),
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromRGBO(188, 157, 255, 1.0)),
                         ),
-                        onPressed: (){},
-                        child: const Text('Ok',style: TextStyle(fontSize: 13),)
-                    ),
+                        onPressed: () {},
+                        child: Text(
+                          'Ok',
+                          style: TextStyle(fontSize: 13.sp),
+                        )),
                   ),
                   ElevatedButton(
                       style: ButtonStyle(
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                            )
-                        ),
-                        backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        )),
+                        backgroundColor: MaterialStateProperty.all(
+                            const Color.fromRGBO(188, 157, 255, 1.0)),
                       ),
-                      onPressed: (){},
-                      child: const Text('Change Password',style: TextStyle(fontSize: 13),)
-                  )
+                      onPressed: () {
+                        FirebaseAuth.instance.sendPasswordResetEmail(
+                            email: FirebaseAuth.instance.currentUser!.email!);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                "Password reset link has been sent to your email id.")));
+                      },
+                      child: Text(
+                        'Change Password',
+                        style: TextStyle(fontSize: 13.sp),
+                      ))
                 ],
               ),
             ),
