@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:kriti/popups/shopdetailspopup.dart';
+import 'package:kriti/popups/shopkeeperProfilePopup.dart';
 import '../components/bottom_nav_bar.dart';
 import '../database.dart';
+import '../popups/showPopUp.dart';
 
 class menuscreen extends StatefulWidget {
   String shop_key;
@@ -16,8 +21,9 @@ class _menuscreenState extends State<menuscreen> {
       height,
       width;
   var listlength=0;
-
+  String status="Open";
   // List testingList = [["Seez Maggi",23],["Aloo Paratha",20]];
+  late Timer timer;
   late Databases db;
   String ShopName="";
   Map shop={};
@@ -29,13 +35,8 @@ class _menuscreenState extends State<menuscreen> {
   void initState(){
     super.initState();
     initialise();
-    db.retrieve_menu(widget.shop_key,widget.collection_name).then((value){
-      setState(() {
-        shop=value;
-        listlength=shop['Menu'].length;
-        ShopName=shop['ShopName'];
-
-      });
+    timer= Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
     });
   }
   @override
@@ -124,31 +125,33 @@ class _menuscreenState extends State<menuscreen> {
                               ),
                             ),
                           ),
-                          Visibility(
-                            visible: listlength!=0,
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: w/6),
-                                  child: Text(
-                                    'Now open',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: 'DM-Sans'
-                                    ),
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: w/6),
+                                child: Text(
+                                  'Now '+status,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(114, 114, 114, 1.0),
+                                      fontSize: 15,
+                                      fontFamily: 'DM-Sans'
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: w/3),
-                                  child: TextButton(onPressed: (){}, child: Text(
-                                      'details',
-                                    style: TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                  )),
-                                )
-                              ],
-                            ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: w/3),
+                                child: TextButton(onPressed: (){
+                                  showDialog(context: context, builder: (BuildContext context){
+                                    return ShowPopUp(widgetcontent: ShopDetails(),);
+                                  });
+                                }, child: Text(
+                                    'details',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                )),
+                              )
+                            ],
                           )
                         ],
                       ),
@@ -184,6 +187,17 @@ class _menuscreenState extends State<menuscreen> {
         )
       ],
     );
+  }
+  Future<void> Reload()async{
+    db.retrieve_menu(widget.shop_key,widget.collection_name).then((value){
+      setState(() {
+        shop=value;
+        listlength=shop['Menu'].length;
+        ShopName=shop['ShopName'];
+        status=shop['open']==1?"Open":"Close";
+        listlength=shop['open']==1?listlength:0;
+      });
+    });
   }
 }
 

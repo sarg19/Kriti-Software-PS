@@ -93,7 +93,7 @@ class _ShopDetailsState extends State<ShopDetails> {
                           const Color.fromRGBO(188, 157, 255, 1.0)),
                     ),
                     onPressed: () {},
-                    child: const Text('Log Out')
+                    child: const Text('Contact')
                 )
               ],
             ),

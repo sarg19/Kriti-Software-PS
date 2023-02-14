@@ -226,4 +226,15 @@ class Databases{
     }
     return shops;
   }
+  void update_last_7(String collection,String shop_key,num amount)async{
+    late Map? shop_info;
+    var snapshot=await firestore.collection(collection).doc(shop_key).get();
+    shop_info=snapshot.data();
+    if(shop_info==null){
+      return;
+    }
+    List last_seven=shop_info['Last7'];
+    Timestamp time=shop_info['Last_Update'];
+    print(Timestamp.now().toDate().difference(time.toDate()).inDays);
+  }
 }
