@@ -25,6 +25,12 @@ class Databases{
     Menu['Menu'].add({'Price':_price,'Name':_name,'Available':1});
     usersCollection.doc(shop_key).update({'Menu':Menu['Menu']});
   }
+  Future retrieve_shop_info(String collection,String shop_key) async {
+    late Map? shop_info;
+    var snapshot=await firestore.collection(collection).doc(shop_key).get();
+    shop_info=snapshot.data();
+    return shop_info;
+  }
   Future retrieve_user_info(String userId) async {
     late Map? user_info;
     var snapshot=await firestore.collection("users").doc(userId).get();
@@ -148,7 +154,8 @@ class Databases{
       'Status':'Requested',
       'Shop_Name':Cart['Shop_Name'],
       'Order_Items':Cart['Items'],
-      'Shop_Key':shop_key
+      'Shop_Key':shop_key,
+      'Total_Amount':Cart['Total_Amount']
     }).then((value){
       Order_Key=value.id;
     });
@@ -165,7 +172,8 @@ class Databases{
       'Order_Items':Cart['Items'],
       'Order_Key':Order_Key,
       'Status':'Requested',
-      'User_Key':userId
+      'User_Key':userId,
+      'Total_Amount':Cart['Total_Amount']
     });
     usersCollection.doc(userId).update({'Active_Orders':user_info['Active_Orders'],'Cart':user_info['Cart']});
     shopsCollection.doc(shop_key).update({'Pending_Order':shop_info['Pending_Order']});
@@ -235,6 +243,37 @@ class Databases{
     }
     List last_seven=shop_info['Last7'];
     Timestamp time=shop_info['Last_Update'];
-    print(Timestamp.now().toDate().difference(time.toDate()).inDays);
+    int days=Timestamp.now().toDate().difference(time.toDate()).inDays;
+    int days2=Timestamp.now().toDate().weekday-time.toDate().weekday;
+    if(days2<0){
+      days2=days2+7;
+    }
+    if(days>=7 || (days>0 && days2==0)){
+      last_seven=[amount,0,0,0,0,0,0];
+      firestore.collection(collection).doc(shop_key).update({
+        'Last7':last_seven,
+        'Last_Update':Timestamp.now().toDate()
+      });
+      return;
+    }
+    if(days2==0){
+      last_seven[0]=last_seven[0]+amount;
+      firestore.collection(collection).doc(shop_key).update({
+        'Last7':last_seven,
+        'Last_Update':Timestamp.now().toDate()
+      });
+      return;
+    }
+    for(int i=days2-1;i>=0;i--){
+      for(int j=5;j>=0;j--){
+        last_seven[j+1]=last_seven[j];
+      }
+      last_seven[0]=0;
+    }
+    last_seven[0]=last_seven[0]+amount;
+    firestore.collection(collection).doc(shop_key).update({
+      'Last7':last_seven,
+      'Last_Update':Timestamp.now().toDate()
+    });
   }
 }
