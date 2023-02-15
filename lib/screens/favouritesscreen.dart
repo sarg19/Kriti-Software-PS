@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../components/bottom_nav_bar.dart';
@@ -25,7 +26,7 @@ class _favouritesscreenState extends State<favouritesscreen> {
   void initState() {
     super.initState();
     initialise();
-    db.retrieve_user_info("01li51cY9718Ns75HOa9").then((value) {
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value) {
       setState(() {
         Favouites = value;
         listlength = Favouites['Favourites'].length;

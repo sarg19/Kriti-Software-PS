@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -49,7 +50,7 @@ class _cartscreenState extends State<cartscreen> {
   void initState() {
     super.initState();
     initialise();
-    db.retrieve_user_info("01li51cY9718Ns75HOa9").then((value) {
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value) {
       setState(() {
         user_data = value;
         for (Map item in user_data['Cart']) {
@@ -316,7 +317,7 @@ class _cartscreenState extends State<cartscreen> {
   }
 
   Future<void> Reload() async {
-    db.retrieve_user_info("01li51cY9718Ns75HOa9").then((value) {
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value) {
       if(!mounted){
         return;
       }
