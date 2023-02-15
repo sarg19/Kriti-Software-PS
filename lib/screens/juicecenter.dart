@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
+import 'package:kriti/popups/shopdetailspopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/uploadfilescreen.dart';
@@ -120,7 +121,11 @@ class _JuiceState extends State<JuiceCenter> {
                         return Padding(
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
-                            onTap: (){},
+                            onTap: (){
+                              showDialog(context: context, builder: (BuildContext context){
+                                return const ShowPopUp(widgetcontent: ShopDetails(),);
+                              });
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
@@ -132,16 +137,19 @@ class _JuiceState extends State<JuiceCenter> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(top: 9.h,bottom: 9.h,left: 14.w),
-                                      child: Text(
-                                        juicecenter[index]['Name'],
-                                        style: TextStyle(
-                                          fontSize: 20.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.only(top: 9.h,bottom: 9.h,left: 14.w),
+                                        child: Text(
+                                          juicecenter[index]['Name'],
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontSize: 20.sp,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.left,
                                         ),
-                                        textAlign: TextAlign.left,
                                       ),
                                     ),
                                     Padding(

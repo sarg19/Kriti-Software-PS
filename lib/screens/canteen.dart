@@ -239,8 +239,9 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                           child: TabBarView(
                             children: [
                               SizedBox(
-                                height: height*0.571,
+                                height: 420.h,
                                 child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
                                   itemCount: marketcomplexsize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
@@ -337,6 +338,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               SizedBox(
                                 height: 420.h,
                                 child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
                                   itemCount: khokhasize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
@@ -432,6 +434,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               SizedBox(
                                 height: 420.h,
                                 child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
                                   itemCount: foodcourtsize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
@@ -527,6 +530,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               SizedBox(
                                 height: 420.h,
                                 child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
                                   itemCount: canteensize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {

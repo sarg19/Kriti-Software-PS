@@ -4,6 +4,8 @@ import 'package:kriti/components/bottom_nav_bar.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/Stationary.dart';
 import 'package:kriti/screens/canteen.dart';
+import 'package:kriti/screens/juicecenter.dart';
+import 'package:kriti/screens/miscellaneous.dart';
 import '../popups/profilepopup.dart';
 
 class homescreen extends StatefulWidget {
@@ -31,7 +33,7 @@ class _homescreenState extends State<homescreen> {
   Widget build(BuildContext context) {
     var discountlist = ['1', '2', '3', '4', '5'];
     var categories = ['Food', 'Stationary', 'Juice center', 'Others'];
-    var nextscreens = [const MyTabbedPage(), const StationaryScreen()];
+    var nextscreens = [const MyTabbedPage(), const StationaryScreen(), const JuiceCenter(), const Misc()];
     var size = MediaQuery.of(context).size;
     var width = size.width;
     var height = size.height;
