@@ -2,7 +2,9 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/bottomsheets/loginsheet.dart';
+import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
 
@@ -101,7 +103,7 @@ class _SignUpSheetState extends State<SignUpSheet> {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Sign up successful")));
       Navigator.pop(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const homescreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomerTabs(currentIndex: 0)));
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         setState(() {
@@ -146,14 +148,14 @@ class _SignUpSheetState extends State<SignUpSheet> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(15.0),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 30),
+                          fontSize: 30.sp),
                     ),
                   ),
                   CustomTextField(controller: _nameController, labelText: "Name", hintText: "", inputType: TextInputType.text, errorText: _nameError,),
@@ -174,17 +176,17 @@ class _SignUpSheetState extends State<SignUpSheet> {
                             )),
                         textStyle: MaterialStateProperty.all(
                             const TextStyle(fontWeight: FontWeight.w600))),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
-                            fontSize: 20
+                            fontSize: 20.sp,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15,),
+                  SizedBox(height: 15.h,),
                   Divider(
                     thickness: 2,
                     indent: (width-150)/2,
@@ -192,20 +194,22 @@ class _SignUpSheetState extends State<SignUpSheet> {
                     color: Colors.white,
                     // height: 150,
                   ),
-                  const SizedBox(height: 15,),
+                  SizedBox(height: 15.h,),
                   RichText(
                     text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                               text: 'Already have an account? ',
                               style: TextStyle(
-                                  color: Colors.white
+                                  color: Colors.white,
+                                  fontSize: 15.sp
                               )
                           ),
                           TextSpan(
                               text: 'login',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.black,
+                                  fontSize: 15.sp
                               ),
                               recognizer: TapGestureRecognizer()..onTap = (){
                                 Navigator.of(context).pop();
@@ -225,7 +229,7 @@ class _SignUpSheetState extends State<SignUpSheet> {
                         ]
                     ),
                   ),
-                  const SizedBox(height: 20,)
+                  SizedBox(height: 20.h,)
                 ],
               ),
             ),

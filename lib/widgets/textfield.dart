@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextField extends StatelessWidget {
   final Color? labelColor;
@@ -17,7 +18,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: padding ?? 60),
+      padding: EdgeInsets.symmetric(horizontal: padding ?? 60.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -25,13 +26,13 @@ class CustomTextField extends StatelessWidget {
             labelText,
             style: TextStyle(
                 color: labelColor ?? Colors.white,
-                fontSize: 13
+                fontSize: 13.sp
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SizedBox(
-              height: errorText==""? 35 : 50,
+              height: errorText==""? 35.h : 50.h,
               child: TextField(
                 textAlignVertical: TextAlignVertical.center,
                 controller: controller,
@@ -39,7 +40,7 @@ class CustomTextField extends StatelessWidget {
                 keyboardType: inputType,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(bottom: 3.5, left: 10),
+                  contentPadding: EdgeInsets.only(bottom: 3.5.h, left: 10.w),
                   border: const OutlineInputBorder(
                       borderSide: BorderSide.none,
                       borderRadius: BorderRadius.all(Radius.circular(17.5))

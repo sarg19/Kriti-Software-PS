@@ -46,6 +46,7 @@ class _CustomerTabsState extends State<CustomerTabs> {
         ),
         Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             centerTitle: true,
             title: Image(
               height: 45.h,

@@ -1,13 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kriti/components/bottom_nav_bar.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
-
 import '../database.dart';
-
-void main() => {runApp(MaterialApp(home: cartscreen()))};
 
 class cartscreen extends StatefulWidget {
   const cartscreen({Key? key}) : super(key: key);
@@ -322,6 +317,9 @@ class _cartscreenState extends State<cartscreen> {
 
   Future<void> Reload() async {
     db.retrieve_user_info("01li51cY9718Ns75HOa9").then((value) {
+      if(!mounted){
+        return;
+      }
       setState(() {
         user_data = value;
         for (Map item in user_data['Cart']) {
