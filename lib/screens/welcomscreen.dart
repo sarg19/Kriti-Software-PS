@@ -122,29 +122,7 @@ class _CustomerWelcomeScreenState extends State<CustomerWelcomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20.h,),
-              Divider(
-                thickness: 1.5,
-                indent: (width-150)/2,
-                endIndent: (width-150)/2,
-                color: Colors.black,
-                // height: 150,
-              ),
-              // const SizedBox(height: 15,),
-              TextButton(
-                onPressed: (){
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const CustomerTabs(currentIndex: 0)),
-                          (Route route) => false);
-                },
-                child: Text(
-                  'Continue as Guest',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15.sp
-                  ),
-                ),
-              ),
+
               // const SizedBox(
               //   height: 40,
               // )

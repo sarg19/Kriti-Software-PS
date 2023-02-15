@@ -8,6 +8,8 @@ import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
 
+import '../database.dart';
+
 class SignUpSheet extends StatefulWidget {
   const SignUpSheet({Key? key}) : super(key: key);
 
@@ -27,7 +29,16 @@ class _SignUpSheetState extends State<SignUpSheet> {
   String _phoneError = "";
   String _passwordError = "";
   String _confirmError = "";
-
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   Future<void> signup() async {
     String name = _nameController.text;
     String email = _emailController.text;
@@ -72,7 +83,11 @@ class _SignUpSheetState extends State<SignUpSheet> {
         _phoneError = "Enter valid phone number";
       });
       return;
-    } else {
+    } else if(num.tryParse(phone).runtimeType==null) {
+      setState(() {
+        _phoneError = "Wrong input in phone";
+      });
+    }else{
       setState(() {
         _phoneError = "";
       });
@@ -98,9 +113,10 @@ class _SignUpSheetState extends State<SignUpSheet> {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email, password: password).then((value){
+            db.create_user(value.user?.uid,email ,name, num.tryParse(phone));
+      });
       if (!mounted) return;
-      print(FirebaseAuth.instance.currentUser!.emailVerified);
       FirebaseAuth.instance.currentUser?.sendEmailVerification();
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("An email verification link has been sent. Verify to proceed.")));

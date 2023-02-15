@@ -11,6 +11,8 @@ import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
 
+import '../database.dart';
+
 class LoginSheet extends StatefulWidget {
   const LoginSheet({Key? key}) : super(key: key);
 
@@ -21,7 +23,17 @@ class LoginSheet extends StatefulWidget {
 class _LoginSheetState extends State<LoginSheet> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  late Databases db;
+  late Map user_info;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   String _emailError = "";
   String _passwordError = "";
 
@@ -46,11 +58,17 @@ class _LoginSheetState extends State<LoginSheet> {
     }
     try {
       await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password).then((value){
+            // print(value);
+            db.retrieve_user_info(value.user?.uid).then((data){
+              user_info=data;
+              print(user_info);
+            });
+      });
       if (!mounted) return;
       if (!FirebaseAuth.instance.currentUser!.emailVerified) return;
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const CustomerTabs(currentIndex: 0)),
+          MaterialPageRoute(builder: (context) => CustomerTabs(currentIndex: 0)),
               (Route route) => false);
     } on FirebaseAuthException catch (e) {
       print(e);
