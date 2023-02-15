@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../database.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class ShopkeeperOrderPage extends StatefulWidget {
   const ShopkeeperOrderPage({Key? key}) : super(key: key);
@@ -310,6 +311,7 @@ class ShopkeeperActiveCard extends StatefulWidget {
   State<ShopkeeperActiveCard> createState() => _shopkeeper_active_card();
 }
 class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
+  var getResult;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -424,7 +426,9 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
                         IconButton(
                           icon: ImageIcon(AssetImage('assets/icons/scan.png')),
                           iconSize: 30,
-                          onPressed: (){},
+                          onPressed: (){
+                            scanQRCode();
+                          },
                           // color: Colors.red,
                         )
 
@@ -440,7 +444,19 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
       ),
     );
   }
+  void scanQRCode() async {
+    try{
+      final qrCode = await FlutterBarcodeScanner.scanBarcode('#BC9DFF', 'Cancel', true, ScanMode.QR);
+      if (!mounted) return;
+      setState(() {
+        getResult = qrCode;
+      });
+    }catch(e){
+      print(e);
+    }
+  }
 }
+
 
 
 

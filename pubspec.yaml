@@ -50,6 +50,7 @@ dependencies:
   file_previewer: ^0.0.6
   upi_india: ^3.0.1
   flutter_screenutil: ^5.6.1
+  flutter_barcode_scanner: ^2.0.0
 
 
 dev_dependencies:
