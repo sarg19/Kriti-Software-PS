@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/uploadfilescreen.dart';
+
+import '../database.dart';
 
 class StationaryScreen extends StatefulWidget {
   const StationaryScreen({Key? key}) : super(key: key);
@@ -15,9 +19,26 @@ class StationaryScreen extends StatefulWidget {
 class _StationaryScreenState extends State<StationaryScreen> {
 
   int _currentIndex = 0;
+  List stationary=[];
+  int stationarysize=0;
   List<String>_Stationary =['Subhansiri','Kapili','Barak','Umiam','Dhansiri','Lohit','Disang','Dihing','Kameng','Brahma','Manas','Core 1','Core 2','Core 3','Core 4'];
   List<String>_Status=['Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open',];
+  late Databases db;
+  late Timer timer;
+  initialise() {
+    db = Databases();
+    db.initialise();
 
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      Reload();
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
+    // db.create_food_shop("Aicy7Z7TrkJHVgwxrADB", "food-foodcourt", "Gholap Sarjerao", "sarvesh@gmail.com", "Bajerao since 1947", 1234567890, 'Food Court', 'Food');
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -93,7 +114,7 @@ class _StationaryScreenState extends State<StationaryScreen> {
                     height: 588.h,
                     child:ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: _Stationary.length,
+                      itemCount: stationarysize,
                       itemBuilder: (BuildContext context, int index)
                       {
                         return Padding(
@@ -116,7 +137,7 @@ class _StationaryScreenState extends State<StationaryScreen> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 9.h,bottom: 9.h,left: 14.w),
                                       child: Text(
-                                        '${_Stationary[index]} Stationary',
+                                        stationary[index]['Name'],
                                         style: TextStyle(
                                           fontSize: 20.sp,
                                           fontWeight: FontWeight.bold,
@@ -128,7 +149,7 @@ class _StationaryScreenState extends State<StationaryScreen> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 9.h,bottom: 9.h,right: 14.w),
                                       child: Text(
-                                        _Status[index],
+                                        stationary[index]['open']==1?'Open':'Close',
                                         style: TextStyle(
                                           fontSize: 13.sp,
                                           color: Colors.white,
@@ -209,5 +230,16 @@ class _StationaryScreenState extends State<StationaryScreen> {
         ),
       )
     ]);
+  }
+  Future<void> Reload() async {
+    db.getfoodshop('stationary').then((value){
+      if(!mounted) {
+        return;
+      }
+      setState((){
+        stationary=value;
+        stationarysize=stationary.length;
+      });
+    });
   }
 }

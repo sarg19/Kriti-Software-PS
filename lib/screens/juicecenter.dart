@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/uploadfilescreen.dart';
+
+import '../database.dart';
 
 class JuiceCenter extends StatefulWidget {
   const JuiceCenter({Key? key}) : super(key: key);
@@ -15,9 +19,26 @@ class JuiceCenter extends StatefulWidget {
 class _JuiceState extends State<JuiceCenter> {
 
   int _currentIndex = 0;
+  List juicecenter=[];
+  int juicesize=0;
   List<String>_Stationary =['Subhansiri','Kapili','Barak','Umiam','Dhansiri','Lohit','Disang','Dihing','Kameng','Brahma','Manas','Core 1','Core 2','Core 3','Core 4'];
   List<String>_Status=['Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open',];
 
+  late Databases db;
+  late Timer timer;
+  initialise() {
+    db = Databases();
+    db.initialise();
+
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      Reload();
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -93,7 +114,7 @@ class _JuiceState extends State<JuiceCenter> {
                     height: 588.h,
                     child:ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: _Stationary.length,
+                      itemCount: juicesize,
                       itemBuilder: (BuildContext context, int index)
                       {
                         return Padding(
@@ -114,7 +135,7 @@ class _JuiceState extends State<JuiceCenter> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 9.h,bottom: 9.h,left: 14.w),
                                       child: Text(
-                                        '${_Stationary[index]} Juice Center',
+                                        juicecenter[index]['Name'],
                                         style: TextStyle(
                                           fontSize: 20.sp,
                                           fontWeight: FontWeight.bold,
@@ -126,7 +147,7 @@ class _JuiceState extends State<JuiceCenter> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 9.h,bottom: 9.h,right: 14.w),
                                       child: Text(
-                                        _Status[index],
+                                        juicecenter[index]==1?'Open':'Close',
                                         style: TextStyle(
                                           fontSize: 13.sp,
                                           color: Colors.white,
@@ -207,5 +228,16 @@ class _JuiceState extends State<JuiceCenter> {
         ),
       )
     ]);
+  }
+  Future<void> Reload() async {
+    db.getfoodshop('grocery').then((value){
+      if(!mounted) {
+        return;
+      }
+      setState((){
+        juicecenter=value;
+        juicesize=juicecenter.length;
+      });
+    });
   }
 }
