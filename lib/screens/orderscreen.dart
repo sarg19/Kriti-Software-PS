@@ -396,20 +396,20 @@ class _OrderCardState extends State<OrderCard> {
               ),
             ),
             Container(
-                height: 55,
-                width: 280,
+                height: 55.h,
+                width: 280.w,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(255, 249, 240, 1.0),
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(15),
                         bottomRight: Radius.circular(15))),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 90,
+                          width: 90.w,
                           // padding: EdgeInsets.fromLTRB(20, 0, 20, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -428,7 +428,7 @@ class _OrderCardState extends State<OrderCard> {
                           ),
                         ),
                         Container(
-                          width: 90,
+                          width: 90.w,
                           // padding: EdgeInsets.fromLTRB(20, 0, 20, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(

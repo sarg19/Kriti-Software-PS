@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
 import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/canteen.dart';
 import '../popups/profilepopup.dart';
 
 class homescreen extends StatefulWidget {
@@ -28,7 +29,8 @@ class _homescreenState extends State<homescreen> {
   @override
   Widget build(BuildContext context) {
     var discountlist = ['1', '2', '3', '4', '5'];
-    var categories = ['1', '2', '3', '4'];
+    var categories = ['Food', 'Stationary', 'Juice center', 'Others'];
+    var nextscreens = [const MyTabbedPage()];
     var size = MediaQuery.of(context).size;
     var width = size.width;
     var height = size.height;
@@ -99,7 +101,9 @@ class _homescreenState extends State<homescreen> {
                     shape: BoxShape.circle,
                   ),
                   child: ElevatedButton(
-                    onPressed: () => print("hello"),
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => nextscreens[index]));
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: EdgeInsets.all(width / 6),

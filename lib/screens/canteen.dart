@@ -1,6 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/profilepopup.dart';
+import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/menu.dart';
 
 import '../database.dart';
@@ -11,7 +15,7 @@ class MyTabbedPage extends StatefulWidget {
   const MyTabbedPage({super.key});
 
   @override
-  _MyTabbedPageState createState() => new _MyTabbedPageState();
+  _MyTabbedPageState createState() => _MyTabbedPageState();
 }
 
 class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMixin {
@@ -39,7 +43,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
     super.initState();
     initialise();
   }
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -57,41 +60,44 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
             ),
             Padding(
               padding: const EdgeInsets.all(0.0),
-              child: new Scaffold(
+              child: Scaffold(
                 backgroundColor: Colors.transparent,
                 appBar: AppBar(
-                  title: Center(
-                    child: Container(
-                      height:50,
-                      width:50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                      ),
-
-                      child: Image(
-                        image: AssetImage("assets/images/appLogo.png"),
-                      ),
-                    ),
+                  centerTitle: true,
+                  title: Image(
+                    height: 45.h,
+                    width: 45.h,
+                    image: const AssetImage("assets/images/appLogo.png"),
                   ),
                   backgroundColor: Colors.transparent,
-                  elevation: 100.0,
+                  elevation: 0,
                   leading: IconButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
                     icon: const Icon(Icons.arrow_back_ios_new , color: Colors.black ),
                   ),
                   actions: [
-                    Transform.scale(
-                      scale: 1.5,
-                      child: IconButton(
-                        onPressed: (){},
-                        icon: const Icon(Icons.account_circle_outlined , color: Colors.black),
+                    IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => const ShowPopUp(
+                            widgetcontent: Profile(),
+                          ),
+                        );
+                      },
+                      iconSize: 30.h,
+                      icon: const ImageIcon(
+                        AssetImage('assets/icons/person.png'),
+                        color: Colors.black,
                       ),
-                    ),
+                    )
                   ],
                 ),
                 body: Center(
                   child: SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     child: Column(
                       children: [
                         Padding(
@@ -101,11 +107,11 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                               borderRadius: BorderRadius.circular(20),
                               color: Colors.white,
                             ),
-                            height: 40,
+                            height: 40.h,
                             child: TextField(
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.fromLTRB(0, 7, 0, 5),
-                                prefixIcon: Icon(Icons.search_outlined , color: Colors.black),
+                                contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
+                                prefixIcon: const Icon(Icons.search_outlined , color: Colors.black),
                                 border: InputBorder.none,
                                 fillColor: Colors.white,
                                 hintText: 'Search...',
@@ -114,15 +120,15 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 10.h,
                         ),
                         SizedBox(
-                          height: 70,
+                          height: 70.h,
                           child: AppBar(
                             backgroundColor: Colors.transparent,
-                            elevation: 100.0,
+                            elevation: 0,
                             bottom: PreferredSize(
-                              preferredSize: Size.fromHeight(65),
+                              preferredSize: Size.fromHeight(65.h),
                               child: TabBar(
                                 indicator: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
@@ -131,20 +137,20 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                 [
                                   Container(
                                     alignment: const Alignment(0,-1),
-                                    height: 65,
-                                    width: 65,
+                                    height: 65.h,
+                                    width: 65.h,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                       shape: BoxShape.rectangle,
                                     ),
                                     child: SizedBox.expand(
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           'Market Complex',
                                           style: TextStyle(
                                             wordSpacing: 3,
-                                            fontSize: 13,
+                                            fontSize: 13.sp,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
@@ -154,20 +160,20 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                   ),
                                   Container(
                                     alignment: const Alignment(0,-1),
-                                    height: 65,
-                                    width: 65,
+                                    height: 65.h,
+                                    width: 65.h,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                       shape: BoxShape.rectangle,
                                     ),
                                     child: SizedBox.expand(
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           'Khokha',
                                           style: TextStyle(
                                             wordSpacing: 3,
-                                            fontSize: 13,
+                                            fontSize: 13.sp,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
@@ -177,20 +183,20 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                   ),
                                   Container(
                                     alignment: const Alignment(0,-1),
-                                    height: 65,
-                                    width: 65,
+                                    height: 65.h,
+                                    width: 65.h,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                       shape: BoxShape.rectangle,
                                     ),
                                     child: SizedBox.expand(
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           'Food  Court',
                                           style: TextStyle(
                                             wordSpacing: 3,
-                                            fontSize: 13,
+                                            fontSize: 13.sp,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
@@ -200,19 +206,19 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                   ),
                                   Container(
                                     alignment: const Alignment(0,-1),
-                                    height: 65,
-                                    width: 65,
+                                    height: 65.h,
+                                    width: 65.h,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(15),
-                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                       shape: BoxShape.rectangle,
                                     ),
                                     child: SizedBox.expand(
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
                                           'Canteen',
                                           style: TextStyle(
-                                            fontSize: 13,
+                                            fontSize: 13.sp,
                                             color: Colors.white,
                                           ),
                                           textAlign: TextAlign.center,
@@ -226,13 +232,13 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                           ),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 30.h,
                         ),
                         SizedBox(
                           height:height*0.571,
                           child: TabBarView(
                             children: [
-                              Container(
+                              SizedBox(
                                 height: height*0.571,
                                 child: ListView.builder(
                                   itemCount: marketcomplexsize+1,
@@ -245,13 +251,13 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                           Text(
                                             'Trending in Market Complex',
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 24.sp,
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width:width*0.89,
-                                            height : 150,
+                                            height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: 5,
@@ -260,11 +266,12 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 return Padding(
                                                   padding: const EdgeInsets.all(10.0),
                                                   child: Container(
-                                                    height: 141,
-                                                    width: 150,
+                                                    height: 141.h,
+                                                    width: 150.w
+                                                    ,
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                                     ),
                                                   ),
                                                 );
@@ -281,10 +288,20 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
-                                            color: Color.fromRGBO(188, 157, 255, 1.0),
+                                            color: const Color.fromRGBO(188, 157, 255, 1.0),
                                           ),
-                                          height: 40,
+                                          height: 40.h,
                                           child: OutlinedButton(
+                                            onPressed: () {
+                                              if(marketcomplexshop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: marketcomplexshop[index-1]['id'],collection_name: "food-marketcomplex")));
+                                              }
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              side: const BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                            ),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Row(
@@ -293,7 +310,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     marketcomplexshop[index-1]['Name'],
                                                     style: TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
                                                       color: Colors.white,
                                                     ),
@@ -302,22 +319,12 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     marketcomplexshop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
-                                                      fontSize: 13,
+                                                      fontSize: 13.sp,
                                                       color: Colors.white,
                                                     ),
                                                     textAlign: TextAlign.right,
                                                   ),
                                                 ],
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              if(marketcomplexshop[index-1]['open']==1){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: marketcomplexshop[index-1]['id'],collection_name: "food-marketcomplex")));
-                                              }
-                                            },
-                                            style: OutlinedButton.styleFrom(
-                                              side: BorderSide(
-                                                color: Colors.transparent,
                                               ),
                                             ),
                                           ),
@@ -327,8 +334,8 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                   },
                                 ),
                               ),
-                              Container(
-                                height: 420,
+                              SizedBox(
+                                height: 420.h,
                                 child: ListView.builder(
                                   itemCount: khokhasize+1,
                                   itemBuilder: (BuildContext context, int index)
@@ -340,13 +347,13 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                           Text(
                                             'Trending in Khokha',
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 24.sp,
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Container(
-                                            width:350,
-                                            height : 150,
+                                          SizedBox(
+                                            width:350.w,
+                                            height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: 5,
@@ -355,11 +362,11 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 return Padding(
                                                   padding: const EdgeInsets.all(10.0),
                                                   child: Container(
-                                                    height: 141,
-                                                    width: 150,
+                                                    height: 141.h,
+                                                    width: 150.w,
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                                     ),
                                                   ),
                                                 );
@@ -376,10 +383,20 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
-                                            color: Color.fromRGBO(188, 157, 255, 1.0),
+                                            color: const Color.fromRGBO(188, 157, 255, 1.0),
                                           ),
-                                          height: 40,
+                                          height: 40.h,
                                           child: OutlinedButton(
+                                            onPressed: () {
+                                              if(khokhashop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: khokhashop[index-1]['id'],collection_name: "food-khokha")));
+                                              }
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              side: const BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                            ),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Row(
@@ -388,7 +405,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     khokhashop[index-1]['Name'],
                                                     style: TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
                                                       color: Colors.white,
                                                     ),
@@ -397,22 +414,12 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     khokhashop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
-                                                      fontSize: 13,
+                                                      fontSize: 13.sp,
                                                       color: Colors.white,
                                                     ),
                                                     textAlign: TextAlign.right,
                                                   ),
                                                 ],
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              if(khokhashop[index-1]['open']==1){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: khokhashop[index-1]['id'],collection_name: "food-khokha")));
-                                              }
-                                            },
-                                            style: OutlinedButton.styleFrom(
-                                              side: BorderSide(
-                                                color: Colors.transparent,
                                               ),
                                             ),
                                           ),
@@ -422,8 +429,8 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                   },
                                 ),
                               ),
-                              Container(
-                                height: 420,
+                              SizedBox(
+                                height: 420.h,
                                 child: ListView.builder(
                                   itemCount: foodcourtsize+1,
                                   itemBuilder: (BuildContext context, int index)
@@ -435,13 +442,13 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                           Text(
                                             'Trending in Food Court',
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 24.sp,
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Container(
-                                            width:350,
-                                            height : 150,
+                                          SizedBox(
+                                            width:350.w,
+                                            height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: 5,
@@ -450,11 +457,11 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 return Padding(
                                                   padding: const EdgeInsets.all(10.0),
                                                   child: Container(
-                                                    height: 141,
-                                                    width: 150,
+                                                    height: 141.h,
+                                                    width: 150.w,
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                                     ),
                                                   ),
                                                 );
@@ -467,14 +474,24 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                     else
                                     {
                                       return Padding(
-                                        padding: const EdgeInsets.fromLTRB(45, 10, 45, 10),
+                                        padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
-                                            color: Color.fromRGBO(188, 157, 255, 1.0),
+                                            color: const Color.fromRGBO(188, 157, 255, 1.0),
                                           ),
-                                          height: 40,
+                                          height: 40.h,
                                           child: OutlinedButton(
+                                            onPressed: () {
+                                              if(foodcourtshop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: foodcourtshop[index-1]['id'],collection_name: "food-foodcourt")));
+                                              }
+                                            },
+                                            style: OutlinedButton.styleFrom(
+                                              side: const BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                            ),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Row(
@@ -483,7 +500,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     foodcourtshop[index-1]['Name'],
                                                     style: TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
                                                       color: Colors.white,
                                                     ),
@@ -492,22 +509,12 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     foodcourtshop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
-                                                      fontSize: 13,
+                                                      fontSize: 13.sp,
                                                       color: Colors.white,
                                                     ),
                                                     textAlign: TextAlign.right,
                                                   ),
                                                 ],
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              if(foodcourtshop[index-1]['open']==1){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: foodcourtshop[index-1]['id'],collection_name: "food-foodcourt")));
-                                              }
-                                            },
-                                            style: OutlinedButton.styleFrom(
-                                              side: BorderSide(
-                                                color: Colors.transparent,
                                               ),
                                             ),
                                           ),
@@ -517,8 +524,8 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                   },
                                 ),
                               ),
-                              Container(
-                                height: 420,
+                              SizedBox(
+                                height: 420.h,
                                 child: ListView.builder(
                                   itemCount: canteensize+1,
                                   itemBuilder: (BuildContext context, int index)
@@ -530,13 +537,13 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                           Text(
                                             'Trending in Canteen',
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 24.sp,
                                               color: Colors.black,
                                             ),
                                           ),
-                                          Container(
-                                            width:350,
-                                            height : 150,
+                                          SizedBox(
+                                            width:350.w,
+                                            height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: 5,
@@ -549,7 +556,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                     width: 150,
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                                                     ),
                                                   ),
                                                 );
@@ -562,14 +569,24 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                     else
                                     {
                                       return Padding(
-                                        padding: const EdgeInsets.fromLTRB(45, 10, 45, 10),
+                                        padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(15),
-                                            color: Color.fromRGBO(188, 157, 255, 1.0),
+                                            color: const Color.fromRGBO(188, 157, 255, 1.0),
                                           ),
-                                          height: 40,
+                                          height: 40.h,
                                           child: OutlinedButton(
+                                            onPressed: () {
+                                              if(canteenshop[index-1]['open']==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: canteenshop[index-1]['id'],collection_name: "food-canteen")));
+                                              }
+                                              },
+                                            style: OutlinedButton.styleFrom(
+                                              side: const BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                            ),
                                             child: Align(
                                               alignment: Alignment.centerLeft,
                                               child: Row(
@@ -578,7 +595,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     canteenshop[index-1]['Name'],
                                                     style: TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
                                                       color: Colors.white,
                                                     ),
@@ -587,22 +604,12 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   Text(
                                                     canteenshop[index-1]['open']==1?'Open':'Close',
                                                     style: TextStyle(
-                                                      fontSize: 13,
+                                                      fontSize: 13.sp,
                                                       color: Colors.white,
                                                     ),
                                                     textAlign: TextAlign.right,
                                                   ),
                                                 ],
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              if(canteenshop[index-1]['open']==1){
-                                                Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: canteenshop[index-1]['id'],collection_name: "food-canteen")));
-                                              }
-                                              },
-                                            style: OutlinedButton.styleFrom(
-                                              side: BorderSide(
-                                                color: Colors.transparent,
                                               ),
                                             ),
                                           ),
@@ -616,7 +623,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                           ),
                         ),
                         SizedBox(
-                          height: 50,
+                          height: 50.h,
                         ),
                       ],
                     ),
@@ -636,85 +643,56 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                 // ),
                 bottomNavigationBar: BottomNavigationBar(
                   backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
-                  selectedItemColor: Colors.black,
+                  selectedItemColor: Colors.black54,
                   unselectedItemColor: Colors.black54,
                   selectedFontSize: 0,
                   type: BottomNavigationBarType.fixed,
-                  currentIndex: _currentIndex,
                   items: [
                     BottomNavigationBarItem(
-                      icon: Container(
-                        margin: const EdgeInsets.all(8.0),
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                            color: _currentIndex == 0 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                            borderRadius: const BorderRadius.all(Radius.circular(10))
-                        ),
-                        child: IconButton(
-                          icon: const ImageIcon(AssetImage('assets/icons/home.png')),
-                          onPressed: () {
-                            setState(() {
-                              _currentIndex = 0;
-                            });
-                          },
-                        ),
+                      icon: IconButton(
+                        icon: const ImageIcon(AssetImage('assets/icons/home.png')),
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const CustomerTabs(currentIndex: 0)),
+                                  (Route<dynamic> route) => false);
+                        },
                       ),
                       label: '',
                     ),
                     BottomNavigationBarItem(
-                      icon: Container(
-                        margin: const EdgeInsets.all(8.0),
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                            color: _currentIndex == 1 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                            borderRadius: const BorderRadius.all(Radius.circular(10))
-                        ),
-                        child: IconButton(
-                          icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
-                          onPressed: () {
-                            setState(() {
-                              _currentIndex = 1;
-                            });
-                          },
-                        ),
+                      icon: IconButton(
+                        icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const CustomerTabs(currentIndex: 1)),
+                                  (Route<dynamic> route) => false);
+                        },
                       ),
                       label: '',
                     ),
                     BottomNavigationBarItem(
-                      icon: Container(
-                        margin: const EdgeInsets.all(8.0),
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                            color: _currentIndex == 2 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                            borderRadius: const BorderRadius.all(Radius.circular(10))
-                        ),
-                        child: IconButton(
-                          icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
-                          onPressed: () {
-                            setState(() {
-                              _currentIndex = 2;
-                            });
-                          },
-                        ),
+                      icon: IconButton(
+                        icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const CustomerTabs(currentIndex: 2)),
+                                  (Route<dynamic> route) => false);
+                        },
                       ),
                       label: '',
                     ),
                     BottomNavigationBarItem(
-                      icon: Container(
-                        margin: const EdgeInsets.all(8.0),
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                            color: _currentIndex == 3 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                            borderRadius: const BorderRadius.all(Radius.circular(10))
-                        ),
-                        child: IconButton(
-                          icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
-                          onPressed: () {
-                            setState(() {
-                              _currentIndex = 3;
-                            });
-                          },
-                        ),
+                      icon: IconButton(
+                        icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
+                        onPressed: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const CustomerTabs(currentIndex: 3)),
+                                  (Route<dynamic> route) => false);
+                        },
                       ),
                       label: '',
                     ),
@@ -728,24 +706,36 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
   }
   Future<void> Reload() async {
     db.getfoodshop('food-marketcomplex').then((value){
+      if(!mounted) {
+        return;
+      }
       setState((){
         marketcomplexshop=value;
         marketcomplexsize=marketcomplexshop.length;
       });
     });
     db.getfoodshop('food-canteen').then((value){
+      if(!mounted) {
+        return;
+      }
       setState((){
         canteenshop=value;
         canteensize=canteenshop.length;
       });
     });
     db.getfoodshop('food-foodcourt').then((value){
+      if(!mounted) {
+        return;
+      }
       setState((){
         foodcourtshop=value;
         foodcourtsize=foodcourtshop.length;
       });
     });
     db.getfoodshop('food-khokha').then((value){
+      if(!mounted) {
+        return;
+      }
       setState((){
         khokhashop=value;
         khokhasize=khokhashop.length;

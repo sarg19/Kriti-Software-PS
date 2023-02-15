@@ -48,6 +48,7 @@ class _LoginSheetState extends State<LoginSheet> {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       if (!mounted) return;
+      if (!FirebaseAuth.instance.currentUser!.emailVerified) return;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const CustomerTabs(currentIndex: 0)),
               (Route route) => false);

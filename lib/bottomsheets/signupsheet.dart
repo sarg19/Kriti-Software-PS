@@ -51,7 +51,7 @@ class _SignUpSheetState extends State<SignUpSheet> {
       });
       return;
     } else if (!RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@iitg.ac.in")
+        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@gmail.com")
         .hasMatch(email)) {
       setState(() {
         _emailError = "Enter valid IITG email";
@@ -100,10 +100,12 @@ class _SignUpSheetState extends State<SignUpSheet> {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       if (!mounted) return;
+      print(FirebaseAuth.instance.currentUser!.emailVerified);
+      FirebaseAuth.instance.currentUser?.sendEmailVerification();
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Sign up successful")));
+          .showSnackBar(const SnackBar(content: Text("An email verification link has been sent. Verify to proceed.")));
       Navigator.pop(context);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomerTabs(currentIndex: 0)));
+      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomerTabs(currentIndex: 0)));
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         setState(() {
