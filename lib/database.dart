@@ -276,4 +276,83 @@ class Databases{
       'Last_Update':Timestamp.now().toDate()
     });
   }
+  void addfavourite(String item_name,num price,String shop_key,String shop_name,String userId) async {
+
+    late Map? user_info;
+    final CollectionReference usersCollection = firestore.collection('users');
+    var snapshot=await firestore.collection("users").doc(userId).get();
+    user_info=snapshot.data();
+    if(user_info==null){
+      return;
+    }
+    user_info['Favourites'].add({
+      'Item_Name':item_name,
+      'Price':price,
+      'Shop_Key':shop_key,
+      'Shop_Name':shop_name,
+    });
+    // print(user_info['Favourites']);
+    firestore.collection("users").doc(userId).update({
+      'Favourites':user_info['Favourites']
+    });
+
+  }
+
+
+  void removefavourite(String item_name,num price,String shop_key,String shop_name,String userId) async {
+
+    late Map? user_info;
+    final CollectionReference usersCollection = firestore.collection('users');
+    var snapshot=await firestore.collection("users").doc(userId).get();
+    user_info=snapshot.data();
+    if(user_info==null){
+      return;
+    }
+
+    late Map? Item;
+    var counter=0;
+    for(Map shopcart in user_info['Favourites']){
+      if(shopcart['Item_Name']==item_name){
+        Item=shopcart;
+        counter=1;
+      }
+    }
+    if(counter==0){
+      return;
+    }
+    user_info['Favourites'].remove(Item);
+
+
+    // print(user_info['Favourites']);
+    firestore.collection("users").doc(userId).update({
+      'Favourites':user_info['Favourites']
+    });
+
+  }
+
+
+  void rating(num new_rating,String shop_key) async {
+
+    late Map? shop_info;
+    final CollectionReference shopCollection = firestore.collection('shops');
+    var shopsnapshot=await firestore.collection('shops').doc(shop_key).get();
+    shop_info=shopsnapshot.data();
+    if(shop_info==null){
+      return;
+    }
+
+    num tempRating = shop_info['current_rating'] * shop_info['total_review'] + new_rating;
+
+    shop_info['total_review'] = shop_info['total_review'] + 1;
+
+    tempRating = tempRating/shop_info['total_review'];
+
+    shop_info['current_rating'] = tempRating;
+
+    firestore.collection("shops").doc(shop_key).update({
+      'current_rating':shop_info['current_rating'],
+      'total_review':shop_info['total_review']
+    });
+
+  }
 }
