@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/customertabs.dart';
+import 'package:kriti/screens/uploadfilescreen.dart';
 
 class StationaryScreen extends StatefulWidget {
   const StationaryScreen({Key? key}) : super(key: key);
@@ -98,7 +99,9 @@ class _StationaryScreenState extends State<StationaryScreen> {
                         return Padding(
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
-                            onTap: (){},
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const uploadscreen()));
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),

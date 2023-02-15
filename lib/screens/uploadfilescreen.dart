@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/profilepopup.dart';
+import 'package:kriti/popups/shopdetailspopup.dart';
+import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/customertabs.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:file_picker/file_picker.dart';
@@ -41,8 +46,8 @@ class _uploadscreenState extends State<uploadscreen> {
           if (result!.files[i]!= null) {
             final thumbnailindex = await FilePreview.getThumbnail(
               result!.files[i].path!,
-              height: 100,
-              width: 200,
+              height: 100.h,
+              width: 200.w,
             );
             setState(() {
               thumbnail.add(thumbnailindex);
@@ -63,22 +68,22 @@ class _uploadscreenState extends State<uploadscreen> {
     final mb=kb/1024;
     final fileSize=mb>=1? '${mb.toStringAsFixed(2)} MB': '${kb.toStringAsFixed(2)} KB';
     var extension=file.extension ?? 'none';
-    extension="."+extension;
+    extension=".$extension";
     final path=file.path ?? 'none';
     final filename=file.name;
 
 
     return Container(
-      margin: EdgeInsets.fromLTRB(40,40,40,0),
+      margin: EdgeInsets.fromLTRB(40.w,40.h,40.w,0),
       child: InkWell(
         onTap: ()=>openFile(file),
         child: Column(
           children: [
-            Container(child: thumbnail,width: 200,height: 100),
+            SizedBox(width: 200.w,height: 100.h, child: thumbnail),
             Center(
               child:Container(
                 alignment: Alignment.center,
-                width:300,
+                width:300.w,
                 child: Text(filename),
               ),
             ),
@@ -110,51 +115,87 @@ class _uploadscreenState extends State<uploadscreen> {
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Center(
-              child: Container(
-                height:50,
-                width:50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-
-                child: const Image(
-                  image: AssetImage("assets/images/appLogo.png"),
-                ),
-              ),
+            centerTitle: true,
+            title: Image(
+              height: 45.h,
+              width: 45.h,
+              image: const AssetImage("assets/images/appLogo.png"),
             ),
             backgroundColor: Colors.transparent,
-            elevation: 100.0,
+            elevation: 0,
             leading: IconButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pop(context);
+              },
               icon: const Icon(Icons.arrow_back_ios_new , color: Colors.black ),
             ),
             actions: [
-              Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                  onPressed: (){},
-                  icon: const Icon(Icons.account_circle_outlined , color: Colors.black),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const ShowPopUp(
+                      widgetcontent: Profile(),
+                    ),
+                  );
+                },
+                iconSize: 30.h,
+                icon: const ImageIcon(
+                  AssetImage('assets/icons/person.png'),
+                  color: Colors.black,
                 ),
-              ),
+              )
             ],
           ),
           body: Column(
             children: [
-              Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.fromLTRB(width*0.076, height*0.0176, 0, 0),
-                    child: ListTile(
-                      title: Text("Kapili Stationary",style:TextStyle(fontSize: 25)),
-                      subtitle: Text("Now Open",style: TextStyle(fontSize: 15),),
+              SizedBox(height: 10.h,),
+              PreferredSize(
+                preferredSize: Size.fromHeight(90.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: width/6),
+                      child: Text(
+                        'Kapili Stationary',  //change to ShopName
+                        style: TextStyle(
+                            fontSize: 25.sp,
+                            fontFamily: 'DM-Sans'
+                        ),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(width*0.7633, height*0.05875, 0, 0),
-                    child:Text("Details",style: TextStyle(fontSize: 15),),
-                  )
-                ],
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: width/6),
+                          child: Text(
+                            'Now Open',
+                            style: TextStyle(
+                                color: const Color.fromRGBO(114, 114, 114, 1.0),
+                                fontSize: 15.sp,
+                                fontFamily: 'DM-Sans'
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: width/3),
+                          child: TextButton(onPressed: (){
+                            showDialog(context: context, builder: (BuildContext context){
+                              return const ShowPopUp(widgetcontent: ShopDetails(),);
+                            });
+                          }, child: Text(
+                            'details',
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 15.sp,
+                            ),
+                          )),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
               Container(
                 width: double.infinity,
@@ -163,40 +204,38 @@ class _uploadscreenState extends State<uploadscreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                margin: EdgeInsets.fromLTRB(40, 20, 40, 30),
+                margin: EdgeInsets.fromLTRB(40.w, 20.h, 40.w, 30.h),
                 child: pickedfile.isNotEmpty ? PageView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) =>
-                      Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: height * 0.25,
-                              width: width * 0.67,
-                              child: buildFile(pickedfile[index],thumbnail[index]),
+                      Column(
+                        children: [
+                          SizedBox(
+                            height: height * 0.25,
+                            width: width * 0.67,
+                            child: buildFile(pickedfile[index],thumbnail[index]),
+                          ),
+                          Container(
+                            width: width*0.5,
+                            height: height*0.047,
+                            margin: EdgeInsets.fromLTRB(width/100, 0, 0, 0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color.fromRGBO(188, 157, 255, 1.0),
                             ),
-                            Container(
-                              width: width*0.5,
-                              height: height*0.047,
-                              margin: EdgeInsets.fromLTRB(width/100, 0, 0, 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Color.fromRGBO(188, 157, 255, 1.0),
-                              ),
-                              child: TextButton(
-                                  onPressed: (){
-                                    setState(() {
-                                      thumbnail.remove(thumbnail[index]);
-                                      pickedfile.remove(pickedfile[index]);
-                                    });
-                                  },
-                                  child: Text("Remove this item",style: TextStyle(color: Colors.white,fontSize: 20),)
-                              ),
+                            child: TextButton(
+                                onPressed: (){
+                                  setState(() {
+                                    thumbnail.remove(thumbnail[index]);
+                                    pickedfile.remove(pickedfile[index]);
+                                  });
+                                },
+                                child: Text("Remove this item",style: TextStyle(color: Colors.white,fontSize: 16.sp),)
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                  itemCount: pickedfile!.length,
+                  itemCount: pickedfile.length,
                   pageSnapping: true,
                 ):
                 Center(
@@ -216,13 +255,13 @@ class _uploadscreenState extends State<uploadscreen> {
                     margin: EdgeInsets.fromLTRB(width*0.0712, 0, width*0.02544, 0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                     ),
                     child: TextButton(
                         onPressed: (){
                           pickfile();
                         },
-                        child: Text("Add more files",style: TextStyle(color: Colors.white,fontSize: 20),)
+                        child: Text("Add more files",style: TextStyle(color: Colors.white,fontSize: 16.sp),)
                     ),
                   ),
                   Container(
@@ -230,18 +269,74 @@ class _uploadscreenState extends State<uploadscreen> {
                     height: height*0.047,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Color.fromRGBO(188, 157, 255, 1.0),
+                      color: const Color.fromRGBO(188, 157, 255, 1.0),
                     ),
                     child: TextButton(
                         onPressed: (){},
-                        child: Text("Request Print",style: TextStyle(color: Colors.white,fontSize: 20),)
+                        child: Text("Request Print",style: TextStyle(color: Colors.white,fontSize: 16.sp),)
                     ),
                   )
                 ],
               )
             ],
           ),
-          bottomNavigationBar: BottomNavBar()
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
+            selectedItemColor: Colors.black54,
+            unselectedItemColor: Colors.black54,
+            selectedFontSize: 0,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/home.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 0)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 1)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 2)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 3)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+            ],
+          ),
         ),
 
       ],
