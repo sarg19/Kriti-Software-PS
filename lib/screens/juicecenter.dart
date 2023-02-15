@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
@@ -27,10 +28,19 @@ class _JuiceState extends State<JuiceCenter> {
 
   late Databases db;
   late Timer timer;
+  String Name='User';
+  String Email='abc@example.com';
+  int Phone=1234567890;
   initialise() {
     db = Databases();
     db.initialise();
-
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState(() {
+        Name=value['Name'];
+        Email=value['Mail'];
+        Phone=value['Phone_Number'];
+      });
+    });
     timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
       Reload();
     });
@@ -73,8 +83,8 @@ class _JuiceState extends State<JuiceCenter> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const ShowPopUp(
-                      widgetcontent: Profile(),
+                    builder: (context) =>  ShowPopUp(
+                      widgetcontent: Profile(Name: Name,Email: Email,Phone: Phone,),
                     ),
                   );
                 },

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
@@ -6,6 +7,8 @@ import 'package:kriti/screens/cartscreen.dart';
 import 'package:kriti/screens/favouritesscreen.dart';
 import 'package:kriti/screens/home.dart';
 import 'package:kriti/screens/orderscreen.dart';
+
+import '../database.dart';
 
 class CustomerTabs extends StatefulWidget {
   final int currentIndex;
@@ -25,14 +28,32 @@ class _CustomerTabsState extends State<CustomerTabs> {
     const cartscreen()
   ];
 
+  String Name='User';
+  String Email='abc@example.com';
+  int Phone=1234567890;
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
   @override
   void initState() {
     _currentIndex = widget.currentIndex;
     super.initState();
+    initialise();
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState(() {
+        Name=value['Name'];
+        Email=value['Mail'];
+        Phone=value['Phone_Number'];
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     var size = MediaQuery.of(context).size;
     var width = size.width;
     var height = size.height;
@@ -60,8 +81,8 @@ class _CustomerTabsState extends State<CustomerTabs> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const ShowPopUp(
-                      widgetcontent: Profile(),
+                    builder: (context) => ShowPopUp(
+                      widgetcontent: Profile(Name: Name,Email: Email,Phone: Phone,),
                     ),
                   );
                 },

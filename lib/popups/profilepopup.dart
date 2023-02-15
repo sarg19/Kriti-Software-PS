@@ -6,7 +6,10 @@ import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/choicescreen.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  final String Name;
+  final String Email;
+  final int Phone;
+  Profile({Key? key,this.Name="User",this.Email="abc@example.com",this.Phone=1234567890}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -58,21 +61,20 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Sarvesh Gholap',
+                  Text(widget.Name,
                       style: TextStyle(
                         fontSize: 20.sp,
                       )),
                   Padding(
                     padding: EdgeInsets.only(top: 5.0.h, bottom: 14.0.h),
-                    child: Text('sarvesh.iitg.ac.in',
+                    child: Text(widget.Email,
                         style: TextStyle(
                             fontSize: 16.sp,
                             color: const Color.fromRGBO(114, 114, 114, 1.0))),
                   ),
-                  Text('2101010', style: TextStyle(fontSize: 20.sp)),
                   Padding(
                     padding: EdgeInsets.only(top: 15.0.h, bottom: 15.0.h),
-                    child: Text('97547xxx', style: TextStyle(fontSize: 20.sp)),
+                    child: Text(widget.Phone.toString(), style: TextStyle(fontSize: 20.sp)),
                   ),
                 ],
               ),

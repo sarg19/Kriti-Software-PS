@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
@@ -6,6 +7,7 @@ import 'package:kriti/screens/Stationary.dart';
 import 'package:kriti/screens/canteen.dart';
 import 'package:kriti/screens/juicecenter.dart';
 import 'package:kriti/screens/miscellaneous.dart';
+import '../database.dart';
 import '../popups/profilepopup.dart';
 
 class homescreen extends StatefulWidget {
@@ -18,13 +20,24 @@ class homescreen extends StatefulWidget {
 class _homescreenState extends State<homescreen> {
   PageController controller = PageController(initialPage: 0, keepPage: false);
   static dynamic currentPageValue = 0.0;
-
+  String Name="User";
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
   @override
   void initState() {
     super.initState();
     controller.addListener(() {
       setState(() {
         currentPageValue = controller.page;
+      });
+    });
+    initialise();
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState((){
+        Name=value['Name'];
       });
     });
   }
@@ -62,7 +75,7 @@ class _homescreenState extends State<homescreen> {
         Container(
           margin: EdgeInsets.fromLTRB(width * 0.06, height / 7.4, 0, 0),
           child: Text(
-            "Hello There,Username",
+            "Hello There, "+Name,
             style: TextStyle(fontSize: 24.sp, letterSpacing: 2),
           ),
         ),

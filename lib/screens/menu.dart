@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
@@ -30,6 +31,9 @@ class _menuscreenState extends State<menuscreen> {
   late Databases db;
   String ShopName="";
   Map shop={};
+  String Name='User';
+  String Email='abc@example.com';
+  int Phone=1234567890;
   initialise(){
     db=Databases();
     db.initialise();
@@ -40,6 +44,14 @@ class _menuscreenState extends State<menuscreen> {
     initialise();
     timer= Timer.periodic(const Duration(milliseconds: 100), (timer) {
       Reload();
+    });
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState((){
+        Name=value['Name'];
+        Email=value['Mail'];
+        Phone=value['Phone_Number'];
+      });
+
     });
   }
   @override
@@ -77,8 +89,8 @@ class _menuscreenState extends State<menuscreen> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const ShowPopUp(
-                      widgetcontent: Profile(),
+                    builder: (context) => ShowPopUp(
+                      widgetcontent: Profile(Name: Name,Email: Email,Phone: Phone,),
                     ),
                   );
                 },

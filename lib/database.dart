@@ -31,13 +31,13 @@ class Databases{
     shop_info=snapshot.data();
     return shop_info;
   }
-  Future retrieve_user_info(String userId) async {
+  Future retrieve_user_info(String? userId) async {
     late Map? user_info;
     var snapshot=await firestore.collection("users").doc(userId).get();
     user_info=snapshot.data();
     return user_info;
   }
-  void create_user(String userId,String email,String Name,num p_number) async {
+  void create_user(String? userId,String email,String Name,num? p_number) async {
     final CollectionReference usersCollection = firestore.collection('users');
     usersCollection.doc(userId).set({
       'Active_Orders':[],

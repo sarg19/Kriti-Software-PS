@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
@@ -11,11 +12,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:file_previewer/file_previewer.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
 
-void main()=>{
-  runApp(MaterialApp(
-      home: uploadscreen()
-  ))
-};
+import '../database.dart';
+
 
 
 class uploadscreen extends StatefulWidget {
@@ -26,6 +24,27 @@ class uploadscreen extends StatefulWidget {
 }
 
 class _uploadscreenState extends State<uploadscreen> {
+  String Name='User';
+  String Email='abc@example.com';
+  int Phone=1234567890;
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState((){
+        Name=value['Name'];
+        Email=value['Mail'];
+        Phone=value['Phone_Number'];
+      });
+
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   FilePickerResult? result;
   List <PlatformFile> pickedfile=[];
   List <Widget> thumbnail=[];
@@ -134,8 +153,8 @@ class _uploadscreenState extends State<uploadscreen> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const ShowPopUp(
-                      widgetcontent: Profile(),
+                    builder: (context) => ShowPopUp(
+                      widgetcontent: Profile(Name: Name,Email: Email,Phone: Phone,),
                     ),
                   );
                 },

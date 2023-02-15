@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
@@ -24,11 +25,20 @@ class _StationaryScreenState extends State<StationaryScreen> {
   List<String>_Stationary =['Subhansiri','Kapili','Barak','Umiam','Dhansiri','Lohit','Disang','Dihing','Kameng','Brahma','Manas','Core 1','Core 2','Core 3','Core 4'];
   List<String>_Status=['Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open','Open',];
   late Databases db;
+  String Name='User';
+  String Email='abc@example.com';
+  int Phone=1234567890;
   late Timer timer;
   initialise() {
     db = Databases();
     db.initialise();
-
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState(() {
+        Name=value['Name'];
+        Email=value['Mail'];
+        Phone=value['Phone_Number'];
+      });
+    });
     timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
       Reload();
     });
@@ -72,8 +82,8 @@ class _StationaryScreenState extends State<StationaryScreen> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const ShowPopUp(
-                      widgetcontent: Profile(),
+                    builder: (context) => ShowPopUp(
+                      widgetcontent: Profile(Name: Name,Email: Email,Phone: Phone,),
                     ),
                   );
                 },
