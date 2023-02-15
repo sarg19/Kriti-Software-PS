@@ -133,7 +133,7 @@ class _JuiceState extends State<JuiceCenter> {
                           child: GestureDetector(
                             onTap: (){
                               showDialog(context: context, builder: (BuildContext context){
-                                return const ShowPopUp(widgetcontent: ShopDetails(),);
+                                return ShowPopUp(widgetcontent: ShopDetails(shop_key: juicecenter[index]['id'], collection: 'grocery',),);
                               });
                             },
                             child: Container(

@@ -201,7 +201,7 @@ class _uploadscreenState extends State<uploadscreen> {
                           padding: EdgeInsets.only(left: width/3),
                           child: TextButton(onPressed: (){
                             showDialog(context: context, builder: (BuildContext context){
-                              return const ShowPopUp(widgetcontent: ShopDetails(),);
+                              return  ShowPopUp(widgetcontent: ShopDetails(shop_key: "",collection: 'stationary',),);
                             });
                           }, child: Text(
                             'details',

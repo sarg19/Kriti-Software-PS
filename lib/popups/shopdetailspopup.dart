@@ -1,14 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/database.dart';
 
 class ShopDetails extends StatefulWidget {
-  const ShopDetails({Key? key}) : super(key: key);
+  String shop_key;
+  String collection;
+  ShopDetails({Key? key,required this.shop_key,required this.collection}) : super(key: key);
 
   @override
   State<ShopDetails> createState() => _ShopDetailsState();
 }
 
 class _ShopDetailsState extends State<ShopDetails> {
+  String Name="UserName";
+  String ShopName="ShopName";
+  int Phone=1234567890;
+  int counter=0;
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+    db.retrieve_shop_info(widget.collection, widget.shop_key).then((value){
+      setState(() {
+        counter=1;
+        ShopName=value['ShopName'];
+        Name=value['UserName'];
+        Phone=value['Number'];
+      });
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +61,7 @@ class _ShopDetailsState extends State<ShopDetails> {
                     },
                   ),
                 ),
-                Text('Kapili', style: TextStyle(
+                Text('Shop Details', style: TextStyle(
                   fontSize: 24.sp,
                 ),
                 ),
@@ -52,7 +77,7 @@ class _ShopDetailsState extends State<ShopDetails> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 8.0.h, bottom: 2.0.h),
-                  child: Text('S23004xxx', style: TextStyle(
+                  child: Text(widget.shop_key, style: TextStyle(
                     fontSize: 20.sp,
                   )),
                 ),
@@ -65,13 +90,13 @@ class _ShopDetailsState extends State<ShopDetails> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(top: 5.0.h),
-                    child: Text('Abxshk Sjxhsu', style: TextStyle(
+                    child: Text(Name, style: TextStyle(
                         fontSize: 20.sp
                     )),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 10.0.h, bottom: 10.0.h),
-                    child: Text('Kapili Canteen', style: TextStyle(
+                    child: Text(ShopName, style: TextStyle(
                         fontSize: 16.sp,
                         color: const Color.fromRGBO(
                             114, 114, 114, 1.0)
@@ -93,7 +118,11 @@ class _ShopDetailsState extends State<ShopDetails> {
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(188, 157, 255, 1.0)),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if(counter==1){
+                        print('for contact');
+                      }
+                    },
                     child: const Text('Contact')
                 )
               ],

@@ -131,7 +131,7 @@ class _MiscState extends State<Misc> {
                           child: GestureDetector(
                             onTap: (){
                               showDialog(context: context, builder: (BuildContext context){
-                                return const ShowPopUp(widgetcontent: ShopDetails(),);
+                                return ShowPopUp(widgetcontent: ShopDetails(shop_key: Misc[index]['id'],collection: 'miscellaneous',),);
                               });
                             },
                             child: Container(

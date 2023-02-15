@@ -21,6 +21,7 @@ class menuscreen extends StatefulWidget {
 }
 
 class _menuscreenState extends State<menuscreen> {
+  int counter=0;
   var size,
       height,
       width;
@@ -157,9 +158,11 @@ class _menuscreenState extends State<menuscreen> {
                             Padding(
                               padding: EdgeInsets.only(left: w/3),
                               child: TextButton(onPressed: (){
-                                showDialog(context: context, builder: (BuildContext context){
-                                  return const ShowPopUp(widgetcontent: ShopDetails(),);
-                                });
+                                if(counter==1){
+                                  showDialog(context: context, builder: (BuildContext context){
+                                    return  ShowPopUp(widgetcontent: ShopDetails(shop_key: widget.shop_key,collection: shop['collection'],),);
+                                  });
+                                }
                               }, child: Text(
                                   'details',
                                 style: TextStyle(
@@ -267,6 +270,7 @@ class _menuscreenState extends State<menuscreen> {
         return;
       }
       setState(() {
+        counter=1;
         shop=value;
         listlength=shop['Menu'].length;
         ShopName=shop['ShopName'];
