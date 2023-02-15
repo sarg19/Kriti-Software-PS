@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +25,10 @@ class _MiscState extends State<Misc> {
   String Name='User';
   String Email='abc@example.com';
   int Phone=1234567890;
+  List Misc=[];
+  int misclength=0;
   late Databases db;
+  late Timer timer;
   initialise() {
     db = Databases();
     db.initialise();
@@ -33,6 +38,9 @@ class _MiscState extends State<Misc> {
         Email=value['Mail'];
         Phone=value['Phone_Number'];
       });
+    });
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      Reload();
     });
   }
   @override
@@ -115,7 +123,7 @@ class _MiscState extends State<Misc> {
                     height: 588.h,
                     child:ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: _Stationary.length,
+                      itemCount: misclength,
                       itemBuilder: (BuildContext context, int index)
                       {
                         return Padding(
@@ -141,7 +149,7 @@ class _MiscState extends State<Misc> {
                                       child: Padding(
                                         padding: EdgeInsets.only(top: 9.h,bottom: 9.h,left: 14.w),
                                         child: Text(
-                                          '${_Stationary[index]} Stationary',
+                                          Misc[index]['Name'],
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             fontSize: 20.sp,
@@ -155,7 +163,7 @@ class _MiscState extends State<Misc> {
                                     Padding(
                                       padding: EdgeInsets.only(top: 9.h,bottom: 9.h,right: 14.w),
                                       child: Text(
-                                        _Status[index],
+                                        Misc[index]['open']==1?'Open':'Close',
                                         style: TextStyle(
                                           fontSize: 13.sp,
                                           color: Colors.white,
@@ -236,5 +244,16 @@ class _MiscState extends State<Misc> {
         ),
       )
     ]);
+  }
+  Future<void> Reload() async {
+    db.getfoodshop('miscellaneous').then((value){
+      if(!mounted) {
+        return;
+      }
+      setState((){
+        Misc=value;
+        misclength=Misc.length;
+      });
+    });
   }
 }
