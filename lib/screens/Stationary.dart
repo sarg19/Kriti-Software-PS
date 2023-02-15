@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/profilepopup.dart';
+import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/customertabs.dart';
 
 class StationaryScreen extends StatefulWidget {
   const StationaryScreen({Key? key}) : super(key: key);
@@ -27,52 +31,55 @@ class _StationaryScreenState extends State<StationaryScreen> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Center(
-              child: Container(
-                height:50,
-                width:50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-
-                child: Image(
-                  image: AssetImage("assets/images/appLogo.png"),
-                ),
-              ),
+            centerTitle: true,
+            title: Image(
+              height: 45.h,
+              width: 45.h,
+              image: const AssetImage("assets/images/appLogo.png"),
             ),
             backgroundColor: Colors.transparent,
-            elevation: 100.0,
+            elevation: 0,
             leading: IconButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pop(context);
+              },
               icon: const Icon(Icons.arrow_back_ios_new , color: Colors.black ),
             ),
             actions: [
-              Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                  onPressed: (){},
-                  icon: const Icon(Icons.account_circle_outlined , color: Colors.black),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => const ShowPopUp(
+                      widgetcontent: Profile(),
+                    ),
+                  );
+                },
+                iconSize: 30.h,
+                icon: const ImageIcon(
+                  AssetImage('assets/icons/person.png'),
+                  color: Colors.black,
                 ),
-              ),
+              )
             ],
           ),
           body: Center(
             child: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(70.0,10.0,70.0,10.0),
+                    padding: EdgeInsets.fromLTRB(70.0.w,10.0.h,70.0.w,10.0.h),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
                       ),
-                      height: 40,
+                      height: 40.h,
                       child: TextField(
                         decoration: InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(0, 7, 0, 5),
-                          prefixIcon: Icon(Icons.search_outlined , color: Colors.black),
+                          contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
+                          prefixIcon: const Icon(Icons.search_outlined , color: Colors.black),
                           border: InputBorder.none,
                           fillColor: Colors.white,
                           hintText: 'Search...',
@@ -81,33 +88,34 @@ class _StationaryScreenState extends State<StationaryScreen> {
                     ),
                   ),
 
-                  Container(
-                    height: 550,
+                  SizedBox(
+                    height: 588.h,
                     child:ListView.builder(
+                      physics: const BouncingScrollPhysics(),
                       itemCount: _Stationary.length,
                       itemBuilder: (BuildContext context, int index)
                       {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(45, 10, 45, 10),
+                          padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
                             onTap: (){},
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                color: Color.fromRGBO(188, 157, 255, 1.0),
+                                color: const Color.fromRGBO(188, 157, 255, 1.0),
                               ),
-                              height: 40,
+                              height: 40.h,
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 9,bottom: 9,left: 14),
+                                      padding: EdgeInsets.only(top: 9.h,bottom: 9.h,left: 14.w),
                                       child: Text(
                                         '${_Stationary[index]} Stationary',
                                         style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                         ),
@@ -115,11 +123,11 @@ class _StationaryScreenState extends State<StationaryScreen> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 9,bottom: 9,right: 14),
+                                      padding: EdgeInsets.only(top: 9.h,bottom: 9.h,right: 14.w),
                                       child: Text(
-                                        '${_Status[index]}',
+                                        _Status[index],
                                         style: TextStyle(
-                                          fontSize: 13,
+                                          fontSize: 13.sp,
                                           color: Colors.white,
                                         ),
                                         textAlign: TextAlign.right,
@@ -140,85 +148,56 @@ class _StationaryScreenState extends State<StationaryScreen> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
-            selectedItemColor: Colors.black,
+            selectedItemColor: Colors.black54,
             unselectedItemColor: Colors.black54,
             selectedFontSize: 0,
             type: BottomNavigationBarType.fixed,
-            currentIndex: _currentIndex,
             items: [
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 0 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/home.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 0;
-                      });
-                    },
-                  ),
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/home.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 0)),
+                            (Route<dynamic> route) => false);
+                  },
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 1 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 1;
-                      });
-                    },
-                  ),
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 1)),
+                            (Route<dynamic> route) => false);
+                  },
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 2 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 2;
-                      });
-                    },
-                  ),
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 2)),
+                            (Route<dynamic> route) => false);
+                  },
                 ),
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 3 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 3;
-                      });
-                    },
-                  ),
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 3)),
+                            (Route<dynamic> route) => false);
+                  },
                 ),
                 label: '',
               ),

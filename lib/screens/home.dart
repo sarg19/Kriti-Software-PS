@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
 import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/Stationary.dart';
 import 'package:kriti/screens/canteen.dart';
 import '../popups/profilepopup.dart';
 
@@ -30,7 +31,7 @@ class _homescreenState extends State<homescreen> {
   Widget build(BuildContext context) {
     var discountlist = ['1', '2', '3', '4', '5'];
     var categories = ['Food', 'Stationary', 'Juice center', 'Others'];
-    var nextscreens = [const MyTabbedPage()];
+    var nextscreens = [const MyTabbedPage(), const StationaryScreen()];
     var size = MediaQuery.of(context).size;
     var width = size.width;
     var height = size.height;
