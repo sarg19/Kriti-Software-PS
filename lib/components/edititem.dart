@@ -62,7 +62,7 @@ class _EditItemState extends State<EditItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: Image.asset('assets/icons/back.png'),
                   onPressed: () {
                     Navigator.pop(context);
                   },

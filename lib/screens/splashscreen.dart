@@ -5,6 +5,8 @@ import 'package:kriti/database.dart';
 import 'package:kriti/screens/choicescreen.dart';
 import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/shopkeepertabs.dart';
+import 'package:kriti/screens/stationarytabs.dart';
+import 'package:kriti/screens/groceryandmiscellaneous.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -47,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
           type = value;
         });
       });
-      await Future.delayed(const Duration(seconds: 2), () {});
+      await Future.delayed(const Duration(seconds: 10), () {});
       if(type=="users"){
         Navigator.pushReplacement(
             context,
@@ -55,19 +57,21 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: const CustomerTabs(currentIndex: 0),
                 type: PageTransitionType.fade));
       } else if(type=="stationary"){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StationaryTabs()));
 
       } else if(type=="grocery" || type=="miscellaneous"){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => groceryandmiscellaneous()));
 
       } else if(type=="none"){
 
       } else {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ShopkeeperTabs()));
       }
-      Navigator.pushReplacement(
-          context,
-          PageTransition(
-              child: const CustomerTabs(currentIndex: 0),
-              type: PageTransitionType.fade));
+      // Navigator.pushReplacement(
+      //     context,
+      //     PageTransition(
+      //         child: const CustomerTabs(currentIndex: 0),
+      //         type: PageTransitionType.fade));
     }
   }
 

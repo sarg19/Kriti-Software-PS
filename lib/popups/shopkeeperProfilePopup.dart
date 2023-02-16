@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/screens/choicescreen.dart';
+import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/popups/editshopkeeperprofile.dart';
 
 class ShopkeeperProfile extends StatefulWidget {
   const ShopkeeperProfile({Key? key}) : super(key: key);
@@ -12,7 +14,7 @@ class ShopkeeperProfile extends StatefulWidget {
 
 class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
 
-  int _currentStar = 0;
+  int _currentStar = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +109,14 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color.fromRGBO(188, 157, 255, 1.0)),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const ShowPopUp(
+                                    widgetcontent: ShopkeeperEditProfile(),
+                                  ),
+                                );
+                              },
                               child: const Text('Edit Profile')),
                           ElevatedButton(
                               style: ButtonStyle(
@@ -144,46 +153,11 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            IconButton(
-                              icon: Icon(_currentStar < 1 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
-                              onPressed:(){
-                                setState(() {
-                                  _currentStar = 1;
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(_currentStar < 2 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
-                              onPressed:(){
-                                setState(() {
-                                  _currentStar = 2;
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(_currentStar < 3 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
-                              onPressed:(){
-                                setState(() {
-                                  _currentStar = 3;
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(_currentStar < 4 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
-                              onPressed:(){
-                                setState(() {
-                                  _currentStar = 4;
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(_currentStar < 5 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
-                              onPressed:(){
-                                setState(() {
-                                  _currentStar = 5;
-                                });
-                              },
-                            )
+                            Icon(_currentStar < 1 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                            Icon(_currentStar < 2 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                            Icon(_currentStar < 3 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                            Icon(_currentStar < 4 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                            Icon(_currentStar < 5 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
                           ]
                       ),
                     ),

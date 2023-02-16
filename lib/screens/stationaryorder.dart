@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class StationaryOrderPage extends StatefulWidget {
   const StationaryOrderPage({Key? key}) : super(key: key);
@@ -27,46 +29,11 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
     double w = size.width;
     return Stack(
       children: [
-        Image.asset(
-          height: h,
-          width: w,
-          fit: BoxFit.cover,
-          "assets/images/bgImage1.png",
-        ),
         Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: Center(
-              child: Container(
-                height: 50,
-                width: 50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: const Image(
-                  image: AssetImage("assets/images/appLogo.png"),
-                ),
-              ),
-            ),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-            ),
-            actions: [
-              Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.account_circle_outlined,
-                      color: Colors.black),
-                ),
-              ),
-            ],
-          ),
           body: Center(
             child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
                   Center(
@@ -74,8 +41,8 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
                       // decoration: BoxDecoration(
                       //     border: Border.all(color: Colors.black)
                       // ),
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
-                      child: Text("Orders", style: TextStyle(fontSize: 40,fontWeight: FontWeight.w400)),
+                      padding: EdgeInsets.fromLTRB(0, 20.h, 0, 20.h),
+                      child: Text("Orders", style: TextStyle(fontSize: 40.sp,fontWeight: FontWeight.w400)),
                     ),
                   ),
                   Row(
@@ -98,7 +65,7 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
                             color: selected == 0
                                 ? Colors.black
                                 : Color.fromRGBO(104, 104, 104, 1.0),
-                            fontSize: 25,
+                            fontSize: 25.sp,
                           ),
                         ),
                         style: TextButton.styleFrom(
@@ -136,24 +103,26 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
                     thickness: 3,
                     color: Colors.black,
                     // height: 10,
-                    indent: selected == 0? 60 : MediaQuery.of(context).size.width/2 ,
-                    endIndent: selected==0? MediaQuery.of(context).size.width/2 + 50 : 60,
+                    indent: selected == 0? 59.w : MediaQuery.of(context).size.width/2+10.h ,
+                    endIndent: selected==0? MediaQuery.of(context).size.width/2 + 57.w : 59.w,
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 10.h,
                   ),
                   selected == 1
                       ? Container(
-                    height: 500,
+                    height: 500.h,
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                         itemCount: GrandList.length,
                         itemBuilder: (context, index) {
                           return StationaryPendingCard(items: GrandList[index]);
                         }),
                   )
                       : Container(
-                    height: 500,
+                    height: 500.h,
                     child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
                         itemCount: GandList.length,
                         itemBuilder: (context, index) {
                           return StationaryActiveCard(items: GandList[index]);
@@ -162,92 +131,6 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
                 ],
               ),
             ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
-            selectedItemColor: Colors.black,
-            unselectedItemColor: Colors.black54,
-            selectedFontSize: 0,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _currentIndex,
-            items: [
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 0 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/home.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 0;
-                      });
-                    },
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 1 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 1;
-                      });
-                    },
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 2 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 2;
-                      });
-                    },
-                  ),
-                ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Container(
-                  margin: const EdgeInsets.all(8.0),
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                      color: _currentIndex == 3 ? const Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
-                      borderRadius: const BorderRadius.all(Radius.circular(10))
-                  ),
-                  child: IconButton(
-                    icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
-                    onPressed: () {
-                      setState(() {
-                        _currentIndex = 3;
-                      });
-                    },
-                  ),
-                ),
-                label: '',
-              ),
-            ],
           ),
         ),
       ],
@@ -294,9 +177,9 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
           children: [
             Container(
               //padding: EdgeInsets.fromLTRB(20, 0, right, bottom),
-              height: 55,
-              width: 280,
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+              height: 55.h,
+              width: 280.w,
+              padding: EdgeInsets.fromLTRB(20.w, 15.h, 0, 0),
               decoration: BoxDecoration(
                   color: Color.fromRGBO(188, 157, 255, 1.0),
                   borderRadius: BorderRadius.only(
@@ -307,7 +190,7 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
               child: Text(
                 'Tarun',
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 25.sp,
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'DMSans'
@@ -318,17 +201,18 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
             Container(
               color: Color.fromRGBO(255, 249, 240, 1.0),
               padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              height: 80,
+              height: 80.h,
               // height: items.length == 1 ? 60 : items.length*33,
-              width: 280,
+              width: 280.w,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20.h,),
                   Expanded(
                     child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: widget.items.length,
                       itemBuilder: (context,index){
-                        return Text(widget.items[index],textAlign: TextAlign.center, style: TextStyle(fontSize: 18,fontFamily: 'DMSans',),);
+                        return Text(widget.items[index],textAlign: TextAlign.center, style: TextStyle(fontSize: 18.sp,fontFamily: 'DMSans',),);
                       },
                     ),
                   ),
@@ -336,8 +220,8 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
               ),
             ),
             Container(
-                height: 55,
-                width: 280,
+                height: 55.h,
+                width: 280.w,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(255, 249, 240, 1.0),
                     borderRadius: BorderRadius.only(
@@ -351,7 +235,7 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 90,
+                          width: 90.w,
                           // padding: EdgeInsets.fromLTRB(20, 0, 20, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -364,14 +248,14 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                               'Accept',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
-                                fontSize: 15,
+                                fontSize: 15.sp,
                               ),
                             ),
                             onPressed: (){},
                           ),
                         ),
                         Container(
-                          width: 90,
+                          width: 90.w,
                           // padding: EdgeInsets.fromLTRB(20, 0, 20, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -384,7 +268,7 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                               'Reject',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
-                                fontSize: 15,
+                                fontSize: 15.sp,
                               ),
                             ),
                             onPressed: (){},
@@ -409,6 +293,7 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
 
 
 class _StationaryActiveCard extends State<StationaryActiveCard>{
+  var getResult;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -425,9 +310,9 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
           children: [
             Container(
               //padding: EdgeInsets.fromLTRB(20, 0, right, bottom),
-              height: 55,
-              width: 280,
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+              height: 55.h,
+              width: 280.w,
+              padding: EdgeInsets.fromLTRB(20.w, 15.h, 0, 0),
               decoration: BoxDecoration(
                   color: Color.fromRGBO(188, 157, 255, 1.0),
                   borderRadius: BorderRadius.only(
@@ -438,7 +323,7 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
               child: Text(
                 'Tarun',
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 25.sp,
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'DMSans'
@@ -449,14 +334,15 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
             Container(
               color: Color.fromRGBO(255, 249, 240, 1.0),
               padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-              height: 80,
+              height: 80.h,
               // height: items.length == 1 ? 60 : items.length*33,
-              width: 280,
+              width: 280.w,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20.h,),
                   Expanded(
                     child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: widget.items.length,
                       itemBuilder: (context,index){
                         return Text(widget.items[index],textAlign: TextAlign.center, style: TextStyle(fontSize: 18,fontFamily: 'DMSans',),);
@@ -468,8 +354,8 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
             ),
             Container(
               // margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                height: 55,
-                width: 280,
+                height: 55.h,
+                width: 280.w,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(255, 249, 240, 1.0),
                     borderRadius: BorderRadius.only(
@@ -485,11 +371,12 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                         IconButton(
                           icon: const ImageIcon(AssetImage('assets/icons/scan.png'), color: Colors.transparent,),
                           iconSize: 0,
-                          onPressed: (){},
+                          onPressed: (){
+                          },
                           // color: Colors.red,
                         ),
                         Container(
-                          width: 120,
+                          width: 120.w,
                           // padding: EdgeInsets.fromLTRB(73, 0, 0, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -502,7 +389,7 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                               'Ready',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
-                                fontSize: 15,
+                                fontSize: 15.sp,
                               ),
                             ),
                             onPressed: (){},
@@ -511,7 +398,9 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                         IconButton(
                           icon: ImageIcon(AssetImage('assets/icons/scan.png')),
                           iconSize: 30,
-                          onPressed: (){},
+                          onPressed: (){
+                            scanQRCode();
+                          },
                           // color: Colors.red,
                         )
                         // Container(
@@ -546,5 +435,16 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
         ),
       ),
     );
+  }
+  void scanQRCode() async {
+    try{
+      final qrCode = await FlutterBarcodeScanner.scanBarcode('#BC9DFF', 'Cancel', true, ScanMode.QR);
+      if (!mounted) return;
+      setState(() {
+        getResult = qrCode;
+      });
+    }catch(e){
+      print(e);
+    }
   }
 }

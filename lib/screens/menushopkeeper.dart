@@ -7,6 +7,7 @@ import 'package:kriti/popups/profilepopup.dart';
 import '../components/bottom_nav_bar.dart';
 import '../database.dart';
 import '../popups/showPopUp.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import '../database.dart';
 
 class shopmenuscreen extends StatefulWidget {
@@ -47,6 +48,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
     double w = size.width;
     return Center(
               child: SingleChildScrollView(
+                physics:NeverScrollableScrollPhysics(),
                 child: Column(
                   children: [
                     Padding(
@@ -56,7 +58,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white,
                         ),
-                        height: 40,
+                        height: 40.h,
                         child: TextField(
                           controller: SearchController,
                           decoration: InputDecoration(
@@ -70,13 +72,13 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
                     SizedBox(
                       child: Text(
                         "Kapili Canteen",
                         style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 25.sp,
                           fontFamily: 'DM Sans'
                         )
                       ),
@@ -85,8 +87,9 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                       height: 20,
                     ),
                     Container(
-                      height: 550,
+                      height: 550.h,
                       child: ListView.builder(
+                        physics: BouncingScrollPhysics(),
                         itemCount: listlength,
                         itemBuilder: (context, index) {
                           if(!Menu['Menu'][index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
@@ -155,7 +158,7 @@ class ShopkeeperMenuCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       child: Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
-        height: 170,
+        height: 170.h,
         child: Column(
           children: [
             Container(
@@ -166,16 +169,16 @@ class ShopkeeperMenuCard extends StatelessWidget {
                       topRight: Radius.circular(15),
                     )
                 ),
-                padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                height: 80,
-                width: 280,
+                padding: EdgeInsets.fromLTRB(20.w, 20.h, 0, 0),
+                height: 80.h,
+                width: 280.w,
                 child: Stack(
                   children:[
                     Text.rich(
                         TextSpan(
                             style: TextStyle(
                               fontFamily: 'DMSans',
-                              fontSize: 20,
+                              fontSize: 20.sp,
                             ),
                             children: [
                               TextSpan(text: name),
@@ -188,13 +191,13 @@ class ShopkeeperMenuCard extends StatelessWidget {
                     ),
                     Positioned(
                       top: 0,
-                      right: 12,
+                      right: 12.w,
                       child: Container(
                         child: Text(
                           availability,
                           style: TextStyle(
                             fontFamily: 'DMSans',
-                            fontSize: 13,
+                            fontSize: 13.sp,
                             color: Color.fromRGBO(72, 72, 72, 1)
                           ),
                         ),
@@ -204,8 +207,8 @@ class ShopkeeperMenuCard extends StatelessWidget {
                 ),
             ),
             Container(
-                height: 60,
-                width: 280,
+                height: 60.h,
+                width: 280.w,
                 decoration: const BoxDecoration(
                     color: Color.fromRGBO(255, 249, 240, 1.0),
                     borderRadius: BorderRadius.only(
@@ -217,7 +220,7 @@ class ShopkeeperMenuCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10.h),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 0,

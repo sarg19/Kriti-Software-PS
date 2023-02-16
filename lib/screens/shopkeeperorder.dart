@@ -1,8 +1,6 @@
-
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../database.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
@@ -65,6 +63,7 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
     double w = size.width;
     return Center(
             child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
                   Center(
@@ -72,7 +71,7 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
                       // decoration: BoxDecoration(
                       //     border: Border.all(color: Colors.black)
                       // ),
-                      padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      padding: EdgeInsets.fromLTRB(0, 20.h, 0, 20.h),
                       child: Text("Orders", style: TextStyle(fontSize: 40,fontWeight: FontWeight.w400)),
                     ),
                   ),
@@ -96,7 +95,7 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
                             color: selected == 0
                                 ? Colors.black
                                 : Color.fromRGBO(104, 104, 104, 1.0),
-                            fontSize: 25,
+                            fontSize: 25.sp,
                           ),
                         ),
                         style: TextButton.styleFrom(
@@ -121,7 +120,7 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
                             color: selected == 1
                                 ? Colors.black
                                 : Color.fromRGBO(104, 104, 104, 1.0),
-                            fontSize: 25,
+                            fontSize: 25.sp,
                           ),
                         ),
                         style: TextButton.styleFrom(
@@ -134,24 +133,26 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
                     thickness: 3,
                     color: Colors.black,
                     // height: 10,
-                    indent: selected == 0? 70 : MediaQuery.of(context).size.width/2 +20,
-                    endIndent: selected==0? MediaQuery.of(context).size.width/2 + 50 : 70,
+                    indent: selected == 0? 67.w : MediaQuery.of(context).size.width/2 +29.w,
+                    endIndent: selected==0? MediaQuery.of(context).size.width/2 + 50.w : 70.w,
                   ),
                   SizedBox(
                     height: 10,
                   ),
                   selected == 1
                       ? Container(
-                    height: 500,
+                    height: 500.h,
                     child: ListView.builder(
+                       physics: BouncingScrollPhysics(),
                         itemCount: pendinglength,
                         itemBuilder: (context, index) {
                           return ShopkeeperPendingCard(items: Pending_Order[index]);
                         }),
                   )
                       : Container(
-                    height: 500,
+                    height: 500.h,
                     child: ListView.builder(
+                       physics: BouncingScrollPhysics(),
                         itemCount: activelength,
                         itemBuilder: (context, index) {
                           return ShopkeeperActiveCard(items: Active_Order[index]);
@@ -188,9 +189,9 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 15.h),
         // width: 280,
-        height: widget.items['Order_Items'].length.toDouble()*25+150,
+        height: widget.items['Order_Items'].length.toDouble()*25+151.h,
         // decoration: BoxDecoration(
         //   color: Color.fromRGBO(255, 249, 240, 1.0),
         //   borderRadius: BorderRadius.circular(15),
@@ -199,9 +200,9 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
           children: [
             Container(
               //padding: EdgeInsets.fromLTRB(20, 0, right, bottom),
-              height: 55,
-              width: 280,
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+              height: 55.h,
+              width: 280.w,
+              padding: EdgeInsets.fromLTRB(20.w, 15.h, 0, 0),
               decoration: BoxDecoration(
                   color: Color.fromRGBO(188, 157, 255, 1.0),
                   borderRadius: BorderRadius.only(
@@ -212,7 +213,7 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
               child: Text(
                 widget.items['Name'],
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 25.sp,
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'DMSans'
@@ -222,23 +223,24 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
             ),
             Container(
               color: Color.fromRGBO(255, 249, 240, 1.0),
-              padding: EdgeInsets.fromLTRB(20, 0,
-                  20, 0),
-              height: widget.items['Order_Items'].length.toDouble()*25+40,
+              padding: EdgeInsets.fromLTRB(20.w, 0,
+                  20.w, 0),
+              height: widget.items['Order_Items'].length.toDouble()*25+41.h,
               // height: items.length == 1 ? 60 : items.length*33,
-              width: 280,
+              width: 280.w,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20.h,),
                   Expanded(
                     child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: widget.items['Order_Items'].length,
                       itemBuilder: (context,index){
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(widget.items['Order_Items'][index]['Item_Name'], style: TextStyle(fontSize: 18,fontFamily: 'DMSans'),),
-                            Text("x "+widget.items['Order_Items'][index]['Quantity'].toString(), style: TextStyle(fontSize: 16,fontFamily: 'DMSans',color: Color.fromRGBO(114, 114, 114, 1.0)),),
+                            Text(widget.items['Order_Items'][index]['Item_Name'], style: TextStyle(fontSize: 18.sp,fontFamily: 'DMSans'),),
+                            Text("x "+widget.items['Order_Items'][index]['Quantity'].toString(), style: TextStyle(fontSize: 16.sp,fontFamily: 'DMSans',color: Color.fromRGBO(114, 114, 114, 1.0)),),
                           ],
                         );
                       },
@@ -247,15 +249,15 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
                   Align(
                     heightFactor: 1.3,
                     alignment: Alignment.topRight,
-                    child: Text("Rs. "+widget.items['Total_Amount'].toString(), style: TextStyle(fontSize: 16,fontFamily: 'DMSans',color: Color.fromRGBO(114, 114, 114, 1.0)),),
+                    child: Text("Rs. "+widget.items['Total_Amount'].toString(), style: TextStyle(fontSize: 16.sp,fontFamily: 'DMSans',color: Color.fromRGBO(114, 114, 114, 1.0)),),
                   ),
                 ],
               ),
             ),
             Container(
               // margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                height: 55,
-                width: 280,
+                height: 55.h,
+                width: 280.w,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(255, 249, 240, 1.0),
                     borderRadius: BorderRadius.only(
@@ -275,7 +277,7 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
                           // color: Colors.red,
                         ),
                         Container(
-                          width: 120,
+                          width: 120.w,
                           // padding: EdgeInsets.fromLTRB(73, 0, 0, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -288,7 +290,7 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
                               'Ready',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
-                                fontSize: 16,
+                                fontSize: 16.sp,
                               ),
                             ),
                             onPressed: (){},
@@ -338,9 +340,9 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 15.h),
         // width: 280,
-        height: widget.items['Order_Items'].length.toDouble()*25+150,
+        height: (widget.items['Order_Items'].length.toDouble()*25+151.h),
         // decoration: BoxDecoration(
         //   color: Color.fromRGBO(255, 249, 240, 1.0),
         //   borderRadius: BorderRadius.circular(15),
@@ -349,9 +351,9 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
           children: [
             Container(
               //padding: EdgeInsets.fromLTRB(20, 0, right, bottom),
-              height: 55,
-              width: 280,
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+              height: 55.h,
+              width: 280.w,
+              padding: EdgeInsets.fromLTRB(20.w, 15.h, 0, 0),
               decoration: BoxDecoration(
                   color: Color.fromRGBO(188, 157, 255, 1.0),
                   borderRadius: BorderRadius.only(
@@ -362,7 +364,7 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
               child: Text(
                 widget.items['Name'],
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 25.sp,
                     color: Color.fromRGBO(255, 255, 255, 1),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'DMSans'
@@ -372,23 +374,24 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
             ),
             Container(
               color: Color.fromRGBO(255, 249, 240, 1.0),
-              padding: EdgeInsets.fromLTRB(20, 0,
-                  20, 0),
-              height: widget.items['Order_Items'].length.toDouble()*25+40,
+              padding: EdgeInsets.fromLTRB(20.w, 0,
+                  20.w, 0),
+              height: widget.items['Order_Items'].length.toDouble()*25+41.h,
               // height: items.length == 1 ? 60 : items.length*33,
-              width: 280,
+              width: 280.w,
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20.h,),
                   Expanded(
                     child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       itemCount: widget.items['Order_Items'].length,
                       itemBuilder: (context,index){
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(widget.items['Order_Items'][index]['Item_Name'], style: TextStyle(fontSize: 18,fontFamily: 'DMSans'),),
-                            Text("x "+widget.items['Order_Items'][index]['Quantity'].toString(),style: TextStyle(color: Color.fromRGBO(114, 114, 114, 1.0),fontSize: 16))
+                            Text(widget.items['Order_Items'][index]['Item_Name'], style: TextStyle(fontSize: 18.sp,fontFamily: 'DMSans'),),
+                            Text("x "+widget.items['Order_Items'][index]['Quantity'].toString(),style: TextStyle(color: Color.fromRGBO(114, 114, 114, 1.0),fontSize: 16.sp))
                           ],
                         );
                       },
@@ -397,15 +400,15 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
                   Align(
                     heightFactor: 1.3,
                     alignment: Alignment.topRight,
-                    child: Text("Rs. "+widget.items['Total_Amount'].toString(), style: TextStyle(fontSize: 16,fontFamily: 'DMSans',color: Color.fromRGBO(
+                    child: Text("Rs. "+widget.items['Total_Amount'].toString(), style: TextStyle(fontSize: 16.sp,fontFamily: 'DMSans',color: Color.fromRGBO(
                         114, 114, 114, 1.0)),),
                   ),
                 ],
               ),
             ),
             Container(
-                height: 55,
-                width: 280,
+                height: 55.h,
+                width: 280.w,
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(255, 249, 240, 1.0),
                     borderRadius: BorderRadius.only(
@@ -419,7 +422,7 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          width: 90,
+                          width: 90.w,
                           // padding: EdgeInsets.fromLTRB(20, 0, 20, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -432,14 +435,14 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
                               'Accept',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
-                                fontSize: 15,
+                                fontSize: 15.sp,
                               ),
                             ),
                             onPressed: (){},
                           ),
                         ),
                         Container(
-                          width: 90,
+                          width: 90.w,
                           // padding: EdgeInsets.fromLTRB(20, 0, 20, 7),
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
@@ -452,7 +455,7 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
                               'Reject',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
-                                fontSize: 15,
+                                fontSize: 15.sp,
                               ),
                             ),
                             onPressed: (){},

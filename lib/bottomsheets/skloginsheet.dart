@@ -9,6 +9,8 @@ import 'package:kriti/popups/changepassword.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/shopkeepertabs.dart';
 import 'package:kriti/widgets/textfield.dart';
+import 'package:kriti/screens/stationarytabs.dart';
+import 'package:kriti/screens/groceryandmiscellaneous.dart';
 import 'sksignupsheet.dart';
 
 class SkLoginSheet extends StatefulWidget {
@@ -68,7 +70,7 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
           coltype = value;
         });
       });
-      await Future.delayed(const Duration(seconds: 2), () {});
+      await Future.delayed(const Duration(seconds: 10), () {});
       print("coltype: $coltype");
       if(coltype=="users"){
         Navigator.pop(context);
@@ -78,8 +80,14 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
                 "This email is registered as a customer.")));
         return;
       } else if(coltype=="stationary"){
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const StationaryTabs()),
+                (Route route) => false);
 
       } else if(coltype=="grocery" || coltype=="miscellaneous"){
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const groceryandmiscellaneous()),
+                (Route route) => false);
 
       } else if(coltype=="none"){
 

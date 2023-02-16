@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/popups/editshopkeeperprofile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kriti/screens/choicescreen.dart';
 
 class StationaryHomePage extends StatefulWidget {
   const StationaryHomePage({Key? key}) : super(key: key);
@@ -17,67 +22,25 @@ class _StationaryHomePage extends State<StationaryHomePage> {
     double w = size.width;
     return Stack(
       children: [
-        Image.asset(
-          height: h,
-          width: w,
-          fit: BoxFit.cover,
-          "assets/images/bgImage1.png",
-        ),
         Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            title: Center(
-              child: Container(
-                height: 50,
-                width: 50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: const Image(
-                  image: AssetImage("assets/images/appLogo.png"),
-                ),
-              ),
-            ),
-            backgroundColor: Colors.transparent,
-            elevation: 100.0,
-            leading: IconButton(
-              onPressed: () {
-                setState(() {
-                  selected = 1 - selected;
-                });
-              },
-              icon: selected==1
-                  ?ImageIcon(AssetImage('assets/icons/Toggle-off.png'),color: Colors.black,)
-                  :ImageIcon(AssetImage('assets/icons/Toggle-on.png'),color: Colors.black,),
-            ),
-            actions: [
-              Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.account_circle_outlined,
-                      color: Colors.black),
-                ),
-              ),
-            ],
-          ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 36),
               child: Column(
                 children: [
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20.h,),
 
-                  Center(child: Text("Subansiri Stationary",style:TextStyle(fontSize: 37,fontWeight: FontWeight.bold,))),
+                  Center(child: Text("Subansiri Stationary",textAlign:TextAlign.center,style:TextStyle(fontSize: 37.sp,))),
                   Text("Now closed",textAlign: TextAlign.left,style: TextStyle(fontSize: 20,color: Color.fromRGBO(
                       114, 114, 114, 1.0)),),
-                  SizedBox(height: 50,),
-                  Text("23004cxcx",style: TextStyle(fontSize: 22),),
-                  SizedBox(height: 30,),
-                  Text("abshhh",style: TextStyle(fontSize: 22),),
-                  SizedBox(height: 20,),
-                  Text("987652xx",style: TextStyle(fontSize: 22),),
-                  SizedBox(height: 25,),
+                  SizedBox(height: 45.h,),
+                  Text("23004cxcx",style: TextStyle(fontSize: 22.sp),),
+                  SizedBox(height: 25.h,),
+                  Text("abshhh",style: TextStyle(fontSize: 22.sp),),
+                  SizedBox(height: 20.h,),
+                  Text("987652xx",style: TextStyle(fontSize: 22.sp),),
+                  SizedBox(height: 25.h,),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,13 +56,20 @@ class _StationaryHomePage extends State<StationaryHomePage> {
                           'Edit Profile',
                           style: TextStyle(
                             fontFamily: 'DMSans',
-                            fontSize: 16,
+                            fontSize: 16.sp,
                           ),
                         ),
-                        onPressed: (){},
+                        onPressed: (){
+                          showDialog(
+                            context: context,
+                            builder: (context) => const ShowPopUp(
+                              widgetcontent: ShopkeeperEditProfile(),
+                            ),
+                          );
+                        },
                       ),
                       Container(
-                        width: 110,
+                        width: 110.w,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               elevation: 0,
@@ -111,10 +81,16 @@ class _StationaryHomePage extends State<StationaryHomePage> {
                             'Log Out',
                             style: TextStyle(
                               fontFamily: 'DMSans',
-                              fontSize: 16,
+                              fontSize: 16.sp,
                             ),
                           ),
-                          onPressed: (){},
+                          onPressed: (){
+                            FirebaseAuth.instance.signOut();
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => const ChoiceScreen()),
+                                    (Route<dynamic> route) => false);
+                          },
                         ),
                       ),
                     ],
