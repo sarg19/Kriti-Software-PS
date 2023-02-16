@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/bottomsheets/skloginsheet.dart';
 import 'package:kriti/bottomsheets/sksignupsheet.dart';
 
@@ -27,41 +28,41 @@ class _ShopkeeperWelcomeScreenState extends State<ShopkeeperWelcomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 140,
+              SizedBox(
+                height: 140.h,
               ),
               SizedBox(
-                height: 150,
-                width: 150,
+                height: 150.h,
+                width: 150.h,
                 child: Image.asset('assets/images/appLogo.png'),
               ),
-              const SizedBox(
-                height: 80,
+              SizedBox(
+                height: 80.h,
               ),
-              const Text(
+              Text(
                 'Welcome',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 40,
+                  fontSize: 40.sp,
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: 20.h,
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 30),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 30.w),
                 child: Text(
                   'Please login or sign up to continue using this app',
                   maxLines: 3,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     // color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 16.sp,
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 25,
+              SizedBox(
+                height: 25.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -89,7 +90,7 @@ class _ShopkeeperWelcomeScreenState extends State<ShopkeeperWelcomeScreen> {
                             )),
                         textStyle: MaterialStateProperty.all(
                             const TextStyle(fontWeight: FontWeight.w600))),
-                    child: const Text('Sign Up'),
+                    child: Text('Sign Up', style: TextStyle(fontSize: 20.sp),),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -114,7 +115,7 @@ class _ShopkeeperWelcomeScreenState extends State<ShopkeeperWelcomeScreen> {
                             )),
                         textStyle: MaterialStateProperty.all(
                             const TextStyle(fontWeight: FontWeight.w600))),
-                    child: const Text('Log In'),
+                    child: Text('Log In', style: TextStyle(fontSize: 20.sp),),
                   ),
                 ],
               ),

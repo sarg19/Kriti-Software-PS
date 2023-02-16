@@ -66,7 +66,7 @@ class _LoginSheetState extends State<LoginSheet> {
             });
       });
       if (!mounted) return;
-      if (!FirebaseAuth.instance.currentUser!.emailVerified) return;
+      // if (!FirebaseAuth.instance.currentUser!.emailVerified) return;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => CustomerTabs(currentIndex: 0)),
               (Route route) => false);

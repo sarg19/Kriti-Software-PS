@@ -62,7 +62,7 @@ class _SignUpSheetState extends State<SignUpSheet> {
       });
       return;
     } else if (!RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@gmail.com")
+        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@iitg.ac.in")
         .hasMatch(email)) {
       setState(() {
         _emailError = "Enter valid IITG email";

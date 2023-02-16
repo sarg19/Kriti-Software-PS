@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/screens/choicescreen.dart';
 
 class ShopkeeperProfile extends StatefulWidget {
   const ShopkeeperProfile({Key? key}) : super(key: key);
@@ -14,14 +17,14 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-              height: 396,
-              width: 304,
+              height: 396.h,
+              width: 304.w,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 color: Color.fromRGBO(253, 243, 223, 1.0),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: EdgeInsets.only(top: 8.0.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -30,22 +33,22 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
+                          padding: EdgeInsets.only(left: 8.0.w),
                           child: IconButton(
                             icon: const ImageIcon(
                                 AssetImage('assets/icons/back.png')),
                             onPressed: () => {Navigator.pop(context)},
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Kapili',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 24.sp,
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 28.0),
-                          child: ImageIcon(
+                        Padding(
+                          padding: EdgeInsets.only(right: 28.0.w),
+                          child: const ImageIcon(
                             AssetImage('assets/icons/person.png'),
                             // color: Colors.transparent,
                           ),
@@ -54,43 +57,43 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Padding(
-                          padding: EdgeInsets.only(top: 8.0, bottom: 2.0),
+                          padding: EdgeInsets.only(top: 8.0.h, bottom: 2.0.h),
                           child: Text('S23004xxx',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 20.sp,
                               )),
                         ),
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 22.0, top: 8),
+                      padding: EdgeInsets.only(left: 22.0.w, top: 8.h),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           Padding(
-                            padding: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.only(top: 5.0.h),
                             child: Text('Abxshk Sjxhsu',
-                                style: TextStyle(fontSize: 20)),
+                                style: TextStyle(fontSize: 20.sp)),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            padding: EdgeInsets.only(top: 10.0.h, bottom: 10.0.h),
                             child: Text('Kapili Canteen',
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromRGBO(114, 114, 114, 1.0))),
+                                    fontSize: 16.sp,
+                                    color: const Color.fromRGBO(114, 114, 114, 1.0))),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.only(top: 5.0.h),
                             child: Text('890824xxx',
-                                style: TextStyle(fontSize: 20)),
+                                style: TextStyle(fontSize: 20.sp)),
                           ),
                         ],
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 18.0, right: 18.0,top: 12,bottom: 20),
+                      padding: EdgeInsets.only(left: 18.0.w, right: 18.0.w,top: 12.h,bottom: 20.h),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -116,27 +119,33 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color.fromRGBO(188, 157, 255, 1.0)),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                FirebaseAuth.instance.signOut();
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => const ChoiceScreen()),
+                                        (Route<dynamic> route) => false);
+                              },
                               child: const Text('Log Out'))
                         ],
                       ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
                           'Your Ratings',
-                          style: TextStyle(fontSize: 24),
+                          style: TextStyle(fontSize: 24.sp),
                         )
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
+                      padding: EdgeInsets.only(top: 10.0.h),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             IconButton(
-                              icon: Icon(_currentStar < 1 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35),
+                              icon: Icon(_currentStar < 1 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
                               onPressed:(){
                                 setState(() {
                                   _currentStar = 1;
@@ -144,7 +153,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                               },
                             ),
                             IconButton(
-                              icon: Icon(_currentStar < 2 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35),
+                              icon: Icon(_currentStar < 2 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
                               onPressed:(){
                                 setState(() {
                                   _currentStar = 2;
@@ -152,7 +161,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                               },
                             ),
                             IconButton(
-                              icon: Icon(_currentStar < 3 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35),
+                              icon: Icon(_currentStar < 3 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
                               onPressed:(){
                                 setState(() {
                                   _currentStar = 3;
@@ -160,7 +169,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                               },
                             ),
                             IconButton(
-                              icon: Icon(_currentStar < 4 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35),
+                              icon: Icon(_currentStar < 4 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
                               onPressed:(){
                                 setState(() {
                                   _currentStar = 4;
@@ -168,7 +177,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                               },
                             ),
                             IconButton(
-                              icon: Icon(_currentStar < 5 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35),
+                              icon: Icon(_currentStar < 5 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
                               onPressed:(){
                                 setState(() {
                                   _currentStar = 5;

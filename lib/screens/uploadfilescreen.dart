@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import 'package:kriti/popups/shopdetailspopup.dart';
@@ -17,7 +18,8 @@ import '../database.dart';
 
 
 class uploadscreen extends StatefulWidget {
-  const uploadscreen({Key? key}) : super(key: key);
+  final String shop_key;
+  const uploadscreen({Key? key, required this.shop_key}) : super(key: key);
 
   @override
   State<uploadscreen> createState() => _uploadscreenState();
@@ -25,16 +27,22 @@ class uploadscreen extends StatefulWidget {
 
 class _uploadscreenState extends State<uploadscreen> {
   String Name='User';
-  String Email='abc@example.com';
+  String email='abc@example.com';
+  String stat_email = 'stationary@gmail.con';
   int Phone=1234567890;
   late Databases db;
   initialise() {
     db = Databases();
     db.initialise();
+    db.retrieve_shop_info('stationary', widget.shop_key).then((value){
+      setState(() {
+        stat_email = value['Email'];
+      });
+    });
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
       setState((){
         Name=value['Name'];
-        Email=value['Mail'];
+        email=value['Mail'];
         Phone=value['Phone_Number'];
       });
 
@@ -48,6 +56,7 @@ class _uploadscreenState extends State<uploadscreen> {
   FilePickerResult? result;
   List <PlatformFile> pickedfile=[];
   List <Widget> thumbnail=[];
+  List <String> paths = [];
   bool isloading=false;
   void pickfile()async{
     setState(() {
@@ -61,6 +70,7 @@ class _uploadscreenState extends State<uploadscreen> {
     if(result!=null){
       for(var i=0;i<result!.files.length;i++){
         pickedfile.add(result!.files[i]);
+        paths.add(result!.files[i].path!);
         try {
           if (result!.files[i]!= null) {
             final thumbnailindex = await FilePreview.getThumbnail(
@@ -154,7 +164,7 @@ class _uploadscreenState extends State<uploadscreen> {
                   showDialog(
                     context: context,
                     builder: (context) => ShowPopUp(
-                      widgetcontent: Profile(Name: Name,Email: Email,Phone: Phone,),
+                      widgetcontent: Profile(Name: Name,Email: email,Phone: Phone,),
                     ),
                   );
                 },
@@ -201,7 +211,7 @@ class _uploadscreenState extends State<uploadscreen> {
                           padding: EdgeInsets.only(left: width/3),
                           child: TextButton(onPressed: (){
                             showDialog(context: context, builder: (BuildContext context){
-                              return  ShowPopUp(widgetcontent: ShopDetails(shop_key: "",collection: 'stationary',),);
+                              return  ShowPopUp(widgetcontent: ShopDetails(shop_key: widget.shop_key,collection: 'stationary',),);
                             });
                           }, child: Text(
                             'details',
@@ -291,7 +301,21 @@ class _uploadscreenState extends State<uploadscreen> {
                       color: const Color.fromRGBO(188, 157, 255, 1.0),
                     ),
                     child: TextButton(
-                        onPressed: (){},
+                        onPressed: () async {
+                          if(pickedfile.isEmpty) return;
+                          final Email send_email = Email(
+                            body: 'Print the files attached in the mail below. ',
+                            subject: 'Request for print',
+                            recipients: [stat_email],
+                            attachmentPaths: paths,
+                            isHTML: false,
+                          );
+                          try {
+                            await FlutterEmailSender.send(send_email);
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
                         child: Text("Request Print",style: TextStyle(color: Colors.white,fontSize: 16.sp),)
                     ),
                   )

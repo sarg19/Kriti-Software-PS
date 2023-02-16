@@ -5,6 +5,8 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/widgets/textfield.dart';
 import 'skloginsheet.dart';
 
@@ -19,6 +21,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
   final TextEditingController _shopNameController = TextEditingController();
   final TextEditingController _ownerNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _upiController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -27,6 +30,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
   String _ownerNameError = "";
   String _emailError = "";
   String _phoneError = "";
+  String _upiError = "";
   String _passwordError = "";
   String _confirmError = "";
   String _regionError = "";
@@ -42,6 +46,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
     String name = _shopNameController.text;
     String ownerName = _ownerNameController.text;
     String email = _emailController.text;
+    String upi = _upiController.text;
     String phone = _phoneController.text;
     String password = _passwordController.text;
     String confirm = _confirmPasswordController.text;
@@ -96,6 +101,16 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
     } else {
       setState(() {
         _phoneError = "";
+      });
+    }
+    if (upi.isEmpty) {
+      setState(() {
+        _upiError = "UPI ID is required.";
+      });
+      return;
+    } else {
+      setState(() {
+        _upiError = "";
       });
     }
     if (password.isEmpty) {
@@ -156,8 +171,16 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       if (!mounted) return;
+      final Email send_email = Email(
+        body: 'Verify the following account \nShop Name: $name\nOwner Name: $ownerName\n Email: $email\n Phone Number: $phone',
+        subject: 'Verification of account',
+        recipients: ['myakesh7@gmail.com'],
+        isHTML: false,
+      );
+
+      await FlutterEmailSender.send(send_email);
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Sign up successful")));
+          .showSnackBar(const SnackBar(content: Text("We've received your request. Wait for your verification.")));
       Navigator.pop(context);
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const homescreen()));
     } on FirebaseAuthException catch (e) {
@@ -204,33 +227,34 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: 15),
-                  const Padding(
-                    padding: EdgeInsets.all(15.0),
+                  SizedBox(height: 15.h),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 30),
+                          fontSize: 30.sp),
                     ),
                   ),
                   CustomTextField(controller: _shopNameController, labelText: "Shop Name", hintText: "", inputType: TextInputType.text, errorText: _nameError,),
                   CustomTextField(controller: _ownerNameController, labelText: "Owner's Name", hintText: "", inputType: TextInputType.text, errorText: _ownerNameError,),
                   CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
                   CustomTextField(controller: _phoneController, labelText: "Phone number", hintText: "", inputType: TextInputType.phone, errorText: _phoneError,),
+                  CustomTextField(controller: _upiController, labelText: "UPI ID", hintText: "", inputType: TextInputType.text, errorText: _upiError,),
                   CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
                   CustomTextField(controller: _confirmPasswordController, labelText: "Confirm Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _confirmError,),
-                  const SizedBox(height: 5,),
-                  const Align(
+                  SizedBox(height: 5.h,),
+                  Align(
                     alignment: Alignment.bottomLeft,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60),
+                      padding: EdgeInsets.symmetric(horizontal: 60.w),
                       child: Text(
                         'Select Region',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontWeight: FontWeight.bold
                         ),
                       ),
@@ -241,31 +265,31 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 60),
+                      padding: EdgeInsets.symmetric(horizontal: 60.w),
                       child: Text(
                         _regionError,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Colors.red,
-                            fontSize: 12,
+                            fontSize: 12.sp,
                         ),
                       ),
                     ),
                   ),
                   // const SizedBox(height: 5,),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Hostel',
+                        Text(
+                          'Canteen',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               region = 1;
@@ -281,15 +305,15 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Food Court',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               region = 2;
@@ -301,19 +325,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Market Complex',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               region = 3;
@@ -325,19 +349,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Khokha',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               region = 4;
@@ -348,74 +372,15 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                       ],
                     ),
                   ),
-                  region==1 ? Column(
-                    children: [
-                      const Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 60),
-                          child: Text(
-                            'Hostel',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ),
-                      ),
-                      _hostelError=="" ?
-                      const SizedBox(height: 0,) :
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 60),
-                          child: Text(
-                            _hostelError,
-                            style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 60),
-                        child: Container(
-                          height: 35,
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: DropdownButton(
-                            icon: Image.asset('assets/icons/dropdown.png'),
-                            items: items.map(buildMenuItem).toList(),
-                            value: dropdownvalue,
-                            underline: const SizedBox(height: 0,),
-                            hint: const Text('Hostel', style: TextStyle(fontSize: 13),),
-                            isExpanded: true,
-                            onChanged: (value){
-                              setState(() {
-                                dropdownvalue = value!;
-                              });
-                            }
-                          ),
-                        ),
-                      ),
-                    ],
-                  ) : const SizedBox(height: 0,),
-                  const Align(
+                  Align(
                     alignment: Alignment.bottomLeft,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60),
+                      padding: EdgeInsets.symmetric(horizontal: 60.w),
                       child: Text(
                         'Type of shop',
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 15,
+                            fontSize: 15.sp,
                           fontWeight: FontWeight.bold
                         ),
                       ),
@@ -426,31 +391,31 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 60),
+                      padding: EdgeInsets.symmetric(horizontal: 60.w),
                       child: Text(
                         _shopTypeError,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.red,
-                          fontSize: 12,
+                          fontSize: 12.sp,
                         ),
                       ),
                     ),
                   ),
                   // const SizedBox(height: 5,),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Food',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               shopType = 1;
@@ -462,19 +427,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Stationary',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               shopType = 2;
@@ -486,43 +451,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'Grocery',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13
-                          ),
-                        ),
-                        IconButton(
-                          iconSize: 13,
-                          onPressed: (){
-                            setState(() {
-                              shopType = 3;
-                            });
-                          },
-                          icon: shopType == 3 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
+                        Text(
                           'Juice Center',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               shopType = 4;
@@ -534,19 +475,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    padding: EdgeInsets.symmetric(horizontal: 60.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Miscellaneous',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13
+                              fontSize: 13.sp
                           ),
                         ),
                         IconButton(
-                          iconSize: 13,
+                          iconSize: 13.sp,
                           onPressed: (){
                             setState(() {
                               shopType = 5;
@@ -570,17 +511,17 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                             )),
                         textStyle: MaterialStateProperty.all(
                             const TextStyle(fontWeight: FontWeight.w600))),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
                         'Sign Up',
                         style: TextStyle(
-                            fontSize: 20
+                            fontSize: 20.sp
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 15,),
+                  SizedBox(height: 15.h,),
                   Divider(
                     thickness: 2,
                     indent: (width-150)/2,
@@ -588,20 +529,22 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                     color: Colors.white,
                     // height: 150,
                   ),
-                  const SizedBox(height: 15,),
+                  SizedBox(height: 15.h,),
                   RichText(
                     text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                               text: 'Already have an account? ',
                               style: TextStyle(
-                                  color: Colors.white
+                                  color: Colors.white,
+                                fontSize: 15.sp
                               )
                           ),
                           TextSpan(
                               text: 'login',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.black,
+                                fontSize: 15.sp
                               ),
                               recognizer: TapGestureRecognizer()..onTap = (){
                                 Navigator.of(context).pop();
@@ -621,7 +564,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                         ]
                     ),
                   ),
-                  const SizedBox(height: 20,)
+                  SizedBox(height: 20.h,)
                 ],
               ),
             ),
@@ -635,8 +578,8 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
     value: item,
     child: Text(
       item,
-      style: const TextStyle(
-        fontSize: 15
+      style: TextStyle(
+        fontSize: 15.sp
       ),
     ),
   );

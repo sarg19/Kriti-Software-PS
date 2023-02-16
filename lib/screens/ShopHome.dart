@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../components/bottom_nav_bar.dart';
 import '../components/bottomnavbarshop.dart';
 class ShopHome extends StatefulWidget {
@@ -15,90 +16,40 @@ class _MyTabbedPageState extends State<ShopHome> {
   Widget build(BuildContext context) {
     var height= MediaQuery.of(context).size.height;
     var width= MediaQuery.of(context).size.width;
-    return Stack(
-        children:[
-          Image.asset(
-            'assets/images/bgImage1.png',
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(0.0),
-            child: new Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                title: Center(
-                  child: Container(
-                    height:50,
-                    width:50,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
-
-                    child: Image(
-                      image: AssetImage("assets/images/appLogo.png"),
-                    ),
-                  ),
-                ),
-                backgroundColor: Colors.transparent,
-                elevation: 100.0,
-                leading: GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      _isopen = !_isopen;
-                    });
-                  },
-                  child: Image.asset(
-                    _isopen ? 'assets/icons/Toggle-on.png' : 'assets/icons/Toggle-off.png',
-                    height: 50,
-                    width: 63,
-                  ),
-                ),
-                actions: [
-                  Transform.scale(
-                    scale: 1.5,
-                    child: IconButton(
-                      onPressed: (){},
-                      icon: const Icon(Icons.account_circle_outlined , color: Colors.black),
-                    ),
-                  ),
-                ],
-              ),
-              body: Column(
+    return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.values,
                 children: [
                   SizedBox(
-                    height: 3,
+                    height: 3.h,
                   ),
                   Text(
                     'Subansiri Canteen',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 30.sp,
                       color: Colors.black,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 3,
+                    height: 3.h,
                   ),
                   Text(
                     _isopen? 'Now Open' : 'Now Closed',
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 15.sp,
                       color: Color.fromRGBO(114, 114, 114, 1.0),
                     ),
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 30.sp,
                   ),
                   Center(
                     child: Container(
                       alignment: const Alignment(0,-1),
-                      height: 98,
-                      width: 200,
+                      height: 98.h,
+                      width: 200.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
@@ -117,7 +68,7 @@ class _MyTabbedPageState extends State<ShopHome> {
                           child: Text(
                             'Add Offer',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               color: Color.fromRGBO(114, 114, 114, 1.0),
                             ),
                             textAlign: TextAlign.center,
@@ -127,13 +78,13 @@ class _MyTabbedPageState extends State<ShopHome> {
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 20.h,
                   ),
                   Center(
                     child: Container(
                       alignment: const Alignment(0,-1),
-                      height: 43,
-                      width: 300,
+                      height: 43.h,
+                      width: 300.w,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
@@ -143,7 +94,7 @@ class _MyTabbedPageState extends State<ShopHome> {
                         child: Text(
                           "Today's Earning is Rs.500",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             color: Colors.black,
                           ),
                           textAlign: TextAlign.center,
@@ -152,23 +103,18 @@ class _MyTabbedPageState extends State<ShopHome> {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 50.h,
                   ),
                   Container(
-                    height: 250,
-                    width: 250,
+                    height: 250.h,
+                    width: 250.w,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Color.fromRGBO(244, 233, 255, 1.0),
+                      color: const Color.fromRGBO(244, 233, 255, 1.0),
                       shape: BoxShape.rectangle,
                     ),
                   ),
                 ],
-              ),
-              bottomNavigationBar: BottomNavBarShop(),
-            ),
-          ),
-        ]
-    );
+              );
   }
 }

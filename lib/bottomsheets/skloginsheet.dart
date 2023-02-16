@@ -3,6 +3,10 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/changepassword.dart';
+import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/shopkeepertabs.dart';
 import 'package:kriti/widgets/textfield.dart';
 import 'sksignupsheet.dart';
 
@@ -43,9 +47,9 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       if (!mounted) return;
-      // Navigator.of(context).pushAndRemoveUntil(
-      //     MaterialPageRoute(builder: (context) => const homescreen()),
-      //         (Route route) => false);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const ShopkeeperTabs()),
+              (Route route) => false);
     } on FirebaseAuthException catch (e) {
       print(e);
       if (e.code == 'user-not-found' || e.code == 'invalid-email') {
@@ -90,18 +94,40 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(15.0),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
                     child: Text(
                       'Login',
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontSize: 30),
+                          fontSize: 30.sp),
                     ),
                   ),
                   CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
                   CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
+                  Padding(
+                    padding: EdgeInsets.only(right: 60.w),
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => const ShowPopUp(widgetcontent: ChangePassword(),),
+                          );
+                        },
+                        child: Text(
+                          'Forgot password?',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.black
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 7.h,),
                   ElevatedButton(
                     onPressed: () {
                       submit();
@@ -115,27 +141,17 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
                             )),
                         textStyle: MaterialStateProperty.all(
                             const TextStyle(fontWeight: FontWeight.w600))),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: Text(
                         'Log In',
                         style: TextStyle(
-                            fontSize: 20
+                            fontSize: 20.sp
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 7,),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 60),
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: const Text(
-                        'Forgot password?',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 7,),
+                  SizedBox(height: 7.h,),
                   Divider(
                     thickness: 2,
                     indent: (width-150)/2,
@@ -143,20 +159,22 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
                     color: Colors.white,
                     // height: 150,
                   ),
-                  const SizedBox(height: 15,),
+                  SizedBox(height: 15.h,),
                   RichText(
                     text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                               text: 'Don\'t have an account? ',
                               style: TextStyle(
-                                  color: Colors.white
+                                color: Colors.white,
+                                fontSize: 15.sp
                               )
                           ),
                           TextSpan(
                               text: 'signup',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.black,
+                                fontSize: 15.sp
                               ),
                               recognizer: TapGestureRecognizer()..onTap = (){
                                 Navigator.of(context).pop();
@@ -176,7 +194,7 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
                         ]
                     ),
                   ),
-                  const SizedBox(height: 20,)
+                  SizedBox(height: 20.h,)
                 ],
               ),
             ),
