@@ -28,6 +28,7 @@ class _menuscreenState extends State<menuscreen> {
       width;
   var listlength=0;
   String status="Open";
+  final SearchController=TextEditingController();
   // List testingList = [["Seez Maggi",23],["Aloo Paratha",20]];
   late Timer timer;
   late Databases db;
@@ -61,6 +62,7 @@ class _menuscreenState extends State<menuscreen> {
     size = MediaQuery.of(context).size;
     double h = size.height;
     double w = size.width;
+
     return Stack(
       children: [
         Image.asset(
@@ -118,6 +120,7 @@ class _menuscreenState extends State<menuscreen> {
                     ),
                     height: 40.h,
                     child: TextField(
+                      controller: SearchController,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
                         prefixIcon: const Icon(Icons.search_outlined , color: Colors.black),
@@ -186,6 +189,9 @@ class _menuscreenState extends State<menuscreen> {
                       physics: const BouncingScrollPhysics(),
                       itemCount: listlength,
                       itemBuilder: (context, index) {
+                        if(!shop['Menu'][index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                          return Container();
+                        }
                         if(shop['Menu'][index]['Available']==1) {
                           return Container(
                             margin: const EdgeInsets.only(bottom: 0),

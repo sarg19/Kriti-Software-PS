@@ -22,6 +22,8 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
       width;
 
   var listlength=0;
+  final SearchController=TextEditingController();
+
   late Databases db;
   Map Menu={};
   late Timer timer;
@@ -55,7 +57,8 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                           color: Colors.white,
                         ),
                         height: 40,
-                        child: const TextField(
+                        child: TextField(
+                          controller: SearchController,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(0, 7, 0, 5),
                             prefixIcon: Icon(Icons.search_outlined , color: Colors.black),
@@ -86,6 +89,9 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                       child: ListView.builder(
                         itemCount: listlength,
                         itemBuilder: (context, index) {
+                          if(!Menu['Menu'][index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                            return Container();
+                          }
                           return Container(
                             margin: EdgeInsets.only(bottom: 0),
                             child: ShopkeeperMenuCard(
