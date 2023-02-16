@@ -195,6 +195,7 @@ class _menuscreenState extends State<menuscreen> {
                               favourite: fav,
                               shop_key: widget.shop_key,
                               shop_name: shop['ShopName'],
+                              collection: widget.collection_name,
                             ),
                           );
                         }else{
@@ -299,12 +300,14 @@ class MyCard extends StatefulWidget {
   List favourite;
   String shop_key;
   String shop_name;
+  String collection;
   MyCard({
     this.name = "",
     this.price = 0,
     required this.favourite,
     this.shop_key="",
-    this.shop_name=""
+    this.shop_name="",
+    this.collection=""
   });
 
   @override
@@ -383,11 +386,11 @@ class _MyCardState extends State<MyCard> {
                         ),
                         onPressed: () {
                           setState(() {
-                            isFavorite = !isFavorite;
+                            isFavorite=!isFavorite;
                             if(isFavorite){
-                                db.addfavourite(widget.name, widget.price, widget.shop_key ,widget.shop_name, FirebaseAuth.instance.currentUser?.uid);
+                                db.addfavourite(widget.name, widget.price, widget.shop_key ,widget.shop_name, FirebaseAuth.instance.currentUser?.uid,widget.collection);
                             }else{
-                              db.removefavourite(widget.name, widget.price, widget.shop_key, widget.shop_name, FirebaseAuth.instance.currentUser?.uid);
+                              db.removefavourite(widget.name, widget.price, widget.shop_key, widget.shop_name, FirebaseAuth.instance.currentUser?.uid,widget.collection);
                             }
                           });
                         },
@@ -426,6 +429,7 @@ class _MyCardState extends State<MyCard> {
                             ),
                           ),
                           onPressed: (){
+                            db.Add_to_Cart(widget.name, widget.price, widget.shop_key, widget.shop_name,FirebaseAuth.instance.currentUser?.uid,widget.collection);
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(content: Text("Item added to cart.")));
                           },

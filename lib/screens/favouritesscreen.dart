@@ -70,6 +70,7 @@ class _favouritesscreenState extends State<favouritesscreen> {
                     shopName: Favouites['Favourites'][index]['Shop_Name'],
                     Shop_Key: Favouites['Favourites'][index]['Shop_Key'],
                     db: db,
+                    collection: Favouites['Favourites'][index]['Collection'],
                   ),
                 );
                 // if(Menu['menu'][index]['Available']==1) {
@@ -98,13 +99,14 @@ class FavouritesCard extends StatelessWidget {
   final String shopName;
   final String Shop_Key;
   Databases db;
-
+  String collection;
   FavouritesCard(
       {this.name = "",
       this.price = 0,
       this.shopName = "",
       this.Shop_Key = "",
-      required this.db});
+      required this.db,
+      this.collection=""});
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +183,7 @@ class FavouritesCard extends StatelessWidget {
                       ),
                       onPressed: () {
                         db.Add_to_Cart(name, price, Shop_Key, shopName,
-                            "01li51cY9718Ns75HOa9");
+                            FirebaseAuth.instance.currentUser?.uid,collection);
                       },
                     ),
                   )

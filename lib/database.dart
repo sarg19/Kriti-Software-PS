@@ -49,15 +49,15 @@ class Databases{
       'Recent_Orders':[]
     });
   }
-  void Add_to_Cart(String _item,num _price,String _shopkey,String _shopname,String userId) async {
+  void Add_to_Cart(String _item,num _price,String _shopkey,String _shopname,String? userId,String collection) async {
     late Map? user_info;
     late Map? shop_info;
-    final CollectionReference shopCollection = firestore.collection('shops');
-    var shopsnapshot=await firestore.collection('shops').doc(_shopkey).get();
+    final CollectionReference shopCollection = firestore.collection(collection);
+    var shopsnapshot=await firestore.collection(collection).doc(_shopkey).get();
     final CollectionReference usersCollection = firestore.collection('users');
     var snapshot=await firestore.collection("users").doc(userId).get();
-    shop_info=shopsnapshot.data();
-    user_info=snapshot.data();
+    shop_info=await shopsnapshot.data();
+    user_info=await snapshot.data();
     if(user_info==null){
       print('first login');
       return;
@@ -66,6 +66,7 @@ class Databases{
       user_info['Cart']=[];
     }
     int counter=0;
+    print(_shopkey);
     for(Map item in shop_info!['Menu']){
       if(item['Name']==_item){
         if(item['Available']==0){
@@ -276,7 +277,7 @@ class Databases{
       'Last_Update':Timestamp.now().toDate()
     });
   }
-  void addfavourite(String item_name,num price,String shop_key,String shop_name,String? userId) async {
+  void addfavourite(String item_name,num price,String shop_key,String shop_name,String? userId,String collection) async {
 
     late Map? user_info;
     final CollectionReference usersCollection = firestore.collection('users');
@@ -299,6 +300,7 @@ class Databases{
       'Price':price,
       'Shop_Key':shop_key,
       'Shop_Name':shop_name,
+      'Collection':collection
     });
     // print(user_info['Favourites']);
     firestore.collection("users").doc(userId).update({
@@ -308,7 +310,7 @@ class Databases{
   }
 
 
-  void removefavourite(String item_name,num price,String shop_key,String shop_name,String? userId) async {
+  void removefavourite(String item_name,num price,String shop_key,String shop_name,String? userId,String collection) async {
 
     late Map? user_info;
     final CollectionReference usersCollection = firestore.collection('users');
@@ -317,11 +319,11 @@ class Databases{
     if(user_info==null){
       return;
     }
-
     late Map? Item;
     var counter=0;
+    print(user_info);
     for(Map shopcart in user_info['Favourites']){
-      if(shopcart['Item_Name']==item_name && shopcart['Shop_Key']==shop_key){
+      if(shopcart['Item_Name']==item_name && shopcart['Shop_Key']==shop_key && shopcart['Collection']==collection){
         Item=shopcart;
         counter=1;
       }
