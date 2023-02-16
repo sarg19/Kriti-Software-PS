@@ -105,18 +105,19 @@ class Databases{
       'Shop_Key':_shopkey,
       'Shop_Name':_shopname,
       'Total_Amount':_price,
-      'Items':[{'Item_Name':_item,'Price':_price,'Quantity':1}]
+      'Items':[{'Item_Name':_item,'Price':_price,'Quantity':1}],
+      'Collection':collection
     });
     usersCollection.doc(userId).update({'Cart':user_info!['Cart']});
     print(user_info!['Cart']);
     return;
   }
-  void Request_Order(String userId, String shop_key) async {
+  void Request_Order(String? userId, String shop_key,String Collection) async {
     late Map? user_info;
     late Map? shop_info;
     final CollectionReference usersCollection = firestore.collection('users');
     var snapshot=await firestore.collection("users").doc(userId).get();
-    var shopsnapshot=await firestore.collection("shops").doc(shop_key).get();
+    var shopsnapshot=await firestore.collection(Collection).doc(shop_key).get();
     user_info=snapshot.data();
     shop_info=shopsnapshot.data();
     if(shop_info==null){
@@ -148,7 +149,7 @@ class Databases{
     print(user_info);
     var Order_Key;
     final CollectionReference ordersCollection = firestore.collection('orders');
-    final CollectionReference shopsCollection = firestore.collection("shops");
+    final CollectionReference shopsCollection = firestore.collection(Collection);
     await ordersCollection.add({
       'Name':user_info["Name"],
       'User_Key':userId,

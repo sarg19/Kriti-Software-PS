@@ -40,7 +40,7 @@ class _cartscreenState extends State<cartscreen> {
   var canteen = [];
   num total = 0;
   late Timer timer;
-
+  int counter=0;
   initialise() {
     db = Databases();
     db.initialise();
@@ -52,6 +52,7 @@ class _cartscreenState extends State<cartscreen> {
     initialise();
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value) {
       setState(() {
+        counter=1;
         user_data = value;
         for (Map item in user_data['Cart']) {
           canteen.add(item['Shop_Name']);
@@ -312,7 +313,11 @@ class _cartscreenState extends State<cartscreen> {
                           style: TextStyle(
                               color: Color.fromRGBO(255, 255, 255, 1.0),
                               fontSize: 20.sp)),
-                      onPressed: () {},
+                      onPressed: () {
+                        if(counter==1){
+                          db.Request_Order(FirebaseAuth.instance.currentUser?.uid, user_data['Cart'][ind]['Shop_Key'], user_data['Cart'][ind]['Collection']);
+                        }
+                      },
                     ))
               ],
             ),
