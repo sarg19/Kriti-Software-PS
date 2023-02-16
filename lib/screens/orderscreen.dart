@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/screens/feedbackscreen.dart';
+import 'package:kriti/screens/orderstatus.dart';
 
 import '../database.dart';
 
@@ -300,7 +301,9 @@ class _CustomerOrderActiveCard extends State<customer_order_active_card> {
                                 fontSize: 15.sp,
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(order_uid: widget.item['Order_Key'])));
+                            },
                           ),
                         ),
                         IconButton(

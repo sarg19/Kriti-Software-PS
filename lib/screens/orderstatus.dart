@@ -7,6 +7,7 @@ import 'package:kriti/database.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/customertabs.dart';
+import 'package:kriti/screens/paymentscreen.dart';
 
 import '../components/bottom_nav_bar.dart';
 
@@ -41,23 +42,32 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
     });
   }
 
+  bool requestApproved = false;
+  // bool requestRejected = !requestApproved;
+  bool showMakePaymentButton = false;
+  bool paymentSuccessful = false;
+  bool orderProcessing = false;
+  bool orderReady = false;
+  late bool special;
+  bool goToQR = false;
+
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     double h = size.height;
     double w = size.width;
 
-    bool requestApproved = true;
-    bool requestRejected = !requestApproved;
-    bool showMakePaymentButton = true;
-    bool paymentSuccessful = true;
-    bool orderProcessing = true;
-    bool orderReady = true;
-    bool special;
-    bool goToQR = requestApproved & paymentSuccessful & orderProcessing & orderReady;
+    // bool requestApproved = false;
+    // // bool requestRejected = !requestApproved;
+    // bool showMakePaymentButton = false;
+    // bool paymentSuccessful = false;
+    // bool orderProcessing = false;
+    // bool orderReady = false;
+    // bool special;
+    // bool goToQR = requestApproved & paymentSuccessful & orderProcessing & orderReady;
 
-    if(requestRejected) special = false;
-    else special = true;
+    if(requestApproved) special = true;
+    else special = false;
 
     if(!requestApproved){
       showMakePaymentButton = false;
@@ -224,7 +234,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                   ],
                 ),
                 Visibility(
-                  visible: requestApproved | requestRejected,
+                  visible: requestApproved,
                   child: Padding(
                     padding: EdgeInsets.only(right: 220.w),
                     child: Container(
@@ -268,37 +278,37 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                     ],
                   ),
                 ),
-                Visibility(
-                  visible: requestRejected,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: w/7,
-                      ),
-                      Container(
-                        height: 40.h,
-                        width: 40.h,
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(188,157,255,1),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      SizedBox(
-                        width: w/20,
-                      ),
-                      Text(
-                        'Request Rejected',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20.sp,
-                            fontFamily: 'DMSans',
-                            fontWeight: FontWeight.normal,
-                            decoration: TextDecoration.none
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Visibility(
+                //   visible: requestRejected,
+                //   child: Row(
+                //     children: [
+                //       SizedBox(
+                //         width: w/7,
+                //       ),
+                //       Container(
+                //         height: 40.h,
+                //         width: 40.h,
+                //         decoration: BoxDecoration(
+                //           color: Color.fromRGBO(188,157,255,1),
+                //           shape: BoxShape.circle,
+                //         ),
+                //       ),
+                //       SizedBox(
+                //         width: w/20,
+                //       ),
+                //       Text(
+                //         'Request Rejected',
+                //         style: TextStyle(
+                //             color: Colors.black,
+                //             fontSize: 20.sp,
+                //             fontFamily: 'DMSans',
+                //             fontWeight: FontWeight.normal,
+                //             decoration: TextDecoration.none
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 Visibility(
                   visible: requestApproved & showMakePaymentButton,
                   child: Padding(
@@ -357,7 +367,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                             )
                           )
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage()));
+                        },
                         child: Text(
                           'Make Payment',
                           style: TextStyle(
@@ -528,6 +540,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
     );
   }
   Future<void> Reload()async{
+    // print(widget.order_uid);
     db.get_order_details(widget.order_uid).then((value) {
       if(!mounted) {
         timer.cancel();
@@ -536,6 +549,26 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
       setState(() {
         order_status = value['Status'];
       });
+      // print(order_status);
+      if(order_status=="Approved"){
+        setState(() {
+          requestApproved = true;
+          special = true;
+          showMakePaymentButton = true;
+        });
+      }
+      if(order_status=="Successful"){
+        setState(() {
+          paymentSuccessful = true;
+          orderProcessing = true;
+        });
+      }
+      if(order_status=="Ready"){
+        setState(() {
+          orderReady = true;
+          goToQR = true;
+        });
+      }
     });
   }
 }

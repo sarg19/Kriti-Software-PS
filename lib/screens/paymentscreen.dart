@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/profilepopup.dart';
+import 'package:kriti/popups/showPopUp.dart';
 import 'package:upi_india/upi_india.dart';
 
-void main()=>{
-  runApp(MaterialApp(
-      home: HomePage()
-  ))
-};
+// void main()=>{
+//   runApp(MaterialApp(
+//       home: HomePage()
+//   ))
+// };
 
-class HomePage extends StatefulWidget {
+class PaymentPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _PaymentPageState createState() => _PaymentPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PaymentPageState extends State<PaymentPage> {
   var receiverupiid;
   var receiverupiname;
   var amount;
@@ -160,20 +163,15 @@ class _HomePageState extends State<HomePage> {
           Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: Center(
-                child: Container(
-                  height:50,
-                  width:50,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Image(
-                    image: AssetImage("assets/images/appLogo.png"),
-                  ),
-                ),
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              title: Image(
+                height: 45.h,
+                width: 45.h,
+                image: const AssetImage("assets/images/appLogo.png"),
               ),
               backgroundColor: Colors.transparent,
-              elevation: 100.0,
+              elevation: 0,
             ),
             body: Column(
               children:[
