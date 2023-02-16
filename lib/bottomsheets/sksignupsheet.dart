@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/database.dart';
 import 'package:kriti/widgets/textfield.dart';
 import 'skloginsheet.dart';
 
@@ -24,7 +25,8 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
   final TextEditingController _upiController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   String _nameError = "";
   String _ownerNameError = "";
@@ -38,9 +40,57 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
   String _shopTypeError = "";
   int region = 0;
   int shopType = 0;
+  String collection_name = "";
 
   String? dropdownvalue;
-  final items = ["Kapili", "Lohit", "Disang", "Brahmaputra", "Manas", "Siang", "Dihing", "Barak", "Umiam", "Kameng", "Subansiri", "Dhansiri"];
+  final items = [
+    "Kapili",
+    "Lohit",
+    "Disang",
+    "Brahmaputra",
+    "Manas",
+    "Siang",
+    "Dihing",
+    "Barak",
+    "Umiam",
+    "Kameng",
+    "Subansiri",
+    "Dhansiri"
+  ];
+
+  late Databases db;
+
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
+
+  String get_collection() {
+    if (shopType == 1) {
+      if (region == 1) {
+        return "food-canteen";
+      } else if (region == 2) {
+        return "food-foodcourt";
+      } else if (region == 3) {
+        return "food-marketcomplex";
+      } else if (region == 4) {
+        return "food-khokha";
+      }
+    } else if (shopType == 2) {
+      return "stationary";
+    } else if (shopType == 3) {
+      return "grocery";
+    } else {
+      return "miscellaneous";
+    }
+    return "";
+  }
 
   Future<void> signup() async {
     String name = _shopNameController.text;
@@ -77,7 +127,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
       });
       return;
     } else if (!RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email)) {
       setState(() {
         _emailError = "Enter valid email";
@@ -93,7 +143,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
         _phoneError = "Phone number is required.";
       });
       return;
-    } else if (phone.length !=10){
+    } else if (phone.length != 10) {
       setState(() {
         _phoneError = "Enter valid phone number";
       });
@@ -136,7 +186,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
         _confirmError = "";
       });
     }
-    if (region == 0){
+    if (region == 0 && shopType == 1) {
       setState(() {
         _regionError = "You must select a region.";
       });
@@ -146,17 +196,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
         _regionError = "";
       });
     }
-    if (region == 1 && dropdownvalue==null) {
-      setState(() {
-        _hostelError = "Select a hostel";
-      });
-      return;
-    } else {
-      setState(() {
-        _hostelError = "";
-      });
-    }
-    if (shopType == 0){
+    if (shopType == 0) {
       setState(() {
         _shopTypeError = "Select the type of your shop.";
       });
@@ -167,20 +207,28 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
       });
     }
     try {
+      collection_name = get_collection();
+      print(collection_name);
       FocusManager.instance.primaryFocus?.unfocus();
       await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        db.create_shop_user(FirebaseAuth.instance.currentUser!.uid,
+            num.tryParse(phone), email, name, upi, ownerName, collection_name);
+      });
       if (!mounted) return;
       final Email send_email = Email(
-        body: 'Verify the following account \nShop Name: $name\nOwner Name: $ownerName\n Email: $email\n Phone Number: $phone',
+        body:
+            'Verify the following account \nShop Name: $name\nOwner Name: $ownerName\n Email: $email\n Phone Number: $phone',
         subject: 'Verification of account',
         recipients: ['myakesh7@gmail.com'],
         isHTML: false,
       );
 
       await FlutterEmailSender.send(send_email);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("We've received your request. Wait for your verification.")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              "We've received your request. Wait for your verification.")));
       Navigator.pop(context);
       // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const homescreen()));
     } on FirebaseAuthException catch (e) {
@@ -205,20 +253,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
     double width = MediaQuery.of(context).size.width;
     // double height = MediaQuery.of(context).size.height;
     return ClipRRect(
-      borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+      borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
       child: BackdropFilter(
-        filter: ImageFilter.blur(
-            sigmaX: 20,
-            sigmaY: 20
-        ),
+        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom),
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           child: Container(
             decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-                color: Colors.black.withOpacity(0.15)
-            ),
+                borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                    topRight: Radius.circular(20.0)),
+                color: Colors.black.withOpacity(0.15)),
             width: MediaQuery.of(context).size.width,
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -238,139 +285,59 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                           fontSize: 30.sp),
                     ),
                   ),
-                  CustomTextField(controller: _shopNameController, labelText: "Shop Name", hintText: "", inputType: TextInputType.text, errorText: _nameError,),
-                  CustomTextField(controller: _ownerNameController, labelText: "Owner's Name", hintText: "", inputType: TextInputType.text, errorText: _ownerNameError,),
-                  CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
-                  CustomTextField(controller: _phoneController, labelText: "Phone number", hintText: "", inputType: TextInputType.phone, errorText: _phoneError,),
-                  CustomTextField(controller: _upiController, labelText: "UPI ID", hintText: "", inputType: TextInputType.text, errorText: _upiError,),
-                  CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
-                  CustomTextField(controller: _confirmPasswordController, labelText: "Confirm Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _confirmError,),
-                  SizedBox(height: 5.h,),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60.w),
-                      child: Text(
-                        'Select Region',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
+                  CustomTextField(
+                    controller: _shopNameController,
+                    labelText: "Shop Name",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    errorText: _nameError,
                   ),
-                  _regionError=="" ?
-                  const SizedBox(height: 0,) :
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60.w),
-                      child: Text(
-                        _regionError,
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 12.sp,
-                        ),
-                      ),
-                    ),
+                  CustomTextField(
+                    controller: _ownerNameController,
+                    labelText: "Owner's Name",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    errorText: _ownerNameError,
                   ),
-                  // const SizedBox(height: 5,),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 60.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Canteen',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
-                        ),
-                        IconButton(
-                          iconSize: 13.sp,
-                          onPressed: (){
-                            setState(() {
-                              region = 1;
-                            });
-                          },
-                          icon: region == 1 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
-                        ),
-                      ],
-                    ),
+                  CustomTextField(
+                    controller: _emailController,
+                    labelText: "Email",
+                    hintText: "",
+                    inputType: TextInputType.emailAddress,
+                    errorText: _emailError,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Food Court',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
-                        ),
-                        IconButton(
-                          iconSize: 13.sp,
-                          onPressed: (){
-                            setState(() {
-                              region = 2;
-                            });
-                          },
-                          icon: region == 2 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
-                        ),
-                      ],
-                    ),
+                  CustomTextField(
+                    controller: _phoneController,
+                    labelText: "Phone number",
+                    hintText: "",
+                    inputType: TextInputType.phone,
+                    errorText: _phoneError,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 60.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Market Complex',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
-                        ),
-                        IconButton(
-                          iconSize: 13.sp,
-                          onPressed: (){
-                            setState(() {
-                              region = 3;
-                            });
-                          },
-                          icon: region == 3 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
-                        ),
-                      ],
-                    ),
+                  CustomTextField(
+                    controller: _upiController,
+                    labelText: "UPI ID",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    errorText: _upiError,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 60.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Khokha',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
-                        ),
-                        IconButton(
-                          iconSize: 13.sp,
-                          onPressed: (){
-                            setState(() {
-                              region = 4;
-                            });
-                          },
-                          icon: region == 4 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
-                        ),
-                      ],
-                    ),
+                  CustomTextField(
+                    controller: _passwordController,
+                    labelText: "Password",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    obscureText: true,
+                    errorText: _passwordError,
+                  ),
+                  CustomTextField(
+                    controller: _confirmPasswordController,
+                    labelText: "Confirm Password",
+                    hintText: "",
+                    inputType: TextInputType.text,
+                    obscureText: true,
+                    errorText: _confirmError,
+                  ),
+                  SizedBox(
+                    height: 5.h,
                   ),
                   Align(
                     alignment: Alignment.bottomLeft,
@@ -381,26 +348,27 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 15.sp,
-                          fontWeight: FontWeight.bold
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
-                  _shopTypeError=="" ?
-                  const SizedBox(height: 0,) :
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 60.w),
-                      child: Text(
-                        _shopTypeError,
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 12.sp,
+                  _shopTypeError == ""
+                      ? const SizedBox(
+                          height: 0,
+                        )
+                      : Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60.w),
+                            child: Text(
+                              _shopTypeError,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                   // const SizedBox(height: 5,),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 60.w),
@@ -409,19 +377,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                       children: [
                         Text(
                           'Food',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 13.sp),
                         ),
                         IconButton(
                           iconSize: 13.sp,
-                          onPressed: (){
+                          onPressed: () {
                             setState(() {
                               shopType = 1;
                             });
                           },
-                          icon: shopType == 1 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
+                          icon: shopType == 1
+                              ? Image.asset('assets/icons/radiofilled.png')
+                              : Image.asset('assets/icons/radio.png'),
                         ),
                       ],
                     ),
@@ -433,19 +401,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                       children: [
                         Text(
                           'Stationary',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 13.sp),
                         ),
                         IconButton(
                           iconSize: 13.sp,
-                          onPressed: (){
+                          onPressed: () {
                             setState(() {
                               shopType = 2;
                             });
                           },
-                          icon: shopType == 2 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
+                          icon: shopType == 2
+                              ? Image.asset('assets/icons/radiofilled.png')
+                              : Image.asset('assets/icons/radio.png'),
                         ),
                       ],
                     ),
@@ -457,19 +425,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                       children: [
                         Text(
                           'Juice Center',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 13.sp),
                         ),
                         IconButton(
                           iconSize: 13.sp,
-                          onPressed: (){
+                          onPressed: () {
                             setState(() {
-                              shopType = 4;
+                              shopType = 3;
                             });
                           },
-                          icon: shopType == 4 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
+                          icon: shopType == 3
+                              ? Image.asset('assets/icons/radiofilled.png')
+                              : Image.asset('assets/icons/radio.png'),
                         ),
                       ],
                     ),
@@ -481,90 +449,226 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
                       children: [
                         Text(
                           'Miscellaneous',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13.sp
-                          ),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 13.sp),
                         ),
                         IconButton(
                           iconSize: 13.sp,
-                          onPressed: (){
+                          onPressed: () {
                             setState(() {
-                              shopType = 5;
+                              shopType = 4;
                             });
                           },
-                          icon: shopType == 5 ? Image.asset('assets/icons/radiofilled.png') : Image.asset('assets/icons/radio.png'),
+                          icon: shopType == 4
+                              ? Image.asset('assets/icons/radiofilled.png')
+                              : Image.asset('assets/icons/radio.png'),
                         ),
                       ],
                     ),
                   ),
+                  shopType == 1
+                      ? Column(children: [
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 60.w),
+                              child: Text(
+                                'Select Region',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15.sp,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          _regionError == ""
+                              ? const SizedBox(
+                                  height: 0,
+                                )
+                              : Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 60.w),
+                                    child: Text(
+                                      _regionError,
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 12.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                          // const SizedBox(height: 5,),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Canteen',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13.sp),
+                                ),
+                                IconButton(
+                                  iconSize: 13.sp,
+                                  onPressed: () {
+                                    setState(() {
+                                      region = 1;
+                                    });
+                                  },
+                                  icon: region == 1
+                                      ? Image.asset(
+                                          'assets/icons/radiofilled.png')
+                                      : Image.asset('assets/icons/radio.png'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 60),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Food Court',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13.sp),
+                                ),
+                                IconButton(
+                                  iconSize: 13.sp,
+                                  onPressed: () {
+                                    setState(() {
+                                      region = 2;
+                                    });
+                                  },
+                                  icon: region == 2
+                                      ? Image.asset(
+                                          'assets/icons/radiofilled.png')
+                                      : Image.asset('assets/icons/radio.png'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Market Complex',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13.sp),
+                                ),
+                                IconButton(
+                                  iconSize: 13.sp,
+                                  onPressed: () {
+                                    setState(() {
+                                      region = 3;
+                                    });
+                                  },
+                                  icon: region == 3
+                                      ? Image.asset(
+                                          'assets/icons/radiofilled.png')
+                                      : Image.asset('assets/icons/radio.png'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 60.w),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Khokha',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13.sp),
+                                ),
+                                IconButton(
+                                  iconSize: 13.sp,
+                                  onPressed: () {
+                                    setState(() {
+                                      region = 4;
+                                    });
+                                  },
+                                  icon: region == 4
+                                      ? Image.asset(
+                                          'assets/icons/radiofilled.png')
+                                      : Image.asset('assets/icons/radio.png'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ])
+                      : const SizedBox(
+                          height: 0,
+                        ),
                   ElevatedButton(
                     onPressed: () {
                       signup();
                     },
                     style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all(const Color(0xFFBC9DFF)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                            )),
+                            MaterialStateProperty.all(const Color(0xFFBC9DFF)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22.0),
+                        )),
                         textStyle: MaterialStateProperty.all(
                             const TextStyle(fontWeight: FontWeight.w600))),
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Text(
                         'Sign Up',
-                        style: TextStyle(
-                            fontSize: 20.sp
-                        ),
+                        style: TextStyle(fontSize: 20.sp),
                       ),
                     ),
                   ),
-                  SizedBox(height: 15.h,),
+                  SizedBox(
+                    height: 15.h,
+                  ),
                   Divider(
                     thickness: 2,
-                    indent: (width-150)/2,
-                    endIndent: (width-150)/2,
+                    indent: (width - 150) / 2,
+                    endIndent: (width - 150) / 2,
                     color: Colors.white,
                     // height: 150,
                   ),
-                  SizedBox(height: 15.h,),
-                  RichText(
-                    text: TextSpan(
-                        children: [
-                          TextSpan(
-                              text: 'Already have an account? ',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                fontSize: 15.sp
-                              )
-                          ),
-                          TextSpan(
-                              text: 'login',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15.sp
-                              ),
-                              recognizer: TapGestureRecognizer()..onTap = (){
-                                Navigator.of(context).pop();
-                                showModalBottomSheet(
-                                  context: context, builder: (context) => const SkLoginSheet(),
-                                  backgroundColor: Colors.transparent,
-                                  barrierColor: Colors.transparent,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(20 ),
-                                      )
-                                  ),
-                                  isScrollControlled: true,
-                                );
-                              }
-                          )
-                        ]
-                    ),
+                  SizedBox(
+                    height: 15.h,
                   ),
-                  SizedBox(height: 20.h,)
+                  RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
+                          text: 'Already have an account? ',
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 15.sp)),
+                      TextSpan(
+                          text: 'login',
+                          style:
+                              TextStyle(color: Colors.black, fontSize: 15.sp),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).pop();
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => const SkLoginSheet(),
+                                backgroundColor: Colors.transparent,
+                                barrierColor: Colors.transparent,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                )),
+                                isScrollControlled: true,
+                              );
+                            })
+                    ]),
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  )
                 ],
               ),
             ),
@@ -573,14 +677,4 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
       ),
     );
   }
-
-  DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
-    value: item,
-    child: Text(
-      item,
-      style: TextStyle(
-        fontSize: 15.sp
-      ),
-    ),
-  );
 }

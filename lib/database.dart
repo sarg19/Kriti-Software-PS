@@ -351,7 +351,7 @@ class Databases{
     });
 
   }
-  void create_shop_user(String shop_key,num p_number,String email,String location,String shop_name ,String upi_id, String user_name,String collection) async {
+  void create_shop_user(String shop_key,num? p_number,String email,String shop_name ,String upi_id, String user_name,String collection) async {
     final CollectionReference shopCollection1 = firestore.collection('food-canteen');
     final CollectionReference shopCollection2 = firestore.collection('food-foodcourt');
     final CollectionReference shopCollection3 = firestore.collection('food-khokha');
@@ -362,7 +362,6 @@ class Databases{
         'Email':email,
         'Last7':[],
         'Last_Update':Timestamp.now(),
-        'Location':location,
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
@@ -381,7 +380,6 @@ class Databases{
         'Email':email,
         'Last7':[],
         'Last_Update':Timestamp.now(),
-        'Location':location,
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
@@ -400,7 +398,6 @@ class Databases{
         'Email':email,
         'Last7':[],
         'Last_Update':Timestamp.now(),
-        'Location':location,
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
@@ -419,7 +416,6 @@ class Databases{
         'Email':email,
         'Last7':[],
         'Last_Update':Timestamp.now(),
-        'Location':location,
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
@@ -437,7 +433,6 @@ class Databases{
     if(collection=='grocery'){
       shopCollection5.doc(shop_key).set({
         'Email':email,
-        'Location':location,
         'Number':p_number,
         'Verified':0,
         'ShopName':shop_name,
@@ -450,7 +445,6 @@ class Databases{
     else if(collection=='miscellaneous'){
       shopCollection6.doc(shop_key).set({
         'Email':email,
-        'Location':location,
         'Number':p_number,
         'Verified':0,
         'ShopName':shop_name,
@@ -465,7 +459,6 @@ class Databases{
       shopCollection7.doc(shop_key).set({
         'Active_Orders': [],
         'Email': email,
-        'Location': location,
         'Number': p_number,
         'Verified':0,
         'Pending_Order': [],
@@ -496,5 +489,47 @@ class Databases{
     });
   }
 
-
+  Future<String> getUserType(String uid) async {
+    CollectionReference usersCollection = firestore.collection('users');
+    var usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "users";
+    }
+    usersCollection = firestore.collection('food-canteen');
+    usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "food-canteen";
+    }
+    usersCollection = firestore.collection('food-foodcourt');
+    usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "food-foodcourt";
+    }
+    usersCollection = firestore.collection('food-khokha');
+    usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "food-khokha";
+    }
+    usersCollection = firestore.collection('food-marketcomplex');
+    usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "food-marketcomplex";
+    }
+    usersCollection = firestore.collection('stationary');
+    usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "stationary";
+    }
+    usersCollection = firestore.collection('grocery');
+    usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "grocery";
+    }
+    usersCollection = firestore.collection('miscellaneous');
+    usersnapshot= await usersCollection.doc(uid).get();
+    if(usersnapshot.exists){
+      return "miscellaneous";
+    }
+    return "none";
+  }
 }

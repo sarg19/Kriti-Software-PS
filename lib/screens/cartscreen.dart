@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:kriti/screens/orderstatus.dart';
 import '../database.dart';
 
 class cartscreen extends StatefulWidget {
@@ -314,7 +315,8 @@ class _cartscreenState extends State<cartscreen> {
                               color: Color.fromRGBO(255, 255, 255, 1.0),
                               fontSize: 20.sp)),
                       onPressed: () {
-                        if(counter==1){
+                        if(counter==1 && canteen.isNotEmpty){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen()));
                           db.Request_Order(FirebaseAuth.instance.currentUser?.uid, user_data['Cart'][ind]['Shop_Key'], user_data['Cart'][ind]['Collection']);
                         }
                       },

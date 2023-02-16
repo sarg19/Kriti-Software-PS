@@ -1,4 +1,11 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/database.dart';
+import 'package:kriti/popups/profilepopup.dart';
+import 'package:kriti/popups/showPopUp.dart';
 
 import '../components/bottom_nav_bar.dart';
 
@@ -60,33 +67,36 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
         ),
         Scaffold(
           appBar: AppBar(
-            title: Center(
-              child: Container(
-                height:50,
-                width:50,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-
-                child: const Image(
-                  image: AssetImage("assets/images/appLogo.png"),
-                ),
-              ),
+            centerTitle: true,
+            title: Image(
+              height: 45.h,
+              width: 45.h,
+              image: const AssetImage("assets/images/appLogo.png"),
             ),
             backgroundColor: Colors.transparent,
-            elevation: 100.0,
+            elevation: 0,
             leading: IconButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.pop(context);
+              },
               icon: const Icon(Icons.arrow_back_ios_new , color: Colors.black ),
             ),
             actions: [
-              Transform.scale(
-                scale: 1.5,
-                child: IconButton(
-                  onPressed: (){},
-                  icon: const Icon(Icons.account_circle_outlined , color: Colors.black),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => ShowPopUp(
+                      widgetcontent: Profile(Name: "Name",Email: "Email",Phone: 9876513546,),
+                    ),
+                  );
+                },
+                iconSize: 30.h,
+                icon: const ImageIcon(
+                  AssetImage('assets/icons/person.png'),
+                  color: Colors.black,
                 ),
-              ),
+              )
             ],
           ),
           backgroundColor: Colors.transparent,

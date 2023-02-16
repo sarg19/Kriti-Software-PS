@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/database.dart';
 import 'package:kriti/screens/choicescreen.dart';
 import 'package:kriti/screens/customertabs.dart';
+import 'package:kriti/screens/shopkeepertabs.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,9 +17,18 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late Databases db;
+  late String type;
+
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+
   @override
   void initState() {
     super.initState();
+    initialise();
     _navigateToHome();
   }
 
@@ -30,6 +42,28 @@ class _SplashScreenState extends State<SplashScreen> {
           PageTransition(
               child: const ChoiceScreen(), type: PageTransitionType.fade));
     } else {
+      db.getUserType(FirebaseAuth.instance.currentUser!.uid).then((value) {
+        setState(() {
+          type = value;
+        });
+      });
+      await Future.delayed(const Duration(seconds: 2), () {});
+      print(type);
+      if(type=="users"){
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: const CustomerTabs(currentIndex: 0),
+                type: PageTransitionType.fade));
+      } else if(type=="stationary"){
+
+      } else if(type=="grocery" || type=="miscellaneous"){
+
+      } else if(type=="none"){
+
+      } else {
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ShopkeeperTabs()));
+      }
       Navigator.pushReplacement(
           context,
           PageTransition(

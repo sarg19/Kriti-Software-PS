@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/database.dart';
 import 'package:kriti/popups/changepassword.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/shopkeepertabs.dart';
@@ -23,6 +24,20 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
 
   String _emailError = "";
   String _passwordError = "";
+  late String coltype = "";
+
+  late Databases db;
+
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
 
   Future<void> submit() async {
     String email = _emailController.text;
@@ -46,10 +61,33 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      if (!mounted) return;
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const ShopkeeperTabs()),
-              (Route route) => false);
+      db.getUserType(FirebaseAuth.instance.currentUser!.uid).then((value) {
+        if (!mounted) return;
+        print("object");
+        setState(() {
+          coltype = value;
+        });
+      });
+      await Future.delayed(const Duration(seconds: 2), () {});
+      print("coltype: $coltype");
+      if(coltype=="users"){
+        Navigator.pop(context);
+        FirebaseAuth.instance.signOut();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                "This email is registered as a customer.")));
+        return;
+      } else if(coltype=="stationary"){
+
+      } else if(coltype=="grocery" || coltype=="miscellaneous"){
+
+      } else if(coltype=="none"){
+
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const ShopkeeperTabs()),
+                (Route route) => false);
+      }
     } on FirebaseAuthException catch (e) {
       print(e);
       if (e.code == 'user-not-found' || e.code == 'invalid-email') {
