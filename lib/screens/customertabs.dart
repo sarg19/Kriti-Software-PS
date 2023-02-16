@@ -42,6 +42,7 @@ class _CustomerTabsState extends State<CustomerTabs> {
     super.initState();
     initialise();
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted)return;
       setState(() {
         Name=value['Name'];
         Email=value['Mail'];
