@@ -616,4 +616,14 @@ class Databases{
       }
     }
   }
+
+  void edit_user(String username,String email,num p_number,String? userId) async {
+
+    firestore.collection('users').doc(userId).update({
+      'Name':username,
+      'Mail':email,
+      'Phone_Number':p_number
+    });
+  }
+
 }
