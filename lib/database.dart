@@ -188,7 +188,7 @@ class Databases{
       return 0;
     }
   }
-  void incrementcart(int ind1,int ind2,List Cart,String userId) async {
+  void incrementcart(int ind1,int ind2,List Cart,String? userId) async {
     final CollectionReference usersCollection = firestore.collection('users');
     Cart[ind1]['Items'][ind2]['Quantity']=Cart[ind1]['Items'][ind2]['Quantity']+1;
     Cart[ind1]['Total_Amount']=Cart[ind1]['Total_Amount']+Cart[ind1]['Items'][ind2]['Price'];
@@ -197,7 +197,7 @@ class Databases{
       'Cart':Cart
     });
   }
-  void decrementcart(int ind1,int ind2,List Cart,String userId) async {
+  void decrementcart(int ind1,int ind2,List Cart,String? userId) async {
     final CollectionReference usersCollection = firestore.collection('users');
     Cart[ind1]['Items'][ind2]['Quantity']=Cart[ind1]['Items'][ind2]['Quantity']-1;
     Cart[ind1]['Total_Amount']=Cart[ind1]['Total_Amount']-Cart[ind1]['Items'][ind2]['Price'];

@@ -203,7 +203,7 @@ class _cartscreenState extends State<cartscreen> {
                             onPressed: () {
                               setState(() {
                                 db.incrementcart(ind, index, user_data['Cart'],
-                                    "01li51cY9718Ns75HOa9");
+                                FirebaseAuth.instance.currentUser?.uid);
                               });
                             },
                           ),
@@ -233,7 +233,7 @@ class _cartscreenState extends State<cartscreen> {
                             onPressed: () {
                               setState(() {
                                 db.decrementcart(ind, index, user_data['Cart'],
-                                    "01li51cY9718Ns75HOa9");
+                                    FirebaseAuth.instance.currentUser?.uid);
                               });
                             },
                           ),
