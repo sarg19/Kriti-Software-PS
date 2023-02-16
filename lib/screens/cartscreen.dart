@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:kriti/popups/removeconformationPopup.dart';
 import 'package:kriti/screens/orderstatus.dart';
 import '../database.dart';
+import '../popups/showPopUp.dart';
 
 class cartscreen extends StatefulWidget {
   const cartscreen({Key? key}) : super(key: key);
@@ -234,8 +236,14 @@ class _cartscreenState extends State<cartscreen> {
                                         color: Colors.white, fontSize: 20.sp))),
                             onPressed: () {
                               setState(() {
-                                db.decrementcart(ind, index, user_data['Cart'],
-                                    FirebaseAuth.instance.currentUser?.uid);
+                                if(user_data['Cart'][ind]['Items'][index]['Quantity']==1){
+                                  showDialog(context: context, builder: (BuildContext context){
+                                    return ShowPopUp(widgetcontent: RemoveItem(),);
+                                  });
+                                }else{
+                                  db.decrementcart(ind, index, user_data['Cart'],
+                                      FirebaseAuth.instance.currentUser?.uid);
+                                }
                               });
                             },
                           ),

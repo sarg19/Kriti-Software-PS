@@ -18,7 +18,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late Databases db;
-  late String type;
+  String type="none";
 
   initialise() {
     db = Databases();
@@ -48,7 +48,6 @@ class _SplashScreenState extends State<SplashScreen> {
         });
       });
       await Future.delayed(const Duration(seconds: 2), () {});
-      print(type);
       if(type=="users"){
         Navigator.pushReplacement(
             context,
