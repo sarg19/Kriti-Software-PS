@@ -319,6 +319,16 @@ class _CustomerOrderActiveCard extends State<customer_order_active_card> {
 }
 
 class _OrderCardState extends State<OrderCard> {
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     double count = widget.item['Order_Items'].length.toDouble();
@@ -425,7 +435,9 @@ class _OrderCardState extends State<OrderCard> {
                                 fontSize: 15.sp,
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              db.Reorder(widget.item['Order_Items'], widget.item['Collection'], widget.item['Shop_Key'], FirebaseAuth.instance.currentUser?.uid);
+                            },
                           ),
                         ),
                         Container(

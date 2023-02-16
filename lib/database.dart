@@ -474,7 +474,7 @@ class Databases{
   void shopToggle(String shop_key , String collection) async {
     late Map? shop_info;
     final CollectionReference usersCollection = firestore.collection(collection);
-    var snapshot=await firestore.collection("users").doc(shop_key).get();
+    var snapshot=await firestore.collection(collection).doc(shop_key).get();
     shop_info=snapshot.data();
 
     if(shop_info!['open'] == 1){
@@ -531,5 +531,89 @@ class Databases{
       return "miscellaneous";
     }
     return "none";
+  }
+  void Reorder(List Items,String collection,String shop_key,String? userId) async {
+    Map? shop_info;
+    Map? user_info;
+    var snapshot=await firestore.collection(collection).doc(shop_key).get();
+    var usersnapshot=await firestore.collection("users").doc(userId).get();
+    shop_info=snapshot.data();
+    user_info=usersnapshot.data();
+    Map shopcart;
+    int counter=0;
+    int index=0;
+    for(Map cart in user_info!['Cart']){
+      if(cart['Shop_Key']==shop_key && cart['Collection']==collection){
+        shopcart=cart;
+        user_info['Cart'].indexOf(shopcart);
+        counter=1;
+      }
+    }
+    if(counter==0){
+      List Cart_Item=[];
+      num Total=0;
+      for(Map item in Items){
+        // print();
+        num price=0;
+        int poss=0;
+
+        for(Map menu in shop_info!['Menu']){
+          if(menu['Name']==item['Item_Name'] && menu['Available']==1){
+            poss=1;
+            price=menu['Price'];
+          }
+        }
+        if(poss==1){
+          Total=Total+price*item['Quantity'];
+          Cart_Item.add({
+            'Item_Name':item['Item_Name'],
+            'Price':price,
+            'Quantity':item['Quantity']
+          });
+        }
+      }
+      user_info['Cart'].add({
+        'Collection':collection,
+        'Shop_Key':shop_key,
+        'Shop_Name':shop_info!['ShopName'],
+        'Items':Cart_Item,
+        'Total_Amount':Total
+      });
+      firestore.collection("users").doc(userId).update({
+        'Cart':user_info['Cart']
+      });
+    }else{
+      for(Map item in Items) {
+        num price = 0;
+        int poss = 0;
+
+        for (Map menu in shop_info!['Menu']) {
+          if (menu['Name'] == item['Item_Name'] && menu['Available'] == 1) {
+            poss = 1;
+            price = menu['Price'];
+          }
+        }
+        if(poss==1){
+          int check=0;
+          for(Map food in user_info['Cart'][index]['Items']){
+            if(food['Item_Name']==item['Item_Name']){
+              food['Quantity']=food['Quantity']+item['Quantity'];
+              check=1;
+            }
+          }
+          user_info['Cart'][index]['Total_Amount']=user_info['Cart'][index]['Total_Amount']+item['Quantity']*price;
+          if(check==0){
+            user_info['Cart'][index]['Items'].add({
+              'Item_Name':item['Item_Name'],
+              'Price':price,
+              'Quantity':item['Quantity']
+            });
+          }
+          firestore.collection("users").doc(userId).update({
+            'Cart':user_info['Cart']
+          });
+        }
+      }
+    }
   }
 }
