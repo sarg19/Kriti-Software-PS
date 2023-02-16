@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,10 +7,12 @@ import 'package:kriti/popups/editprofilePopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/choicescreen.dart';
 
+import '../database.dart';
+
 class Profile extends StatefulWidget {
   final String Name;
   final String Email;
-  final int Phone;
+  final num Phone;
   Profile({Key? key,this.Name="User",this.Email="abc@example.com",this.Phone=1234567890}) : super(key: key);
 
   @override
@@ -16,6 +20,28 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  late Timer timer;
+  late Databases db;
+  String Name="";
+  String Email="";
+  num Phone=123456789;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    setState((){
+      Name=widget.Name;
+      Email=widget.Email;
+      Phone=widget.Phone;
+    });
+    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,20 +87,20 @@ class _ProfileState extends State<Profile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.Name,
+                  Text(Name,
                       style: TextStyle(
                         fontSize: 20.sp,
                       )),
                   Padding(
                     padding: EdgeInsets.only(top: 5.0.h, bottom: 14.0.h),
-                    child: Text(widget.Email,
+                    child: Text(Email,
                         style: TextStyle(
                             fontSize: 16.sp,
                             color: const Color.fromRGBO(114, 114, 114, 1.0))),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 15.0.h, bottom: 15.0.h),
-                    child: Text(widget.Phone.toString(), style: TextStyle(fontSize: 20.sp)),
+                    child: Text(Phone.toString(), style: TextStyle(fontSize: 20.sp)),
                   ),
                 ],
               ),
@@ -97,8 +123,8 @@ class _ProfileState extends State<Profile> {
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) => const ShowPopUp(
-                            widgetcontent: EditProfile(),
+                          builder: (context) => ShowPopUp(
+                            widgetcontent: EditProfile(name: Name,email: Email,phone: Phone,),
                           ),
                         );
                       },
@@ -128,5 +154,20 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+  Future<void> Reload() async {
+    if(!mounted){
+      return;
+    }
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        return;
+      }
+      setState((){
+        Name=value['Name'];
+        Email=value['Mail'];
+        Phone=value['Phone_Number'];
+      });
+    });
   }
 }

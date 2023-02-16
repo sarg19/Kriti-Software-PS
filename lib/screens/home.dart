@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +23,7 @@ class _homescreenState extends State<homescreen> {
   PageController controller = PageController(initialPage: 0, keepPage: false);
   static dynamic currentPageValue = 0.0;
   String Name="User";
+  late Timer timer;
   late Databases db;
   initialise() {
     db = Databases();
@@ -35,10 +38,8 @@ class _homescreenState extends State<homescreen> {
       });
     });
     initialise();
-    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
-      setState((){
-        Name=value['Name'];
-      });
+    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
     });
   }
 
@@ -132,5 +133,15 @@ class _homescreenState extends State<homescreen> {
         ),
       ],
     );
+  }
+  Future<void> Reload() async {
+    if(!mounted){
+      return;
+    }
+    db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState((){
+        Name=value['Name'];
+      });
+    });
   }
 }

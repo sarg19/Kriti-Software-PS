@@ -1,10 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
 
+import '../database.dart';
+
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key}) : super(key: key);
+  String name;
+  String email;
+  num phone;
+  EditProfile({Key? key,this.name="",this.email="",this.phone=1234567890}) : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -14,11 +20,23 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    nameController.text=widget.name;
+    emailController.text=widget.email;
+    phoneController.text=widget.phone.toString();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 370.h,
+      height: 300.h,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color.fromRGBO(253, 243, 223, 1.0),
@@ -73,18 +91,6 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: EdgeInsets.only(top: 6.0.h),
                   child: CustomTextField(
-                    controller: emailController,
-                    labelText: " Email",
-                    hintText: "",
-                    inputType: TextInputType.text,
-                    labelColor: Colors.black,
-                    padding: 15,
-                    errorText: "",
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 6.0.h),
-                  child: CustomTextField(
                     controller: phoneController,
                     labelText: " Phone Number",
                     hintText: "",
@@ -113,7 +119,10 @@ class _EditProfileState extends State<EditProfile> {
                           backgroundColor: MaterialStateProperty.all(
                               const Color.fromRGBO(188, 157, 255, 1.0)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          db.edit_user(nameController.text, emailController.text, num.tryParse(phoneController.text), FirebaseAuth.instance.currentUser?.uid);
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           'Ok',
                           style: TextStyle(fontSize: 13.sp),

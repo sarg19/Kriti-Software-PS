@@ -617,8 +617,8 @@ class Databases{
     }
   }
 
-  void edit_user(String username,String email,num p_number,String? userId) async {
-
+  void edit_user(String username,String email,num? p_number,String? userId) async {
+    print(username);
     firestore.collection('users').doc(userId).update({
       'Name':username,
       'Mail':email,
