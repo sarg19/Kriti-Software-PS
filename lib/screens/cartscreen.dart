@@ -56,9 +56,15 @@ class _cartscreenState extends State<cartscreen> {
         for (Map item in user_data['Cart']) {
           canteen.add(item['Shop_Name']);
         }
-        itemlength = value['Cart'][0]['Items'].length;
-        dropdownvalue = canteen[0];
-        total = value['Cart'][0]['Total_Amount'];
+        if(value['Cart'].length==0){
+          itemlength=0;
+          dropdownvalue='';
+          total=0;
+        }else{
+          itemlength = value['Cart'][0]['Items'].length;
+          dropdownvalue = canteen[0];
+          total = value['Cart'][0]['Total_Amount'];
+        }
       });
     });
     timer = Timer.periodic(Duration(milliseconds: 1000), (timer) {
@@ -328,8 +334,13 @@ class _cartscreenState extends State<cartscreen> {
             canteen.add(item['Shop_Name']);
           }
         }
-        itemlength = value['Cart'][ind]['Items'].length;
-        total = value['Cart'][ind]['Total_Amount'];
+        if(value['Cart'].length==0){
+          itemlength=0;
+          total=0;
+        }else{
+          itemlength = value['Cart'][ind]['Items'].length;
+          total = value['Cart'][ind]['Total_Amount'];
+        }
       });
     });
   }
