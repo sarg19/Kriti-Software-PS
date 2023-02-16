@@ -335,8 +335,10 @@ class _cartscreenState extends State<cartscreen> {
                               fontSize: 20.sp)),
                       onPressed: () {
                         if(counter==1 && canteen.isNotEmpty){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen()));
-                          db.Request_Order(FirebaseAuth.instance.currentUser?.uid, user_data['Cart'][ind]['Shop_Key'], user_data['Cart'][ind]['Collection']);
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(order_uid: ,)));
+                          db.Request_Order(FirebaseAuth.instance.currentUser?.uid, user_data['Cart'][ind]['Shop_Key'], user_data['Cart'][ind]['Collection']).then((value) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(order_uid: value,)));
+                          });
                         }
                       },
                     ))

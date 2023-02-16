@@ -23,6 +23,7 @@ class LoginSheet extends StatefulWidget {
 class _LoginSheetState extends State<LoginSheet> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late String type;
   late Databases db;
   late Map user_info;
   initialise(){
@@ -65,11 +66,26 @@ class _LoginSheetState extends State<LoginSheet> {
               print(user_info);
             });
       });
+      db.getUserType(FirebaseAuth.instance.currentUser!.uid).then((value) {
+        setState(() {
+          type = value;
+        });
+      });
       if (!mounted) return;
       // if (!FirebaseAuth.instance.currentUser!.emailVerified) return;
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => CustomerTabs(currentIndex: 0)),
-              (Route route) => false);
+      await Future.delayed(const Duration(seconds: 2), () {});
+      if(type=="users"){
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => CustomerTabs(currentIndex: 0)),
+                (Route route) => false);
+      } else {
+        Navigator.pop(context);
+        FirebaseAuth.instance.signOut();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+                "This email is registered as a shopkeeper.")));
+        return;
+      }
     } on FirebaseAuthException catch (e) {
       print(e);
       if (e.code == 'user-not-found' || e.code == 'invalid-email') {

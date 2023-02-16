@@ -6,11 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/customertabs.dart';
 
 import '../components/bottom_nav_bar.dart';
 
 class OrderStatusScreen extends StatefulWidget {
-  const OrderStatusScreen({Key? key}) : super(key: key);
+  final String order_uid;
+  const OrderStatusScreen({Key? key, required this.order_uid}) : super(key: key);
 
   @override
   State<OrderStatusScreen> createState() => _OrderStatusScreenState();
@@ -21,6 +23,23 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
   var size,
       height,
       width;
+
+  String order_status = "";
+  late Timer timer;
+  late Databases db;
+  late Map user_info;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    timer= Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      Reload();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,12 +119,68 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
             ],
           ),
           backgroundColor: Colors.transparent,
-          bottomNavigationBar: BottomNavBar(),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
+            selectedItemColor: Colors.black54,
+            unselectedItemColor: Colors.black54,
+            selectedFontSize: 0,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/home.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 0)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 1)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 2)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 3)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+            ],
+          ),
         ),
         Align(
           alignment: Alignment.topCenter,
           child: Padding(
-            padding: EdgeInsets.only(top: 100),
+            padding: EdgeInsets.only(top: 100.h),
             child: Column(
               children: [
                 Text(
@@ -113,7 +188,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                   textAlign: TextAlign.left,
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 35,
+                      fontSize: 35.sp,
                       fontFamily: 'DMSans',
                       fontWeight: FontWeight.normal,
                       decoration: TextDecoration.none
@@ -126,8 +201,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                       width: w/7,
                     ),
                     Container(
-                      height: 40,
-                      width: 40,
+                      height: 40.h,
+                      width: 40.h,
                       decoration: BoxDecoration(
                         color: Color.fromRGBO(188,157,255,1),
                         shape: BoxShape.circle,
@@ -140,7 +215,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                       'Request Sent',
                       style: TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontFamily: 'DMSans',
                           fontWeight: FontWeight.normal,
                           decoration: TextDecoration.none
@@ -151,10 +226,10 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                 Visibility(
                   visible: requestApproved | requestRejected,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 240),
+                    padding: EdgeInsets.only(right: 220.w),
                     child: Container(
                       height: h/19,
-                      width: 5,
+                      width: 5.w,
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
                         color: Color.fromRGBO(188,157,255,1)
@@ -170,8 +245,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         width: w/7,
                       ),
                       Container(
-                        height: 40,
-                        width: 40,
+                        height: 40.h,
+                        width: 40.h,
                         decoration: const BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1),
                           shape: BoxShape.circle,
@@ -184,7 +259,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         'Request Approved',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontFamily: 'DMSans',
                             fontWeight: FontWeight.normal,
                             decoration: TextDecoration.none
@@ -201,8 +276,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         width: w/7,
                       ),
                       Container(
-                        height: 40,
-                        width: 40,
+                        height: 40.h,
+                        width: 40.h,
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1),
                           shape: BoxShape.circle,
@@ -215,7 +290,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         'Request Rejected',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontFamily: 'DMSans',
                             fontWeight: FontWeight.normal,
                             decoration: TextDecoration.none
@@ -227,10 +302,10 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                 Visibility(
                   visible: requestApproved & showMakePaymentButton,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 240),
+                    padding: EdgeInsets.only(right: 220.w),
                     child: Container(
                       height: h/19,
-                      width: 5,
+                      width: 5.w,
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1)
@@ -242,10 +317,10 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                   visible: special,
                   // visible: requestApproved | requestRejected & !showMakePaymentButton,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 240),
+                    padding: EdgeInsets.only(right: 220.w),
                     child: Container(
                       height: h/9,
-                      width: 5,
+                      width: 5.w,
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1)
@@ -261,8 +336,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         width: w/7,
                       ),
                       Container(
-                        height: 40,
-                        width: 40,
+                        height: 40.h,
+                        width: 40.h,
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1),
                           shape: BoxShape.circle,
@@ -287,7 +362,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                           'Make Payment',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               fontFamily: 'DMSans',
                               fontWeight: FontWeight.normal,
                               decoration: TextDecoration.none
@@ -305,8 +380,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         width: w/7,
                       ),
                       Container(
-                        height: 40,
-                        width: 40,
+                        height: 40.h,
+                        width: 40.h,
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1),
                           shape: BoxShape.circle,
@@ -319,7 +394,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         'Payment Successful',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontFamily: 'DMSans',
                             fontWeight: FontWeight.normal,
                             decoration: TextDecoration.none
@@ -331,10 +406,10 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                 Visibility(
                   visible: paymentSuccessful & orderProcessing,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 240),
+                    padding: EdgeInsets.only(right: 220.w),
                     child: Container(
                       height: h/19,
-                      width: 5,
+                      width: 5.w,
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1)
@@ -350,8 +425,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         width: w/7,
                       ),
                       Container(
-                        height: 40,
-                        width: 40,
+                        height: 40.h,
+                        width: 40.h,
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1),
                           shape: BoxShape.circle,
@@ -364,7 +439,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         'Order being Processed',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontFamily: 'DMSans',
                             fontWeight: FontWeight.normal,
                             decoration: TextDecoration.none
@@ -376,10 +451,10 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                 Visibility(
                   visible: orderProcessing & orderReady,
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 240),
+                    padding: EdgeInsets.only(right: 220.w),
                     child: Container(
                       height: h/19,
-                      width: 5,
+                      width: 5.w,
                       alignment: Alignment.centerLeft,
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1)
@@ -395,8 +470,8 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         width: w/7,
                       ),
                       Container(
-                        height: 40,
-                        width: 40,
+                        height: 40.h,
+                        width: 40.h,
                         decoration: BoxDecoration(
                           color: Color.fromRGBO(188,157,255,1),
                           shape: BoxShape.circle,
@@ -405,11 +480,11 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                       SizedBox(
                         width: w/20,
                       ),
-                      const Text(
+                      Text(
                         'Order Ready',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontFamily: 'DMSans',
                             fontWeight: FontWeight.normal,
                             decoration: TextDecoration.none
@@ -433,11 +508,11 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                       )
                     ),
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       'Go to QR',
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontFamily: 'DMSans',
                           fontWeight: FontWeight.normal,
                           decoration: TextDecoration.none
@@ -451,5 +526,16 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
         ),
       ],
     );
+  }
+  Future<void> Reload()async{
+    db.get_order_details(widget.order_uid).then((value) {
+      if(!mounted) {
+        timer.cancel();
+        return;
+      }
+      setState(() {
+        order_status = value['Status'];
+      });
+    });
   }
 }

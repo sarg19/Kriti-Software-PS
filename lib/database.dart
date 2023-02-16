@@ -112,7 +112,7 @@ class Databases{
     print(user_info!['Cart']);
     return;
   }
-  void Request_Order(String? userId, String shop_key,String Collection) async {
+  Future Request_Order(String? userId, String shop_key,String Collection) async {
     late Map? user_info;
     late Map? shop_info;
     final CollectionReference usersCollection = firestore.collection('users');
@@ -179,6 +179,7 @@ class Databases{
     });
     usersCollection.doc(userId).update({'Active_Orders':user_info['Active_Orders'],'Cart':user_info['Cart']});
     shopsCollection.doc(shop_key).update({'Pending_Order':shop_info['Pending_Order']});
+    return Order_Key;
   }
   Future checkUser(String userId) async{
     final CollectionReference usersCollection = firestore.collection('users');
@@ -487,6 +488,12 @@ class Databases{
     firestore.collection(collection).doc(shop_key).update({
       'open':shop_info['open']
     });
+  }
+  Future get_order_details(String? orderId) async {
+    late Map? order_info;
+    var snapshot=await firestore.collection("orders").doc(orderId).get();
+    order_info=snapshot.data();
+    return order_info;
   }
 
   Future<String> getUserType(String uid) async {
