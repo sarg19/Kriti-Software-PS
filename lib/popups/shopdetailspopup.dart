@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
-import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
+import 'package:url_launcher/url_launcher.dart';
 
 class ShopDetails extends StatefulWidget {
   String shop_key;
@@ -119,8 +120,10 @@ class _ShopDetailsState extends State<ShopDetails> {
                       backgroundColor: MaterialStateProperty.all(
                           const Color.fromRGBO(188, 157, 255, 1.0)),
                     ),
-                    onPressed: () {
-                      UrlLauncher.launch('tel:+9324493203');
+                    onPressed: () async {
+                      Uri code=Uri.parse('tel:8770768952');
+                      print(code);
+                      launchUrl(code);
                     },
                     child: const Text('Contact')
                 )
