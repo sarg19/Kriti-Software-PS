@@ -625,5 +625,14 @@ class Databases{
       'Phone_Number':p_number
     });
   }
-
+  void removefromcart(String? userId,Map user_info,int index1,int index2) async {
+    if(user_info['Cart'][index1]['Items'].length==1){
+      user_info['Cart'].remove(user_info['Cart'][index1]);
+    }else{
+      user_info['Cart'][index1]['Items'].remove(user_info['Cart'][index1]['Items'][index2]);
+    }
+    firestore.collection("users").doc(userId).update({
+      'Cart':user_info['Cart']
+    });
+  }
 }

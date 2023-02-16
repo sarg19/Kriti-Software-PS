@@ -1,13 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../database.dart';
+
 class RemoveItem extends StatefulWidget {
-  const RemoveItem({Key? key}) : super(key: key);
+  Map user_info;
+  int index1;
+  int index2;
+  RemoveItem({Key? key,required this.user_info,this.index1=0,this.index2=0}) : super(key: key);
 
   @override
   State<RemoveItem> createState() => _RemoveItemState();
 }
 
 class _RemoveItemState extends State<RemoveItem> {
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,7 +60,10 @@ class _RemoveItemState extends State<RemoveItem> {
                       ),
                       backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
                     ),
-                    onPressed: (){},
+                    onPressed: (){
+                      db.removefromcart(FirebaseAuth.instance.currentUser?.uid,widget.user_info, widget.index1, widget.index2);
+                      Navigator.pop(context);
+                    },
                     child: const Text('Yes')
                 ),
               ),
@@ -59,7 +78,9 @@ class _RemoveItemState extends State<RemoveItem> {
                       ),
                       backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
                     ),
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.pop(context);
+                    },
                     child: const Text('No')
                 ),
               )

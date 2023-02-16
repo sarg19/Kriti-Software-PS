@@ -238,7 +238,7 @@ class _cartscreenState extends State<cartscreen> {
                               setState(() {
                                 if(user_data['Cart'][ind]['Items'][index]['Quantity']==1){
                                   showDialog(context: context, builder: (BuildContext context){
-                                    return ShowPopUp(widgetcontent: RemoveItem(),);
+                                    return ShowPopUp(widgetcontent: RemoveItem(user_info: user_data,index1: ind,index2: index,),);
                                   });
                                 }else{
                                   db.decrementcart(ind, index, user_data['Cart'],
@@ -344,10 +344,9 @@ class _cartscreenState extends State<cartscreen> {
       }
       setState(() {
         user_data = value;
+        canteen=[];
         for (Map item in user_data['Cart']) {
-          if (!canteen.contains(item['Shop_Name'])) {
             canteen.add(item['Shop_Name']);
-          }
         }
         if(value['Cart'].length==0){
           itemlength=0;
