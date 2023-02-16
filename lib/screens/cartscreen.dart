@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:kriti/popups/removeconformationPopup.dart';
+import 'package:kriti/screens/canteen.dart';
+import 'package:kriti/screens/menu.dart';
 import 'package:kriti/screens/orderstatus.dart';
 import '../database.dart';
 import '../popups/showPopUp.dart';
@@ -301,11 +303,20 @@ class _cartscreenState extends State<cartscreen> {
                       color: Color.fromRGBO(188, 157, 255, 1.0),
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      "Add more items",
-                      style: TextStyle(
-                          color: Color.fromRGBO(255, 255, 255, 1.0),
-                          fontSize: 20.sp),
+                    child: TextButton(
+                      onPressed: (){
+                        if(user_data['Cart'].length==0){
+                          Navigator.push(context,MaterialPageRoute(builder: (context)=>const MyTabbedPage()));
+                        }else{
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: user_data['Cart'][ind]['Shop_Key'],collection_name: user_data['Cart'][ind]['Collection'],)));
+                        }
+                      },
+                      child: Text(
+                        "Add more items",
+                        style: TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 1.0),
+                            fontSize: 20.sp),
+                      ),
                     )),
                 Container(
                     height: height * 0.05,
