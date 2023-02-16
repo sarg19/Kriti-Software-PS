@@ -327,11 +327,11 @@ class Databases{
   }
 
 
-  void rating(num new_rating,String shop_key) async {
+  void rating(num new_rating,String shop_key,String collection) async {
 
     late Map? shop_info;
-    final CollectionReference shopCollection = firestore.collection('shops');
-    var shopsnapshot=await firestore.collection('shops').doc(shop_key).get();
+    final CollectionReference shopCollection = firestore.collection(collection);
+    var shopsnapshot=await firestore.collection(collection).doc(shop_key).get();
     shop_info=shopsnapshot.data();
     if(shop_info==null){
       return;
@@ -345,7 +345,7 @@ class Databases{
 
     shop_info['current_rating'] = tempRating;
 
-    firestore.collection("shops").doc(shop_key).update({
+    firestore.collection(collection).doc(shop_key).update({
       'current_rating':shop_info['current_rating'],
       'total_review':shop_info['total_review']
     });

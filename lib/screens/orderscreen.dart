@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/screens/feedbackscreen.dart';
 
 import '../database.dart';
 
@@ -456,7 +457,11 @@ class _OrderCardState extends State<OrderCard> {
                                 fontSize: 15.sp,
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              print(widget.item['Shop_Key']);
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => FeedbackScreen(shop_key: widget.item['Shop_Key'],collection: widget.item['Collection'])));
+
+                            },
                           ),
                         )
                       ]),

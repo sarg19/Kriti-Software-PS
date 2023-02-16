@@ -1,8 +1,15 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
 
+import '../database.dart';
+
 class FeedbackScreen extends StatefulWidget {
-  const FeedbackScreen({Key? key}) : super(key: key);
+  final String shop_key;
+  final String collection;
+  const FeedbackScreen({Key? key, required this.shop_key, required this.collection}) : super(key: key);
 
   @override
   State<FeedbackScreen> createState() => _FeedbackScreenState();
@@ -11,6 +18,18 @@ class FeedbackScreen extends StatefulWidget {
 class _FeedbackScreenState extends State<FeedbackScreen> {
 
   int _currentButton = 0;
+  late Databases db;
+  late Timer timer;
+  initialise(){
+    db=Databases();
+    db.initialise();
+
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +144,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           ),
                           backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
                         ),
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
                         child: const Text('No, Thanks')
                     ),
                     ElevatedButton(
@@ -137,7 +158,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                           ),
                           backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
                         ),
-                        onPressed: (){},
+                        onPressed: (){
+                          db.rating(_currentButton, widget.shop_key, widget.collection);
+                        },
                         child: const Text('Submit')
                     )
                   ],
