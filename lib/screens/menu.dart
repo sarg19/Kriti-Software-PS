@@ -21,6 +21,7 @@ class menuscreen extends StatefulWidget {
 }
 
 class _menuscreenState extends State<menuscreen> {
+  List fav=[];
   int counter=0;
   var size,
       height,
@@ -191,6 +192,9 @@ class _menuscreenState extends State<menuscreen> {
                             child: MyCard(
                               name: shop['Menu'][index]['Name'],
                               price: shop['Menu'][index]['Price'],
+                              favourite: fav,
+                              shop_key: widget.shop_key,
+                              shop_name: shop['ShopName'],
                             ),
                           );
                         }else{
@@ -265,6 +269,14 @@ class _menuscreenState extends State<menuscreen> {
     );
   }
   Future<void> Reload()async{
+    await db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        return;
+      }
+      setState(() {
+        fav=value['Favourites'];
+      });
+    });
     db.retrieve_menu(widget.shop_key,widget.collection_name).then((value){
       if(!mounted){
         return;
@@ -284,10 +296,15 @@ class _menuscreenState extends State<menuscreen> {
 class MyCard extends StatefulWidget {
   final name;
   int price;
-
+  List favourite;
+  String shop_key;
+  String shop_name;
   MyCard({
     this.name = "",
     this.price = 0,
+    required this.favourite,
+    this.shop_key="",
+    this.shop_name=""
   });
 
   @override
@@ -296,7 +313,24 @@ class MyCard extends StatefulWidget {
 
 class _MyCardState extends State<MyCard> {
   bool isFavorite = false;
-
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    for(Map items in widget.favourite){
+      if(items['Item_Name']==widget.name && items['Shop_Key']==widget.shop_key){
+        setState(() {
+          isFavorite=true;
+        });
+      }
+    }
+    // for(Map item in widget.favourite)
+  }
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -350,6 +384,11 @@ class _MyCardState extends State<MyCard> {
                         onPressed: () {
                           setState(() {
                             isFavorite = !isFavorite;
+                            if(isFavorite){
+                                db.addfavourite(widget.name, widget.price, widget.shop_key ,widget.shop_name, FirebaseAuth.instance.currentUser?.uid);
+                            }else{
+                              db.removefavourite(widget.name, widget.price, widget.shop_key, widget.shop_name, FirebaseAuth.instance.currentUser?.uid);
+                            }
                           });
                         },
                       ),

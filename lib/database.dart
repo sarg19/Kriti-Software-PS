@@ -276,13 +276,22 @@ class Databases{
       'Last_Update':Timestamp.now().toDate()
     });
   }
-  void addfavourite(String item_name,num price,String shop_key,String shop_name,String userId) async {
+  void addfavourite(String item_name,num price,String shop_key,String shop_name,String? userId) async {
 
     late Map? user_info;
     final CollectionReference usersCollection = firestore.collection('users');
     var snapshot=await firestore.collection("users").doc(userId).get();
     user_info=snapshot.data();
     if(user_info==null){
+      return;
+    }
+    var counter=0;
+    for(Map shopcart in user_info['Favourites']){
+      if(shopcart['Item_Name']==item_name && shopcart['Shop_Key']==shop_key){
+        counter=1;
+      }
+    }
+    if(counter==1){
       return;
     }
     user_info['Favourites'].add({
@@ -299,7 +308,7 @@ class Databases{
   }
 
 
-  void removefavourite(String item_name,num price,String shop_key,String shop_name,String userId) async {
+  void removefavourite(String item_name,num price,String shop_key,String shop_name,String? userId) async {
 
     late Map? user_info;
     final CollectionReference usersCollection = firestore.collection('users');
@@ -312,7 +321,7 @@ class Databases{
     late Map? Item;
     var counter=0;
     for(Map shopcart in user_info['Favourites']){
-      if(shopcart['Item_Name']==item_name){
+      if(shopcart['Item_Name']==item_name && shopcart['Shop_Key']==shop_key){
         Item=shopcart;
         counter=1;
       }
