@@ -121,7 +121,7 @@ class _ShopDetailsState extends State<ShopDetails> {
                           const Color.fromRGBO(188, 157, 255, 1.0)),
                     ),
                     onPressed: () async {
-                      Uri code=Uri.parse('tel:8770768952');
+                      Uri code=Uri.parse('tel:${Phone.toString()}');
                       print(code);
                       launchUrl(code);
                     },
