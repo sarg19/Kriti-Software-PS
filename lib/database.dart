@@ -351,7 +351,7 @@ class Databases{
     });
 
   }
-  void create_shop_user(String shop_key,num p_number,String email,String location,String shop_name , String user_name,String collection) async {
+  void create_shop_user(String shop_key,num p_number,String email,String location,String shop_name ,String upi_id, String user_name,String collection) async {
     final CollectionReference shopCollection1 = firestore.collection('food-canteen');
     final CollectionReference shopCollection2 = firestore.collection('food-foodcourt');
     final CollectionReference shopCollection3 = firestore.collection('food-khokha');
@@ -366,6 +366,8 @@ class Databases{
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
+        'Verified':0,
+        'UPI_id':upi_id,
         'ShopName':shop_name,
         'UserName':user_name,
         'collection':collection,
@@ -383,6 +385,8 @@ class Databases{
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
+        'Verified':0,
+        'UPI_id':upi_id,
         'ShopName':shop_name,
         'UserName':user_name,
         'collection':collection,
@@ -400,6 +404,8 @@ class Databases{
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
+        'Verified':0,
+        'UPI_id':upi_id,
         'ShopName':shop_name,
         'UserName':user_name,
         'collection':collection,
@@ -417,6 +423,8 @@ class Databases{
         'Menu':[],
         'Number':p_number,
         'Pending_Order':[],
+        'Verified':0,
+        'UPI_id':upi_id,
         'ShopName':shop_name,
         'UserName':user_name,
         'collection':collection,
@@ -431,6 +439,7 @@ class Databases{
         'Email':email,
         'Location':location,
         'Number':p_number,
+        'Verified':0,
         'ShopName':shop_name,
         'UserName':user_name,
         'collection':collection,
@@ -443,6 +452,7 @@ class Databases{
         'Email':email,
         'Location':location,
         'Number':p_number,
+        'Verified':0,
         'ShopName':shop_name,
         'UserName':user_name,
         'collection':collection,
@@ -457,6 +467,7 @@ class Databases{
         'Email': email,
         'Location': location,
         'Number': p_number,
+        'Verified':0,
         'Pending_Order': [],
         'ShopName': shop_name,
         'UserName': user_name,
