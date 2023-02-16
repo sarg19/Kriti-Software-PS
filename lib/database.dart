@@ -207,22 +207,6 @@ class Databases{
       'Cart':Cart
     });
   }
-  void create_food_shop(String shop_key,String collection_name,String _name,String _email,String _shopname,num _phone,String _location, String _type) async{
-    final CollectionReference shopsCollection = firestore.collection(collection_name);
-    shopsCollection.doc(shop_key).set({
-      'Menu':[],
-      'Pending_Order':[],
-      'UserName':_name,
-      'ShopName':_shopname,
-      'Email':_email,
-      'Number':_phone,
-      'Active_Order':[],
-      'Location':_location,
-      'type':_type,
-      'collection':collection_name,
-      'open':0
-    });
-  }
   Future getfoodshop(String collection_name) async {
     final CollectionReference shopsCollection = firestore.collection(collection_name);
     final QuerySnapshot snapshots=await shopsCollection.get();
@@ -366,5 +350,120 @@ class Databases{
       'total_review':shop_info['total_review']
     });
 
+  }
+  void create_shop_user(String shop_key,num p_number,String email,String location,String shop_name , String user_name,String collection) async {
+    final CollectionReference shopCollection1 = firestore.collection('food-canteen');
+    final CollectionReference shopCollection2 = firestore.collection('food-foodcourt');
+    final CollectionReference shopCollection3 = firestore.collection('food-khokha');
+    final CollectionReference shopCollection4 = firestore.collection('food-marketcomplex');
+    if(collection=='food-canteen'){
+      shopCollection1.doc(shop_key).set({
+        'Active_Orders':[],
+        'Email':email,
+        'Last7':[],
+        'Last_Update':Timestamp.now(),
+        'Location':location,
+        'Menu':[],
+        'Number':p_number,
+        'Pending_Order':[],
+        'ShopName':shop_name,
+        'UserName':user_name,
+        'collection':collection,
+        'open':0,
+        'type':"Food"
+      });
+    }
+    else if(collection=='food-foodcourt'){
+      shopCollection2.doc(shop_key).set({
+        'Active_Orders':[],
+        'Email':email,
+        'Last7':[],
+        'Last_Update':Timestamp.now(),
+        'Location':location,
+        'Menu':[],
+        'Number':p_number,
+        'Pending_Order':[],
+        'ShopName':shop_name,
+        'UserName':user_name,
+        'collection':collection,
+        'open':0,
+        'type':"Food"
+      });
+    }
+    else if(collection=='food-khokha'){
+      shopCollection3.doc(shop_key).set({
+        'Active_Orders':[],
+        'Email':email,
+        'Last7':[],
+        'Last_Update':Timestamp.now(),
+        'Location':location,
+        'Menu':[],
+        'Number':p_number,
+        'Pending_Order':[],
+        'ShopName':shop_name,
+        'UserName':user_name,
+        'collection':collection,
+        'open':0,
+        'type':"Food"
+      });
+    }
+    else if(collection=='food-marketcomplex'){
+      shopCollection4.doc(shop_key).set({
+        'Active_Orders':[],
+        'Email':email,
+        'Last7':[],
+        'Last_Update':Timestamp.now(),
+        'Location':location,
+        'Menu':[],
+        'Number':p_number,
+        'Pending_Order':[],
+        'ShopName':shop_name,
+        'UserName':user_name,
+        'collection':collection,
+        'open':0,
+        'type':"Food"
+      });
+    }
+    final CollectionReference shopCollection5 = firestore.collection('grocery');
+    final CollectionReference shopCollection6 = firestore.collection('miscellaneous');
+    if(collection=='grocery'){
+      shopCollection5.doc(shop_key).set({
+        'Email':email,
+        'Location':location,
+        'Number':p_number,
+        'ShopName':shop_name,
+        'UserName':user_name,
+        'collection':collection,
+        'open':0,
+        'type':"Grocery"
+      });
+    }
+    else if(collection=='miscellaneous'){
+      shopCollection6.doc(shop_key).set({
+        'Email':email,
+        'Location':location,
+        'Number':p_number,
+        'ShopName':shop_name,
+        'UserName':user_name,
+        'collection':collection,
+        'open':0,
+        'type':"Miscellaneous"
+      });
+    }
+    final CollectionReference shopCollection7 = firestore.collection('stationary');
+    if(collection=='stationary') {
+      shopCollection7.doc(shop_key).set({
+        'Active_Orders': [],
+        'Email': email,
+        'Location': location,
+        'Number': p_number,
+        'Pending_Order': [],
+        'ShopName': shop_name,
+        'UserName': user_name,
+        'collection': collection,
+        'open': 0,
+        'type': "Stationary"
+      });
+    }
   }
 }
