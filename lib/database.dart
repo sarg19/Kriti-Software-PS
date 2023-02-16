@@ -466,4 +466,24 @@ class Databases{
       });
     }
   }
+
+  void shopToggle(String shop_key , String collection) async {
+    late Map? shop_info;
+    final CollectionReference usersCollection = firestore.collection(collection);
+    var snapshot=await firestore.collection("users").doc(shop_key).get();
+    shop_info=snapshot.data();
+
+    if(shop_info!['open'] == 1){
+      shop_info['open'] = 0 ;
+    }
+    else{
+      shop_info['open'] = 1 ;
+    }
+
+    firestore.collection(collection).doc(shop_key).update({
+      'open':shop_info['open']
+    });
+  }
+
+
 }
