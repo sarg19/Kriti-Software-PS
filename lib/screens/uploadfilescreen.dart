@@ -37,6 +37,7 @@ class _uploadscreenState extends State<uploadscreen> {
     db.retrieve_shop_info('stationary', widget.shop_key).then((value){
       setState(() {
         stat_email = value['Email'];
+        print(widget.shop_key);
       });
     });
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
