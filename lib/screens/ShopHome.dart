@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../components/bottom_nav_bar.dart';
 import '../components/bottomnavbarshop.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../database.dart';
 
 class ShopHome extends StatefulWidget {
   const ShopHome({Key? key}) : super(key: key);
@@ -13,9 +18,38 @@ class ShopHome extends StatefulWidget {
 class _MyTabbedPageState extends State<ShopHome> {
   int _currentIndex = 0;
   bool _isopen = true;
-  List _earnings = [2000,3000,4000,3200,0,1200,1000];
+  List _earnings = [0,0,0,0,0,0,0];
   List _days = ["Mon","Tue","Wed","Thur","Fri","Sat","Sun"];
-
+  late Timer timer;
+  late Databases db;
+  String Name="Shop";
+  num amount=0;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  Future<void> Reload() async {
+    if(!mounted){
+      return;
+    }
+    db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid).then((value){
+      setState((){
+        Name=value['ShopName'];
+        _earnings=value['Last7'];
+        _isopen=value['open']==1?true:false;
+        amount=value['Last7'][0];
+      });
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    db.update_last_7(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid, 0);
+    timer= Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      Reload();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     var height= MediaQuery.of(context).size.height;
@@ -29,7 +63,7 @@ class _MyTabbedPageState extends State<ShopHome> {
                       height: 3,
                     ),
                     Text(
-                      'Subansiri Canteen',
+                       Name,
                       style: TextStyle(
                         fontSize: 30,
                         color: Colors.black,
@@ -97,7 +131,7 @@ class _MyTabbedPageState extends State<ShopHome> {
                         ),
                         child: Center(
                           child: Text(
-                            "Today's Earning is Rs.500",
+                            "Today's Earning is Rs. "+amount.toString(),
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.black,

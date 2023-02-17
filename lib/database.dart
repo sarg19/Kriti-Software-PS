@@ -223,9 +223,9 @@ class Databases{
     }
     return shops;
   }
-  void update_last_7(String collection,String shop_key,num amount)async{
+  void update_last_7(String? collection,String? shop_key,num amount)async{
     late Map? shop_info;
-    var snapshot=await firestore.collection(collection).doc(shop_key).get();
+    var snapshot=await firestore.collection(collection!).doc(shop_key).get();
     shop_info=snapshot.data();
     if(shop_info==null){
       return;
@@ -363,7 +363,7 @@ class Databases{
       shopCollection1.doc(shop_key).set({
         'Active_Orders':[],
         'Email':email,
-        'Last7':[],
+        'Last7':[0,0,0,0,0,0,0],
         'Last_Update':Timestamp.now(),
         'Menu':[],
         'Number':p_number,
@@ -383,7 +383,7 @@ class Databases{
       shopCollection2.doc(shop_key).set({
         'Active_Orders':[],
         'Email':email,
-        'Last7':[],
+        'Last7':[0,0,0,0,0,0,0],
         'Last_Update':Timestamp.now(),
         'Menu':[],
         'Number':p_number,
@@ -403,7 +403,7 @@ class Databases{
       shopCollection3.doc(shop_key).set({
         'Active_Orders':[],
         'Email':email,
-        'Last7':[],
+        'Last7':[0,0,0,0,0,0,0],
         'Last_Update':Timestamp.now(),
         'Menu':[],
         'Number':p_number,
@@ -423,7 +423,7 @@ class Databases{
       shopCollection4.doc(shop_key).set({
         'Active_Orders':[],
         'Email':email,
-        'Last7':[],
+        'Last7':[0,0,0,0,0,0,0],
         'Last_Update':Timestamp.now(),
         'Menu':[],
         'Number':p_number,
