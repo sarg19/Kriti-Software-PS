@@ -5,18 +5,53 @@ import 'package:kriti/popups/editshopkeeperprofile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kriti/screens/choicescreen.dart';
 import 'package:kriti/popups/shopkeeperProfilePopup.dart';
+import 'dart:async';
+import '../database.dart';
 
 class groceryandmiscellaneous extends StatefulWidget {
-  const groceryandmiscellaneous({Key? key}) : super(key: key);
+  final String coltype;
+
+  const groceryandmiscellaneous({Key? key,required this.coltype}) : super(key: key);
 
   @override
   State<groceryandmiscellaneous> createState() => _groceryandmiscellaneous();
 }
 
 class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
+  String email="";
+  String username="";
+  String shopname="";
+  String upiid="";
+  num Phone=123456789;
+  num _currentStar = 4;
+  late Databases db;
+  late Timer timer;
   bool _isopen=true;
   var selected=0;
   var size, height, width;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    db.retrieve_shop_info(widget.coltype,FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted)return;
+      setState(() {
+        upiid=value['UPI_id'];
+        username=value['UserName'];
+        _currentStar=3;
+        shopname=value['ShopName'];
+        email=value['Email'];
+        Phone=value['Number'];
+      });
+    });
+    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -57,8 +92,8 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => const ShowPopUp(
-                      widgetcontent: ShopkeeperProfile(),
+                    builder: (context) => ShowPopUp(
+                      widgetcontent: ShopkeeperProfile(shoptype: widget.coltype,username: username,phone: Phone,rating: _currentStar,shopname: shopname,email: email),
                     ),
                   );
                 },
@@ -78,15 +113,15 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
                 children: [
                   SizedBox(height: 20.h,),
 
-                  Center(child: Text("Kapili Juice",textAlign:TextAlign.center,style:TextStyle(fontSize: 37.sp,))),
+                  Center(child: Text(shopname,textAlign:TextAlign.center,style:TextStyle(fontSize: 37.sp,))),
                   Text("Now closed",textAlign: TextAlign.left,style: TextStyle(fontSize: 20,color: Color.fromRGBO(
                       114, 114, 114, 1.0)),),
                   SizedBox(height: 45.h,),
-                  Text("23004cxcx",style: TextStyle(fontSize: 22.sp),),
+                  Text(email,style: TextStyle(fontSize: 22.sp),),
                   SizedBox(height: 25.h,),
-                  Text("abshhh",style: TextStyle(fontSize: 22.sp),),
+                  Text(username,style: TextStyle(fontSize: 22.sp),),
                   SizedBox(height: 20.h,),
-                  Text("987652xx",style: TextStyle(fontSize: 22.sp),),
+                  Text(Phone.toString(),style: TextStyle(fontSize: 22.sp),),
                   SizedBox(height: 25.h,),
 
                   Row(
@@ -109,8 +144,8 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
                         onPressed: (){
                           showDialog(
                             context: context,
-                            builder: (context) => const ShowPopUp(
-                              widgetcontent: ShopkeeperEditProfile(),
+                            builder: (context) => ShowPopUp(
+                              widgetcontent: ShopkeeperEditProfile(shoptype: widget.coltype,shopname: shopname,username: username,number: Phone,upiid: upiid),
                             ),
                           );
                         },
@@ -152,6 +187,24 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
         ),
       ],
     );
+  }
+  Future<void> Reload() async {
+    if(!mounted){
+      return;
+    }
+    db.retrieve_shop_info(widget.coltype,FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        return;
+      }
+      setState((){
+        upiid=value['UPI_id'];
+        username=value['UserName'];
+        _currentStar=3;
+        shopname=value['ShopName'];
+        email=value['Email'];
+        Phone=value['Number'];
+      });
+    });
   }
 }
 

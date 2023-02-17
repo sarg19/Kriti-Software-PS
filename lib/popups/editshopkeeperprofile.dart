@@ -2,9 +2,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/widgets/textfield.dart';
+import '../database.dart';
 
 class ShopkeeperEditProfile extends StatefulWidget {
-  const ShopkeeperEditProfile({Key? key}) : super(key: key);
+  final String username;
+  final String shopname;
+  final String upiid;
+  final num number;
+  final String shoptype;
+  ShopkeeperEditProfile({Key? key,this.username="",this.upiid="",this.number=12344,this.shopname="",this.shoptype=""}) : super(key: key);
 
   @override
   State<ShopkeeperEditProfile> createState() => _ShopkeeperEditProfileState();
@@ -15,6 +21,24 @@ class _ShopkeeperEditProfileState extends State<ShopkeeperEditProfile> {
   TextEditingController shopnameController=TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController upiidController=TextEditingController();
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    print(widget.upiid);
+    print(widget.username);
+    print(widget.shopname);
+    print(widget.number.toString());
+    nameController.text=widget.username;
+    shopnameController.text=widget.shopname;
+    upiidController.text=widget.upiid;
+    phoneController.text=widget.number.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +150,10 @@ class _ShopkeeperEditProfileState extends State<ShopkeeperEditProfile> {
                           backgroundColor: MaterialStateProperty.all(
                               const Color.fromRGBO(188, 157, 255, 1.0)),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          db.edit_shopkeeper(nameController.text,shopnameController.text,upiidController.text,int.parse(phoneController.text),FirebaseAuth.instance.currentUser?.uid,widget.shoptype);
+                          Navigator.pop(context);
+                        },
                         child: Text(
                           'Ok',
                           style: TextStyle(fontSize: 13.sp),

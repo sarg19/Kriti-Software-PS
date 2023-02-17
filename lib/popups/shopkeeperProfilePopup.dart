@@ -1,20 +1,53 @@
+import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/screens/choicescreen.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/popups/editshopkeeperprofile.dart';
+import '../database.dart';
 
 class ShopkeeperProfile extends StatefulWidget {
-  const ShopkeeperProfile({Key? key}) : super(key: key);
+  final String email;
+  final String username;
+  final String shopname;
+  final num phone;
+  final num rating;
+  final String shoptype;
+  ShopkeeperProfile({Key? key,this.email="S23004xxx",this.username='Abxshk Sjxhsu',this.phone=1234567890,this.rating=0,this.shopname="Kapili Canteen",required this.shoptype}) : super(key: key);
 
   @override
   State<ShopkeeperProfile> createState() => _ShopkeeperProfileState();
 }
 
 class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
-
-  int _currentStar = 4;
+  late Timer timer;
+  late Databases db;
+  String email="";
+  String username="";
+  String shopname="";
+  String upiid='';
+  num Phone=123456789;
+  num _currentStar = 4;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    setState((){
+      email=widget.email;
+      username=widget.username;
+      shopname=widget.shopname;
+      Phone=widget.phone;
+      _currentStar=widget.rating;
+    });
+    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +76,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                           ),
                         ),
                         Text(
-                          'Kapili',
+                          'Profile',
                           style: TextStyle(
                             fontSize: 24.sp,
                           ),
@@ -62,7 +95,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 8.0.h, bottom: 2.0.h),
-                          child: Text('S23004xxx',
+                          child: Text(email,
                               style: TextStyle(
                                 fontSize: 20.sp,
                               )),
@@ -76,19 +109,19 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                         children: [
                           Padding(
                             padding: EdgeInsets.only(top: 5.0.h),
-                            child: Text('Abxshk Sjxhsu',
+                            child: Text(username,
                                 style: TextStyle(fontSize: 20.sp)),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 10.0.h, bottom: 10.0.h),
-                            child: Text('Kapili Canteen',
+                            child: Text(shopname,
                                 style: TextStyle(
                                     fontSize: 16.sp,
                                     color: const Color.fromRGBO(114, 114, 114, 1.0))),
                           ),
                           Padding(
                             padding: EdgeInsets.only(top: 5.0.h),
-                            child: Text('890824xxx',
+                            child: Text(Phone.toString(),
                                 style: TextStyle(fontSize: 20.sp)),
                           ),
                         ],
@@ -112,8 +145,8 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                               onPressed: () {
                                 showDialog(
                                   context: context,
-                                  builder: (context) => const ShowPopUp(
-                                    widgetcontent: ShopkeeperEditProfile(),
+                                  builder: (context) =>  ShowPopUp(
+                                    widgetcontent: ShopkeeperEditProfile(shoptype: widget.shoptype,shopname: shopname,username: username,number: Phone,upiid: upiid),
                                   ),
                                 );
                               },
@@ -165,5 +198,23 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                 ),
               ),
     );
+  }
+  Future<void> Reload() async {
+    if(!mounted){
+      return;
+    }
+    db.retrieve_shop_info(widget.shoptype,FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        return;
+      }
+      setState((){
+        upiid=value['UPI_id'];
+        username=value['UserName'];
+        _currentStar=3;
+        shopname=value['ShopName'];
+        email=value['Email'];
+        Phone=value['Number'];
+      });
+    });
   }
 }

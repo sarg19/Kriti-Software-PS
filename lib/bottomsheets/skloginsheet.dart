@@ -81,19 +81,19 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
         return;
       } else if(coltype=="stationary"){
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const StationaryTabs()),
+            MaterialPageRoute(builder: (context) => StationaryTabs(coltype: coltype,)),
                 (Route route) => false);
 
       } else if(coltype=="grocery" || coltype=="miscellaneous"){
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const groceryandmiscellaneous()),
+            MaterialPageRoute(builder: (context) => groceryandmiscellaneous(coltype: coltype,)),
                 (Route route) => false);
 
       } else if(coltype=="none"){
 
       } else {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const ShopkeeperTabs()),
+            MaterialPageRoute(builder: (context) =>  ShopkeeperTabs(coltype: coltype,)),
                 (Route route) => false);
       }
     } on FirebaseAuthException catch (e) {

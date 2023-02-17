@@ -4,6 +4,8 @@ import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/popups/editshopkeeperprofile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kriti/screens/choicescreen.dart';
+import "../database.dart";
+import 'dart:async';
 
 class StationaryHomePage extends StatefulWidget {
   const StationaryHomePage({Key? key}) : super(key: key);
@@ -13,8 +15,37 @@ class StationaryHomePage extends StatefulWidget {
 }
 
 class _StationaryHomePage extends State<StationaryHomePage> {
+  String email="";
+  String username="";
+  String shopname="";
+  String upiid="";
+  num Phone=123456789;
   var selected=0;
   var size, height, width;
+  late Timer timer;
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    db.retrieve_shop_info('stationary',FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted)return;
+      setState(() {
+        upiid=value['UPI_id'];
+        username=value['UserName'];
+        shopname=value['ShopName'];
+        email=value['Email'];
+        Phone=value['Number'];
+      });
+    });
+    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
+    });
+  }
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -31,15 +62,15 @@ class _StationaryHomePage extends State<StationaryHomePage> {
                 children: [
                   SizedBox(height: 20.h,),
 
-                  Center(child: Text("Subansiri Stationary",textAlign:TextAlign.center,style:TextStyle(fontSize: 37.sp,))),
+                  Center(child: Text(shopname,textAlign:TextAlign.center,style:TextStyle(fontSize: 37.sp,))),
                   Text("Now closed",textAlign: TextAlign.left,style: TextStyle(fontSize: 20,color: Color.fromRGBO(
                       114, 114, 114, 1.0)),),
                   SizedBox(height: 45.h,),
-                  Text("23004cxcx",style: TextStyle(fontSize: 22.sp),),
+                  Text(email,style: TextStyle(fontSize: 22.sp),),
                   SizedBox(height: 25.h,),
-                  Text("abshhh",style: TextStyle(fontSize: 22.sp),),
+                  Text(username,style: TextStyle(fontSize: 22.sp),),
                   SizedBox(height: 20.h,),
-                  Text("987652xx",style: TextStyle(fontSize: 22.sp),),
+                  Text(Phone.toString(),style: TextStyle(fontSize: 22.sp),),
                   SizedBox(height: 25.h,),
 
                   Row(
@@ -62,8 +93,8 @@ class _StationaryHomePage extends State<StationaryHomePage> {
                         onPressed: (){
                           showDialog(
                             context: context,
-                            builder: (context) => const ShowPopUp(
-                              widgetcontent: ShopkeeperEditProfile(),
+                            builder: (context) =>  ShowPopUp(
+                              widgetcontent: ShopkeeperEditProfile(upiid: upiid,number: Phone,username: username,shopname: shopname,shoptype: 'stationary'),
                             ),
                           );
                         },
@@ -105,6 +136,22 @@ class _StationaryHomePage extends State<StationaryHomePage> {
         ),
       ],
     );
+  }
+  Future<void> Reload() async {
+    db.retrieve_menu(FirebaseAuth.instance.currentUser?.uid,'stationary').then((value){
+      if(!mounted){
+        timer.cancel();
+        return;
+      }
+      setState((){
+        shopname=value['ShopName'];
+        username=value['UserName'];
+        Phone=value['Number'];
+        upiid=value['UPI_id'];
+        email=value['Email'];
+
+      });
+    });
   }
 }
 

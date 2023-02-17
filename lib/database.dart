@@ -824,4 +824,13 @@ class Databases{
     });
     firestore.collection('orders').doc(order_key).delete();
   }
+  void edit_shopkeeper(String username,String shopname,String upiid,num? p_number,String? userId,String collection) async {
+    print(username);
+    firestore.collection(collection).doc(userId).update({
+      'UserName':username,
+      'ShopName':shopname,
+      'Number':p_number,
+      'UPI_id':upiid,
+    });
+  }
 }

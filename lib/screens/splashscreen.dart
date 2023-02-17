@@ -58,10 +58,10 @@ class _SplashScreenState extends State<SplashScreen> {
                 child: const CustomerTabs(currentIndex: 0),
                 type: PageTransitionType.fade));
       } else if(type=="stationary"){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StationaryTabs()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StationaryTabs(coltype: type,)));
 
       } else if(type=="grocery" || type=="miscellaneous"){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => groceryandmiscellaneous()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => groceryandmiscellaneous(coltype: type,)));
 
       } else if(type=="none"){
         FirebaseAuth.instance.signOut();
@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
             PageTransition(
                 child: const ChoiceScreen(), type: PageTransitionType.fade));
       } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ShopkeeperTabs()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ShopkeeperTabs(coltype: type,)));
       }
       // Navigator.pushReplacement(
       //     context,

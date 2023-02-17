@@ -13,13 +13,19 @@ import 'package:kriti/screens/shopkeeperorder.dart';
 import '../database.dart';
 
 class ShopkeeperTabs extends StatefulWidget {
-  const ShopkeeperTabs({Key? key}) : super(key: key);
+  final String coltype;
+  const ShopkeeperTabs({Key? key,required this.coltype}) : super(key: key);
 
   @override
   State<ShopkeeperTabs> createState() => _ShopkeeperTabsState();
 }
 
 class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
+  String email="";
+  String username="";
+  String shopname="";
+  num Phone=123456789;
+  num _currentStar = 4;
   int _currentIndex = 0;
   bool _isopen = true;
   var tabs = [const ShopHome(), const ShopkeeperOrderPage(), const shopmenuscreen()];
@@ -49,6 +55,16 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
         if(_currentIndex==2){
           Reload();
         }
+      });
+    });
+    db.retrieve_shop_info(widget.coltype,FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted)return;
+      setState(() {
+        username=value['UserName'];
+        _currentStar=3;
+        shopname=value['ShopName'];
+        email=value['Email'];
+        Phone=value['Number'];
       });
     });
   }
@@ -94,8 +110,8 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => const ShowPopUp(
-                          widgetcontent: ShopkeeperProfile(),
+                        builder: (context) => ShowPopUp(
+                          widgetcontent: ShopkeeperProfile(shoptype: widget.coltype,email: email,shopname: shopname,rating: _currentStar,phone: Phone,username: username),
                         ),
                       );
                     },

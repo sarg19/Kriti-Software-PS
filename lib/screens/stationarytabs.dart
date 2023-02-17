@@ -1,18 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/database.dart';
 import 'package:kriti/popups/shopkeeperProfilePopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/stationaryhome.dart';
 import 'package:kriti/screens/stationaryorder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class StationaryTabs extends StatefulWidget {
-  const StationaryTabs({Key? key}) : super(key: key);
+  final String coltype;
+  const StationaryTabs({Key? key,required this.coltype}) : super(key: key);
 
   @override
   State<StationaryTabs> createState() => _StationaryTabsState();
 }
 
 class _StationaryTabsState extends State<StationaryTabs> {
+  String email="";
+  String username="";
+  String shopname="";
+  num Phone=123456789;
+  late Databases db;
+  num _currentStar = 4;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    db.retrieve_shop_info(widget.coltype,FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted)return;
+      setState(() {
+        username=value['UserName'];
+        _currentStar=3;
+        shopname=value['ShopName'];
+        email=value['Email'];
+        Phone=value['Number'];
+      });
+    });
+  }
   int _currentIndex = 0;
   bool _isopen = true;
   var tabs = [const StationaryHomePage(), const StationaryOrderPage()];
@@ -58,8 +87,8 @@ class _StationaryTabsState extends State<StationaryTabs> {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => const ShowPopUp(
-                          widgetcontent: ShopkeeperProfile(),
+                        builder: (context) => ShowPopUp(
+                          widgetcontent: ShopkeeperProfile(shoptype: widget.coltype,email: email,shopname: shopname,rating: _currentStar,phone: Phone,username: username),
                         ),
                       );
                     },
