@@ -645,7 +645,7 @@ class Databases{
       'Cart':user_info['Cart']
     });
   }
-  void accepted(String userId,String shop_key,String order_key,String collection) async {
+  void accepted(String userId,String? shop_key,String order_key,String? collection) async {
     late Map? user_info;
     var snapshot=await firestore.collection("users").doc(userId).get();
     user_info=snapshot.data();
@@ -664,21 +664,22 @@ class Databases{
     });
 
     late Map? shop_info;
-    var snapshot2=await firestore.collection(collection).doc(shop_key).get();
+    var snapshot2=await firestore.collection(collection!).doc(shop_key).get();
     shop_info=snapshot2.data();
-
+    print(shop_info);
     var index = 0;
-    for(var item in shop_info!['Pending_Orders']){
+    Map temp={};
+    for(var item in shop_info!['Pending_Order']){
       if(item['Order_Key'] == order_key){
+        temp=item;
         break;
       }
-      index++;
     }
 
-    shop_info['Pending_Orders'].removeAt(index);
+    shop_info['Pending_Order'].remove(temp);
 
     firestore.collection(collection).doc(shop_key).update({
-      'Pending_Orders':shop_info['Pending_Orders']
+      'Pending_Order':shop_info['Pending_Order']
     });
 
     late Map? order_info;
@@ -690,10 +691,38 @@ class Databases{
     firestore.collection("orders").doc(order_key).update({
       'Status':order_info['Status']
     });
-
-
-
-
-
+  }
+  void rejected(String userId,String? shop_key,String order_key,String? collection) async {
+    late Map? user_info;
+    var snapshot=await firestore.collection("users").doc(userId).get();
+    user_info=snapshot.data();
+    Map shop_item={};
+    for(var item in user_info!['Active_Orders']){
+      if(item['Order_Key'] == order_key){
+        shop_item=item;
+        break;
+      }
+    }
+    user_info!['Active_Orders'].remove(shop_item);
+    firestore.collection("users").doc(userId).update({
+      'Active_Orders':user_info['Active_Orders']
+    });
+    late Map? shop_info;
+    var snapshot2=await firestore.collection(collection!).doc(shop_key).get();
+    shop_info=snapshot2.data();
+    print(shop_info);
+    var index = 0;
+    Map temp={};
+    for(var item in shop_info!['Pending_Order']){
+      if(item['Order_Key'] == order_key){
+        temp=item;
+        break;
+      }
+    }
+    shop_info['Pending_Order'].remove(temp);
+    firestore.collection(collection).doc(shop_key).update({
+      'Pending_Order':shop_info['Pending_Order']
+    });
+    await firestore.collection('orders').doc(order_key).delete();
   }
 }

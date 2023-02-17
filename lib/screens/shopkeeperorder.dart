@@ -344,6 +344,16 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
 
 
 class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -447,7 +457,9 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
                                 fontSize: 15.sp,
                               ),
                             ),
-                            onPressed: (){},
+                            onPressed: (){
+                              db.accepted(widget.items['User_Key'], FirebaseAuth.instance.currentUser?.uid, widget.items['Order_Key'], FirebaseAuth.instance.currentUser?.displayName);
+                            },
                           ),
                         ),
                         Container(
@@ -467,7 +479,9 @@ class _shopkeeper_pending_card extends State<ShopkeeperPendingCard>{
                                 fontSize: 15.sp,
                               ),
                             ),
-                            onPressed: (){},
+                            onPressed: (){
+                              db.rejected(widget.items['User_Key'], FirebaseAuth.instance.currentUser?.uid, widget.items['Order_Key'], FirebaseAuth.instance.currentUser?.displayName);
+                            },
                           ),
                         )
 
