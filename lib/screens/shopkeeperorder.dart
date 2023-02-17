@@ -287,14 +287,8 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                          icon: const ImageIcon(AssetImage('assets/icons/scan.png'), color: Colors.transparent,),
-                          iconSize: 0,
-                          onPressed: (){},
-                          // color: Colors.red,
-                        ),
                         Container(
                           width: 120.w,
                           // padding: EdgeInsets.fromLTRB(73, 0, 0, 7),
@@ -306,25 +300,29 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
                                 onPrimary: Color.fromRGBO(255, 255, 255, 1.0)
                             ),
                             child: Text(
-                              'Ready',
+                              widget.items['Status']=='Ready'?'Scan QR':'Ready',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
                                 fontSize: 16.sp,
                               ),
                             ),
                             onPressed: (){
-                              db.Ready(widget.items['Order_Key']);
+                              if(widget.items['Status']=='Ready'){
+                                scanQRCode();
+                              }else{
+                                db.Ready(widget.items['Order_Key']);
+                              }
                             },
                           ),
                         ),
-                        IconButton(
-                          icon: ImageIcon(AssetImage('assets/icons/scan.png')),
-                          iconSize: 30,
-                          onPressed: (){
-                            scanQRCode();
-                          },
-                          // color: Colors.red,
-                        )
+                        // IconButton(
+                        //   icon: ImageIcon(AssetImage('assets/icons/scan.png')),
+                        //   iconSize: 30,
+                        //   onPressed: (){
+                        //     scanQRCode();
+                        //   },
+                        //   // color: Colors.red,
+                        // )
 
                       ]
                   ),
