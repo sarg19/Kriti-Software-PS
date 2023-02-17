@@ -73,6 +73,8 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
       // });
       // await Future.delayed(const Duration(seconds: 5), () {});
       // print("coltype: $coltype");
+      print(FirebaseAuth.instance.currentUser?.displayName);
+      print(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 3));
       if(FirebaseAuth.instance.currentUser!.displayName=="users"){
         Navigator.pop(context);
         FirebaseAuth.instance.signOut();
@@ -90,7 +92,7 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
             MaterialPageRoute(builder: (context) => groceryandmiscellaneous(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),)),
                 (Route route) => false);
 
-      } else if(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 3)=="food"){
+      } else if(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 4)=="food"){
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) =>  ShopkeeperTabs(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),)),
                 (Route route) => false);

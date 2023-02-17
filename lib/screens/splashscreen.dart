@@ -63,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
             PageTransition(
                 child: groceryandmiscellaneous(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),),
                 type: PageTransitionType.fade));
-      } else if(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 3)=="food"){
+      } else if(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 4)=="food"){
         Navigator.pushReplacement(
             context,
             PageTransition(
