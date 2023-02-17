@@ -25,6 +25,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
       width;
 
   var listlength=0;
+  String ShopName="";
   final SearchController=TextEditingController();
 
   late Databases db;
@@ -81,7 +82,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                     ),
                     SizedBox(
                       child: Text(
-                        Menu['ShopName'],
+                        ShopName,
                         style: TextStyle(
                           fontSize: 25.sp,
                           fontFamily: 'DM Sans'
@@ -137,6 +138,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
       setState(() {
         Menu=value;
         listlength=Menu['Menu'].length;
+        ShopName=Menu['ShopName'];
       });
     });
   }
