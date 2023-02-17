@@ -24,7 +24,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
       height,
       width;
 
-  var listlength=0;
+  int listlength=0;
   String ShopName="";
   final SearchController=TextEditingController();
 

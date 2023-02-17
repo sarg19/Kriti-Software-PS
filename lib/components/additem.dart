@@ -149,6 +149,8 @@ class _AddItemState extends State<AddItem> {
                           // print(num.tryParse(PriceController.text).runtimeType);
                           if(num.tryParse(PriceController.text).runtimeType==null){
                             print("wrong input");
+                          }else if(num.tryParse(PriceController.text)==null){
+                            print("wrong input");
                           }else{
                             db.add_menu_item(widget.Shop_Key, widget.Menu, NameController.text,num.tryParse(PriceController.text),widget.Collection);
                           }
