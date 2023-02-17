@@ -27,24 +27,26 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
     super.initState();
     initialise();
 
-    Future<void> Reload() async {
-      db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid).then((value){
-        if(!mounted){
-          timer.cancel();
-          return;
-        }
-        setState((){
-          Pending_Order=value['Pending_Order'];
-          Active_Order=value['Active_Orders'];
-          pendinglength=Pending_Order.length;
-          activelength=Active_Order.length;
-        });
-      });
-    }
     timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
       Reload();
     });
   }
+
+  Future<void> Reload() async {
+    db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        timer.cancel();
+        return;
+      }
+      setState((){
+        Pending_Order=value['Pending_Order'];
+        Active_Order=value['Active_Orders'];
+        pendinglength=Pending_Order.length;
+        activelength=Active_Order.length;
+      });
+    });
+  }
+
   int _currentIndex = 0;
   List GrandList = [
     ["aloo seez","alooseez maggi"],
@@ -342,6 +344,17 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
       if (!mounted) return;
       setState(() {
         getResult = qrCode;
+        if(getResult==widget.items['Order_Key']){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  "Order completed.")));
+          db.update_last_7(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid, widget.items['Total_Amount']);
+          db.OrderDelete(widget.items['Order_Key']);
+        } else{
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  "QR didn't match!")));
+        }
       });
     }catch(e){
       print(e);

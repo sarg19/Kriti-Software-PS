@@ -73,8 +73,9 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
       // });
       // await Future.delayed(const Duration(seconds: 5), () {});
       // print("coltype: $coltype");
+      // FirebaseAuth.instance.currentUser!.updateDisplayName("food-foodcourt");
       print(FirebaseAuth.instance.currentUser?.displayName);
-      print(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 3));
+      print(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 4));
       if(FirebaseAuth.instance.currentUser!.displayName=="users"){
         Navigator.pop(context);
         FirebaseAuth.instance.signOut();

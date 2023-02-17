@@ -29,10 +29,11 @@ class _MyTabbedPageState extends State<ShopHome> {
     db.initialise();
   }
   Future<void> Reload() async {
-    if(!mounted){
-      return;
-    }
     db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        timer.cancel();
+        return;
+      }
       setState((){
         Name=value['ShopName'];
         _earnings=value['Last7'];
