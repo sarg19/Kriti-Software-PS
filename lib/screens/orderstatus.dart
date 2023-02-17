@@ -575,6 +575,11 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
       }
       if(order_status=="Ready"){
         setState(() {
+          requestApproved = true;
+          special = true;
+          showMakePaymentButton = true;
+          paymentSuccessful = true;
+          orderProcessing = true;
           orderReady = true;
           goToQR = true;
         });
