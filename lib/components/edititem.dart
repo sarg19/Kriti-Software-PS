@@ -12,11 +12,12 @@ class EditItem extends StatefulWidget {
   int index;
   final Shop_Key;
   Map Menu;
+  final Collection;
   EditItem({Key? key,this.name="",
     this.price=0,
     this.availability,
     this.index=0,
-    this.Shop_Key="",required this.Menu}) : super(key: key);
+    this.Shop_Key="",required this.Menu,this.Collection=""}) : super(key: key);
   @override
   State<EditItem> createState() => _EditItemState();
 }
@@ -179,7 +180,7 @@ class _EditItemState extends State<EditItem> {
                           // print(NameController.text);
                           // print(num.tryParse(PriceController.text));
                           // print(_value);
-                          db.update_menu(widget.Shop_Key, widget.index, widget.Menu, NameController.text, num.tryParse(PriceController.text),_value?1:0);
+                          db.update_menu(widget.Shop_Key, widget.index, widget.Menu, NameController.text, num.tryParse(PriceController.text),_value?1:0,widget.Collection);
                           Navigator.pop(context);
                         },
                         child: Text('OK'),
