@@ -585,6 +585,10 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
         timer.cancel();
         return;
       }
+      if(value==null){
+        timer.cancel();
+        return;
+      }
       setState(() {
         payment_amount = value['Total_Amount'].toString();
       });
