@@ -52,7 +52,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-              height: 396.h,
+              height: widget.shoptype=="stationary"|| widget.shoptype=="grocery"|| widget.shoptype=="stationary"? 290.h:396.h,
               width: 304.w,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -172,6 +172,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                         ],
                       ),
                     ),
+                    widget.shoptype=="stationary"|| widget.shoptype=="grocery"|| widget.shoptype=="stationary"?SizedBox():
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -181,6 +182,7 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                         )
                       ],
                     ),
+                    widget.shoptype=="stationary"|| widget.shoptype=="grocery"|| widget.shoptype=="stationary"?SizedBox():
                     Padding(
                       padding: EdgeInsets.only(top: 10.0.h),
                       child: Row(
