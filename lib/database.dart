@@ -157,7 +157,8 @@ class Databases{
       'Shop_Name':Cart['Shop_Name'],
       'Order_Items':Cart['Items'],
       'Shop_Key':shop_key,
-      'Total_Amount':Cart['Total_Amount']
+      'Total_Amount':Cart['Total_Amount'],
+      'Collection':Collection
     }).then((value){
       Order_Key=value.id;
     });
@@ -167,7 +168,8 @@ class Databases{
       'Shop_Name':Cart['Shop_Name'],
       'Shop_Key':shop_key,
       'Order_Key':Order_Key,
-      'Order_Items':Cart['Items']
+      'Order_Items':Cart['Items'],
+      'Collection':Collection
     });
     shop_info['Pending_Order'].add({
       'Name':user_info["Name"],
