@@ -193,6 +193,16 @@ class ShopkeeperActiveCard extends StatefulWidget {
 }
 class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
   var getResult;
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -302,7 +312,9 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
                                 fontSize: 16.sp,
                               ),
                             ),
-                            onPressed: (){},
+                            onPressed: (){
+                              db.Ready(widget.items['Order_Key']);
+                            },
                           ),
                         ),
                         IconButton(
