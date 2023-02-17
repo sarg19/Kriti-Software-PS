@@ -25,9 +25,9 @@ class Databases{
     Menu['Menu'].add({'Price':_price,'Name':_name,'Available':1});
     usersCollection.doc(shop_key).update({'Menu':Menu['Menu']});
   }
-  Future retrieve_shop_info(String collection,String shop_key) async {
+  Future retrieve_shop_info(String? collection,String? shop_key) async {
     late Map? shop_info;
-    var snapshot=await firestore.collection(collection).doc(shop_key).get();
+    var snapshot=await firestore.collection(collection!).doc(shop_key).get();
     shop_info=snapshot.data();
     return shop_info;
   }
