@@ -823,8 +823,17 @@ class Databases{
       }
     }
     shop_info['Pending_Order'].remove(temp);
+    Map active_temp={};
+    for(var item in shop_info!['Active_Orders']){
+      if(item['Order_Key'] == order_key){
+        active_temp=item;
+        break;
+      }
+    }
+    shop_info['Active_Orders'].remove(active_temp);
     firestore.collection(order_info['Collection']!).doc(order_info['Shop_Key']).update({
-      'Active_Orders':shop_info['Active_Orders']
+      'Active_Orders':shop_info['Active_Orders'],
+      'Pending_Order':shop_info['Pending_Order']
     });
     firestore.collection("users").doc(order_info!['User_Key']).update({
       'Active_Orders':user_info['Active_Orders']
