@@ -48,6 +48,7 @@ class _MiscState extends State<Misc> {
     super.initState();
     initialise();
   }
+  final SearchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -108,6 +109,7 @@ class _MiscState extends State<Misc> {
                       ),
                       height: 40.h,
                       child: TextField(
+                        controller: SearchController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
                           prefixIcon: const Icon(Icons.search_outlined , color: Colors.black),
@@ -126,6 +128,9 @@ class _MiscState extends State<Misc> {
                       itemCount: misclength,
                       itemBuilder: (BuildContext context, int index)
                       {
+                        if(!Misc[index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                          return Container();
+                        }
                         return Padding(
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(

@@ -33,6 +33,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
   String Name='User';
   String Email='abc@example.com';
   int Phone=1234567890;
+  final SearchController = TextEditingController();
   initialise(){
     db=Databases();
     db.initialise();
@@ -121,6 +122,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                             ),
                             height: 40.h,
                             child: TextField(
+                              controller: SearchController,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
                                 prefixIcon: const Icon(Icons.search_outlined , color: Colors.black),
@@ -296,6 +298,9 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                     }
                                     else
                                     {
+                                      if(!marketcomplexshop[index-1]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                                        return Container();
+                                      }
                                       return Padding(
                                         padding: const EdgeInsets.fromLTRB(45, 10, 45, 10),
                                         child: Container(
@@ -392,6 +397,9 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                     }
                                     else
                                     {
+                                      if(!khokhashop[index-1]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                                        return Container();
+                                      }
                                       return Padding(
                                         padding: const EdgeInsets.fromLTRB(45, 10, 45, 10),
                                         child: Container(
@@ -488,6 +496,9 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                     }
                                     else
                                     {
+                                      if(!foodcourtshop[index-1]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                                        return Container();
+                                      }
                                       return Padding(
                                         padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                                         child: Container(
@@ -583,7 +594,9 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                       );
                                     }
                                     else
-                                    {
+                                    {if(!canteenshop[index-1]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                                      return Container();
+                                    }
                                       return Padding(
                                         padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                                         child: Container(
