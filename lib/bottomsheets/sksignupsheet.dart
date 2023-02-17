@@ -213,6 +213,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
+            value.user?.updateDisplayName(collection_name.toString()).then((value) => FirebaseAuth.instance.currentUser?.reload());
         db.create_shop_user(FirebaseAuth.instance.currentUser!.uid,
             num.tryParse(phone), email, name, upi, ownerName, collection_name);
       });
