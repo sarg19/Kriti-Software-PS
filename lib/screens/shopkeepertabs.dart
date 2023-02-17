@@ -1,10 +1,16 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/components/additem.dart';
 import 'package:kriti/popups/shopkeeperProfilePopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/ShopHome.dart';
 import 'package:kriti/screens/menushopkeeper.dart';
 import 'package:kriti/screens/shopkeeperorder.dart';
+
+import '../database.dart';
 
 class ShopkeeperTabs extends StatefulWidget {
   const ShopkeeperTabs({Key? key}) : super(key: key);
@@ -17,6 +23,35 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
   int _currentIndex = 0;
   bool _isopen = true;
   var tabs = [const ShopHome(), const ShopkeeperOrderPage(), const shopmenuscreen()];
+  int counter=0;
+  late Databases db;
+  Map Menu={};
+  late Timer timer;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  Future<void> Reload() async {
+    db.retrieve_menu(FirebaseAuth.instance.currentUser?.uid,FirebaseAuth.instance.currentUser?.displayName).then((value){
+      if(!mounted) return;
+      setState(() {
+        counter=1;
+        Menu=value;
+      });
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    FirebaseAuth.instance.currentUser?.reload().then((value) {
+      timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+        if(_currentIndex==2){
+          Reload();
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     var height= MediaQuery.of(context).size.height;
@@ -73,6 +108,24 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
                 ],
               ),
               body: tabs[_currentIndex],
+              floatingActionButton: _currentIndex==2?FloatingActionButton(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+                child: Image.asset('assets/icons/circleplus.png'),
+                onPressed: (){
+                  print(counter);
+                  if(counter==1){
+                    showDialog(context: context, builder: (BuildContext context){
+                      return ShowPopUp(widgetcontent: AddItem(Shop_Key: FirebaseAuth.instance.currentUser?.uid,Collection: FirebaseAuth.instance.currentUser?.displayName,Menu: Menu,));
+                    });
+                  }
+                },
+              ):Visibility(
+                visible: false,
+                child: FloatingActionButton(
+                  onPressed: (){},
+                ),
+              ),
               bottomNavigationBar: BottomNavigationBar(
                 backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
                 selectedItemColor: Colors.black,
