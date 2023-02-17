@@ -24,6 +24,7 @@ class _homescreenState extends State<homescreen> {
   static dynamic currentPageValue = 0.0;
   String Name="User";
   late Timer timer;
+  final SearchController = TextEditingController();
   late Databases db;
   initialise() {
     db = Databases();
@@ -135,10 +136,11 @@ class _homescreenState extends State<homescreen> {
     );
   }
   Future<void> Reload() async {
-    if(!mounted){
-      return;
-    }
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        timer.cancel();
+        return;
+      }
       setState((){
         Name=value['Name'];
       });

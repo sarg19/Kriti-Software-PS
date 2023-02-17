@@ -124,12 +124,12 @@ class _MyTabbedPageState extends State<ShopHome> {
                           dataSource: _earnings.asMap().entries.map((entry) {
                             final int index = entry.key;
                             final int value = entry.value;
-                            final String day = _days[index];
+                            final String day = _days[_days.length - index - 1];
                             return _ChartData(day,value);
-                          }).toList(),
+                          }).toList().reversed.toList(),
                           xValueMapper: (_ChartData data, _) => data.day,
                           yValueMapper: (_ChartData data, _) => data.earnings,
-                          color: Colors.green
+                          color: Colors.black
                         )
                       ],
                     ),
@@ -145,4 +145,3 @@ class _ChartData {
   final String day;
   final int earnings;
 }
-
