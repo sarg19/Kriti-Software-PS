@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
@@ -23,6 +24,7 @@ class _StationaryTabsState extends State<StationaryTabs> {
   num Phone=123456789;
   late Databases db;
   num _currentStar = 4;
+  bool _isopen = true;
   initialise(){
     db=Databases();
     db.initialise();
@@ -39,11 +41,12 @@ class _StationaryTabsState extends State<StationaryTabs> {
         shopname=value['ShopName'];
         email=value['Email'];
         Phone=value['Number'];
+        _isopen=value['open']==1?true:false;
       });
     });
   }
   int _currentIndex = 0;
-  bool _isopen = true;
+
   var tabs = [const StationaryHomePage(), const StationaryOrderPage()];
   @override
   Widget build(BuildContext context) {
@@ -74,6 +77,7 @@ class _StationaryTabsState extends State<StationaryTabs> {
                   onTap: (){
                     setState(() {
                       _isopen = !_isopen;
+                      db.shopToggle(FirebaseAuth.instance.currentUser?.uid, FirebaseAuth.instance.currentUser?.displayName);
                     });
                   },
                   child: Image.asset(

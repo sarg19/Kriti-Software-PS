@@ -43,6 +43,7 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
       setState(() {
         counter=1;
         Menu=value;
+        _isopen=value['open']==1?true:false;
       });
     });
   }
@@ -97,6 +98,7 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
                   onTap: (){
                     setState(() {
                       _isopen = !_isopen;
+                      db.shopToggle(FirebaseAuth.instance.currentUser?.uid, FirebaseAuth.instance.currentUser?.displayName);
                     });
                   },
                   child: Image.asset(

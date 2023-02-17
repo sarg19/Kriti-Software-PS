@@ -483,10 +483,10 @@ class Databases{
     }
   }
 
-  void shopToggle(String shop_key , String collection) async {
+  void shopToggle(String? shop_key , String? collection) async {
     late Map? shop_info;
-    final CollectionReference usersCollection = firestore.collection(collection);
-    var snapshot=await firestore.collection(collection).doc(shop_key).get();
+    final CollectionReference usersCollection = firestore.collection(collection!);
+    var snapshot=await firestore.collection(collection!).doc(shop_key).get();
     shop_info=snapshot.data();
 
     if(shop_info!['open'] == 1){

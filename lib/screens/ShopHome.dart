@@ -19,7 +19,7 @@ class _MyTabbedPageState extends State<ShopHome> {
   int _currentIndex = 0;
   bool _isopen = true;
   List _earnings = [0,0,0,0,0,0,0];
-  List _days = ["Mon","Tue","Wed","Thur","Fri","Sat","Sun"];
+  List _days = ["6","5","4","3","2","1","0"];
   late Timer timer;
   late Databases db;
   String Name="Shop";
@@ -158,6 +158,8 @@ class _MyTabbedPageState extends State<ShopHome> {
                         ),
                         series: <LineSeries>[
                           LineSeries<_ChartData,String>(
+                            yAxisName: 'Ruppees',
+                            xAxisName: 'Days Before',
                             dataSource: _earnings.asMap().entries.map((entry) {
                               final int index = entry.key;
                               final int value = entry.value;
