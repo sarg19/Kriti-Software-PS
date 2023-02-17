@@ -30,6 +30,7 @@ class _StationaryScreenState extends State<StationaryScreen> {
   String Email='abc@example.com';
   int Phone=1234567890;
   late Timer timer;
+  final SearchController = TextEditingController();
   initialise() {
     db = Databases();
     db.initialise();
@@ -110,6 +111,7 @@ class _StationaryScreenState extends State<StationaryScreen> {
                       ),
                       height: 40.h,
                       child: TextField(
+                        controller: SearchController,
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
                           prefixIcon: const Icon(Icons.search_outlined , color: Colors.black),
@@ -128,6 +130,9 @@ class _StationaryScreenState extends State<StationaryScreen> {
                       itemCount: stationarysize,
                       itemBuilder: (BuildContext context, int index)
                       {
+                        if(!stationary[index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
+                          return Container();
+                        }
                         return Padding(
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
