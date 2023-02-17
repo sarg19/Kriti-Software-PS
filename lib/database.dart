@@ -645,4 +645,55 @@ class Databases{
       'Cart':user_info['Cart']
     });
   }
+  void accepted(String userId,String shop_key,String order_key,String collection) async {
+    late Map? user_info;
+    var snapshot=await firestore.collection("users").doc(userId).get();
+    user_info=snapshot.data();
+
+
+
+    for(var item in user_info!['Active_Orders']){
+      if(item['Order_Key'] == order_key){
+        item['Status'] = "Approved";
+        break;
+      }
+    }
+
+    firestore.collection("users").doc(userId).update({
+      'Active_Orders':user_info['Active_Orders']
+    });
+
+    late Map? shop_info;
+    var snapshot2=await firestore.collection(collection).doc(shop_key).get();
+    shop_info=snapshot2.data();
+
+    var index = 0;
+    for(var item in shop_info!['Pending_Orders']){
+      if(item['Order_Key'] == order_key){
+        break;
+      }
+      index++;
+    }
+
+    shop_info['Pending_Orders'].removeAt(index);
+
+    firestore.collection(collection).doc(shop_key).update({
+      'Pending_Orders':shop_info['Pending_Orders']
+    });
+
+    late Map? order_info;
+    var snapshot3=await firestore.collection('orders').doc(order_key).get();
+    order_info=snapshot3.data();
+
+    order_info!['Status'] = "Approved";
+
+    firestore.collection("orders").doc(order_key).update({
+      'Status':order_info['Status']
+    });
+
+
+
+
+
+  }
 }
