@@ -5,7 +5,8 @@ import '../database.dart';
 class AddItem extends StatefulWidget {
   final Shop_Key;
   Map Menu;
-  AddItem({Key? key,this.Shop_Key="",required this.Menu}) : super(key: key);
+  final Collection;
+  AddItem({Key? key,this.Shop_Key="",required this.Menu,this.Collection=""}) : super(key: key);
 
   @override
   State<AddItem> createState() => _AddItemState();
@@ -148,7 +149,7 @@ class _AddItemState extends State<AddItem> {
                           if(num.tryParse(PriceController.text).runtimeType==null){
                             print("wrong input");
                           }else{
-                            db.add_menu_item(widget.Shop_Key, widget.Menu, NameController.text,num.tryParse(PriceController.text));
+                            db.add_menu_item(widget.Shop_Key, widget.Menu, NameController.text,num.tryParse(PriceController.text),widget.Collection);
                           }
                           Navigator.pop(context);
                         },

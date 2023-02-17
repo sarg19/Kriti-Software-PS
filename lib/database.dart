@@ -6,22 +6,22 @@ class Databases{
   initialise(){
     firestore = FirebaseFirestore.instance;
   }
-  Future retrieve_menu(String shop_key,String collection_name) async {
+  Future retrieve_menu(String? shop_key,String? collection_name) async {
     late Map? shop_info;
-    var snapshot = await firestore.collection(collection_name).doc(shop_key).get();
+    var snapshot = await firestore.collection(collection_name!).doc(shop_key).get();
     shop_info=snapshot.data();
     return shop_info;
   }
-  void update_menu(String shop_key,int index,Map Menu,String _name,num? _price,num _available) async {
-    final CollectionReference usersCollection = firestore.collection('shops');
+  void update_menu(String shop_key,int index,Map Menu,String _name,num? _price,num _available,String Collection) async {
+    final CollectionReference usersCollection = firestore.collection(Collection);
 
     Menu['Menu'][index]['Price']=_price;
     Menu['Menu'][index]['Name']=_name;
     Menu['Menu'][index]['Available']=_available;
     usersCollection.doc(shop_key).update({'Menu':Menu['Menu']});
   }
-  void add_menu_item(String shop_key,Map Menu,String _name,num? _price) async {
-    final CollectionReference usersCollection = firestore.collection('shops');
+  void add_menu_item(String shop_key,Map Menu,String _name,num? _price,String Collection) async {
+    final CollectionReference usersCollection = firestore.collection(Collection);
     Menu['Menu'].add({'Price':_price,'Name':_name,'Available':1});
     usersCollection.doc(shop_key).update({'Menu':Menu['Menu']});
   }

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kriti/components/additem.dart';
 import 'package:kriti/components/edititem.dart';
@@ -36,9 +38,12 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
   void initState(){
     super.initState();
     initialise();
-    timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
-      Reload();
+    FirebaseAuth.instance.currentUser?.reload().then((value){
+      timer = Timer.periodic(Duration(milliseconds: 100), (timer) {
+        Reload();
+      });
     });
+
 
   }
   @override
@@ -102,8 +107,9 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                               price: Menu['Menu'][index]['Price'],
                               availability: Menu['Menu'][index]['Available']==1?"Available":"Unavailable",
                               index: index,
-                              Shop_Key: "kOFNcRZ9JnFFiW3AtXzj",
+                              Shop_Key: FirebaseAuth.instance.currentUser?.uid,
                               Menu: Menu,
+                              Collection: FirebaseAuth.instance.currentUser?.displayName
                             )
                           );
                           // if(Menu['menu'][index]['Available']==1) {
@@ -126,7 +132,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
             );
   }
   Future<void> Reload() async {
-    db.retrieve_menu("kOFNcRZ9JnFFiW3AtXzj",'shops').then((value){
+    db.retrieve_menu(FirebaseAuth.instance.currentUser?.uid,FirebaseAuth.instance.currentUser?.displayName).then((value){
       if(!mounted) return;
       setState(() {
         Menu=value;
@@ -143,13 +149,15 @@ class ShopkeeperMenuCard extends StatelessWidget {
   int index;
   final Shop_Key;
   Map Menu;
+  final Collection;
   ShopkeeperMenuCard({
     this.name = "",
     this.price = 0,
     this.availability="",
     this.index=0,
     this.Shop_Key="",
-    required this.Menu
+    required this.Menu,
+    this.Collection=""
   });
 
   @override
@@ -236,7 +244,7 @@ class ShopkeeperMenuCard extends StatelessWidget {
                           ),
                           onPressed: (){
                             showDialog(context: context, builder: (BuildContext context){
-                              return ShowPopUp(widgetcontent: EditItem(name: name,price: price,availability: availability,index: index,Shop_Key: Shop_Key,Menu: Menu,));
+                              return ShowPopUp(widgetcontent: EditItem(name: name,price: price,availability: availability,index: index,Shop_Key: Shop_Key,Menu: Menu,Collection: Collection,));
                             });
                           },
                         ),
