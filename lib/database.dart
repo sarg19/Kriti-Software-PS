@@ -704,21 +704,18 @@ class Databases{
     late Map? user_info;
     var snapshot=await firestore.collection("users").doc(userId).get();
     user_info=snapshot.data();
-    Map shop_item={};
     for(var item in user_info!['Active_Orders']){
       if(item['Order_Key'] == order_key){
-        shop_item=item;
+        item['Status']="Rejected";
         break;
       }
     }
-    user_info!['Active_Orders'].remove(shop_item);
     firestore.collection("users").doc(userId).update({
       'Active_Orders':user_info['Active_Orders']
     });
     late Map? shop_info;
     var snapshot2=await firestore.collection(collection!).doc(shop_key).get();
     shop_info=snapshot2.data();
-    print(shop_info);
     Map temp={};
     for(var item in shop_info!['Pending_Order']){
       if(item['Order_Key'] == order_key){
@@ -730,7 +727,9 @@ class Databases{
     firestore.collection(collection).doc(shop_key).update({
       'Pending_Order':shop_info['Pending_Order']
     });
-    await firestore.collection('orders').doc(order_key).delete();
+    await firestore.collection('orders').doc(order_key).update({
+      'Status':"Rejected"
+    });
   }
   void PaymentSuccess(String order_key) async{
     late Map? order_info;
