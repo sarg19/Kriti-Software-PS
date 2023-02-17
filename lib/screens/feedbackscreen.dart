@@ -160,6 +160,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         ),
                         onPressed: (){
                           db.rating(_currentButton, widget.shop_key, widget.collection);
+                          Navigator.pop(context);
                         },
                         child: const Text('Submit')
                     )
