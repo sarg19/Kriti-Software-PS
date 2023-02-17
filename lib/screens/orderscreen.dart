@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +16,7 @@ class OrderPage extends StatefulWidget {
 }
 
 class _OrderPageState extends State<OrderPage> {
+  late Timer timer;
   late Map user_info;
   late Databases db;
   int completedlength = 0;
@@ -28,6 +31,14 @@ class _OrderPageState extends State<OrderPage> {
   void initState() {
     super.initState();
     initialise();
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) { Reload();});
+  }
+
+  Future<void> Reload() async{
+    if(!mounted){
+      timer.cancel;
+      return;
+    }
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value) {
       setState(() {
         user_info = value;

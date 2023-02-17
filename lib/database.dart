@@ -771,7 +771,7 @@ class Databases{
     order_info=snapshot3.data();
     late Map? user_info;
     var snapshot=await firestore.collection("users").doc(order_info!['User_Key']).get();
-    user_info=snapshot.data();
+    user_info=await snapshot.data();
     late Map? shop_info;
     var snapshot2=await firestore.collection(order_info['Collection']!).doc(order_info['Shop_Key']).get();
     shop_info=snapshot2.data();

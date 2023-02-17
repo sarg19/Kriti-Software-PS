@@ -56,6 +56,7 @@ class _cartscreenState extends State<cartscreen> {
     super.initState();
     initialise();
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value) {
+      if(!mounted) return;
       setState(() {
         counter=1;
         user_data = value;

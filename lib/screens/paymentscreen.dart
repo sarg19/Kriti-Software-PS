@@ -64,7 +64,7 @@ class _PaymentPageState extends State<PaymentPage> {
       app: app,
       receiverUpiId: widget.upi_id,
       receiverName: widget.shop_name,
-      transactionRefId: 'TestingUpiIndiaPlugin',
+      transactionRefId: "knowshop${widget.order_key}",
       transactionNote: 'Paying to merchant',
       flexibleAmount: false,
       amount: int.parse(widget.payment_amount).toDouble(),

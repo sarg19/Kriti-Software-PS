@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
 import 'package:kriti/popups/profilepopup.dart';
+import 'package:kriti/popups/qr.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/paymentscreen.dart';
@@ -373,7 +374,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         ),
                         onPressed: () {
                           // db.PaymentSuccess(widget.order_uid);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name, order_key: '',)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name, order_key: widget.order_uid,)));
                         },
                         child: Text(
                           'Make Payment',
@@ -524,7 +525,11 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         )
                       )
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(context: context, builder: (BuildContext context){
+                        return ShowPopUp(widgetcontent: QRCard(order_key: widget.order_uid));
+                      });
+                    },
                     child: Text(
                       'Go to QR',
                       style: TextStyle(
@@ -550,7 +555,11 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                             )
                         )
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      timer.cancel();
+                      Navigator.pop(context);
+                      db.OrderDelete(widget.order_uid);
+                    },
                     child: Text(
                       'Cancel Order',
                       style: TextStyle(
@@ -571,7 +580,6 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
     );
   }
   Future<void> Reload()async{
-    // print(widget.order_uid);
     db.get_order_details(widget.order_uid).then((value) {
       if(!mounted) {
         timer.cancel();
