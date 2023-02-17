@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../components/bottom_nav_bar.dart';
 import '../components/bottomnavbarshop.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
 class ShopHome extends StatefulWidget {
   const ShopHome({super.key});
 
@@ -12,6 +13,9 @@ class ShopHome extends StatefulWidget {
 class _MyTabbedPageState extends State<ShopHome> {
   int _currentIndex = 0;
   bool _isopen = true;
+  List _earnings = [2000,3000,4000,3200,0,1200,1000];
+  List _days = ["Mon","Tue","Wed","Thur","Fri","Sat","Sun"];
+
   @override
   Widget build(BuildContext context) {
     var height= MediaQuery.of(context).size.height;
@@ -21,35 +25,35 @@ class _MyTabbedPageState extends State<ShopHome> {
                 // crossAxisAlignment: CrossAxisAlignment.values,
                 children: [
                   SizedBox(
-                    height: 3.h,
+                    height: 3,
                   ),
                   Text(
                     'Subansiri Canteen',
                     style: TextStyle(
-                      fontSize: 30.sp,
+                      fontSize: 30,
                       color: Colors.black,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
-                    height: 3.h,
+                    height: 3,
                   ),
                   Text(
                     _isopen? 'Now Open' : 'Now Closed',
                     style: TextStyle(
-                      fontSize: 15.sp,
+                      fontSize: 15,
                       color: Color.fromRGBO(114, 114, 114, 1.0),
                     ),
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(
-                    height: 30.sp,
+                    height: 30,
                   ),
                   Center(
                     child: Container(
                       alignment: const Alignment(0,-1),
-                      height: 98.h,
-                      width: 200.w,
+                      height: 98,
+                      width: 200,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
@@ -68,7 +72,7 @@ class _MyTabbedPageState extends State<ShopHome> {
                           child: Text(
                             'Add Offer',
                             style: TextStyle(
-                              fontSize: 20.sp,
+                              fontSize: 20,
                               color: Color.fromRGBO(114, 114, 114, 1.0),
                             ),
                             textAlign: TextAlign.center,
@@ -78,13 +82,13 @@ class _MyTabbedPageState extends State<ShopHome> {
                     ),
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 20,
                   ),
                   Center(
                     child: Container(
                       alignment: const Alignment(0,-1),
-                      height: 43.h,
-                      width: 300.w,
+                      height: 43,
+                      width: 300,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
@@ -94,7 +98,7 @@ class _MyTabbedPageState extends State<ShopHome> {
                         child: Text(
                           "Today's Earning is Rs.500",
                           style: TextStyle(
-                            fontSize: 20.sp,
+                            fontSize: 20,
                             color: Colors.black,
                           ),
                           textAlign: TextAlign.center,
@@ -103,18 +107,42 @@ class _MyTabbedPageState extends State<ShopHome> {
                     ),
                   ),
                   SizedBox(
-                    height: 50.h,
+                    height: 50,
                   ),
                   Container(
-                    height: 250.h,
-                    width: 250.w,
+                    height: 250,
+                    width: 250,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: const Color.fromRGBO(244, 233, 255, 1.0),
+                      color: Color.fromRGBO(244, 233, 255, 1.0),
                       shape: BoxShape.rectangle,
+                    ),
+                    child: SfCartesianChart(
+                      primaryXAxis: CategoryAxis(),
+                      series: <LineSeries>[
+                        LineSeries<_ChartData,String>(
+                          dataSource: _earnings.asMap().entries.map((entry) {
+                            final int index = entry.key;
+                            final int value = entry.value;
+                            final String day = _days[index];
+                            return _ChartData(day,value);
+                          }).toList(),
+                          xValueMapper: (_ChartData data, _) => data.day,
+                          yValueMapper: (_ChartData data, _) => data.earnings,
+                          color: Colors.green
+                        )
+                      ],
                     ),
                   ),
                 ],
               );
   }
 }
+
+class _ChartData {
+  _ChartData(this.day, this.earnings);
+
+  final String day;
+  final int earnings;
+}
+
