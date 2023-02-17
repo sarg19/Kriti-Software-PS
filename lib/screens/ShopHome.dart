@@ -118,7 +118,9 @@ class _MyTabbedPageState extends State<ShopHome> {
                       shape: BoxShape.rectangle,
                     ),
                     child: SfCartesianChart(
-                      primaryXAxis: CategoryAxis(),
+                      primaryXAxis: CategoryAxis(
+                        majorGridLines: MajorGridLines(color: Colors.transparent),
+                      ),
                       series: <LineSeries>[
                         LineSeries<_ChartData,String>(
                           dataSource: _earnings.asMap().entries.map((entry) {
