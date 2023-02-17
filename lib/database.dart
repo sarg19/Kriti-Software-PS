@@ -374,7 +374,9 @@ class Databases{
         'UserName':user_name,
         'collection':collection,
         'open':0,
-        'type':"Food"
+        'type':"Food",
+        "current_rating":0,
+        "total_review":0
       });
     }
     else if(collection=='food-foodcourt'){
@@ -392,7 +394,9 @@ class Databases{
         'UserName':user_name,
         'collection':collection,
         'open':0,
-        'type':"Food"
+        'type':"Food",
+        "current_rating":0,
+        "total_review":0
       });
     }
     else if(collection=='food-khokha'){
@@ -410,7 +414,9 @@ class Databases{
         'UserName':user_name,
         'collection':collection,
         'open':0,
-        'type':"Food"
+        'type':"Food",
+        "current_rating":0,
+        "total_review":0
       });
     }
     else if(collection=='food-marketcomplex'){
@@ -428,7 +434,9 @@ class Databases{
         'UserName':user_name,
         'collection':collection,
         'open':0,
-        'type':"Food"
+        'type':"Food",
+        "current_rating":0,
+        "total_review":0
       });
     }
     final CollectionReference shopCollection5 = firestore.collection('grocery');
