@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../database.dart';
@@ -25,16 +26,24 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
   void initState() {
     super.initState();
     initialise();
-    db.retrieve_shop_info("shops", "kOFNcRZ9JnFFiW3AtXzj").then((value){
-      setState((){
-        Pending_Order=value['Pending_Order'];
-        Active_Order=value['Active_Order'];
-        pendinglength=Pending_Order.length;
-        activelength=Active_Order.length;
+
+    Future<void> Reload() async {
+      if(!mounted){
+        timer.cancel();
+        return;
+      }
+      db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid).then((value){
+        setState((){
+          Pending_Order=value['Pending_Order'];
+          Active_Order=value['Active_Orders'];
+          pendinglength=Pending_Order.length;
+          activelength=Active_Order.length;
+        });
       });
+    }
+    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
     });
-    // timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
-    // });
   }
   int _currentIndex = 0;
   List GrandList = [
