@@ -26,6 +26,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
       width;
 
   String order_status = "";
+  String upi_id = "";
+  String payment_amount = "";
+  String shop_name = "";
   late Timer timer;
   late Databases db;
   late Map user_info;
@@ -368,7 +371,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                           )
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name,)));
                         },
                         child: Text(
                           'Make Payment',
@@ -547,6 +550,12 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
         return;
       }
       setState(() {
+        payment_amount = value['Total_Amount'].toString();
+      });
+      setState(() {
+        shop_name = value['Shop_Name'];
+      });
+      setState(() {
         order_status = value['Status'];
       });
       // print(order_status);
@@ -569,6 +578,14 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
           goToQR = true;
         });
       }
+      db.getUserType(value['Shop_Key']).then((collection) {
+        db.retrieve_shop_info(collection, value['Shop_Key']).then((shopinfo) {
+          if(!mounted) return;
+          setState(() {
+            upi_id = shopinfo['UPI_id'];
+          });
+        });
+      });
     });
   }
 }

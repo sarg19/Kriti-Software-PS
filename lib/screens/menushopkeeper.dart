@@ -57,7 +57,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(70.0,10.0,70.0,10.0),
+                      padding: EdgeInsets.fromLTRB(70.0.w,10.0.h,70.0.w,10.0.h),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
@@ -67,7 +67,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                         child: TextField(
                           controller: SearchController,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 7, 0, 5),
+                            contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
                             prefixIcon: Icon(Icons.search_outlined , color: Colors.black),
                             border: InputBorder.none,
                             fillColor: Colors.white,
@@ -81,7 +81,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                     ),
                     SizedBox(
                       child: Text(
-                        "Kapili Canteen",
+                        Menu['ShopName'],
                         style: TextStyle(
                           fontSize: 25.sp,
                           fontFamily: 'DM Sans'
@@ -89,7 +89,7 @@ class _shopmenuscreenState extends State<shopmenuscreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 20.h,
                     ),
                     Container(
                       height: 550.h,
@@ -178,7 +178,7 @@ class ShopkeeperMenuCard extends StatelessWidget {
                     )
                 ),
                 padding: EdgeInsets.fromLTRB(20.w, 20.h, 0, 0),
-                height: 80.h,
+                height: 90.h,
                 width: 280.w,
                 child: Stack(
                   children:[

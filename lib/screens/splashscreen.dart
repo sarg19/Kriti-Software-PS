@@ -49,7 +49,8 @@ class _SplashScreenState extends State<SplashScreen> {
           type = value;
         });
       });
-      await Future.delayed(const Duration(seconds: 10), () {});
+      await Future.delayed(const Duration(seconds: 5), () {});
+      print(type);
       if(type=="users"){
         Navigator.pushReplacement(
             context,
@@ -63,7 +64,11 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => groceryandmiscellaneous()));
 
       } else if(type=="none"){
-
+        FirebaseAuth.instance.signOut();
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: const ChoiceScreen(), type: PageTransitionType.fade));
       } else {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ShopkeeperTabs()));
       }

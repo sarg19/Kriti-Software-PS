@@ -28,11 +28,11 @@ class _ShopkeeperOrderPageState extends State<ShopkeeperOrderPage> {
     initialise();
 
     Future<void> Reload() async {
-      if(!mounted){
-        timer.cancel();
-        return;
-      }
       db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid).then((value){
+        if(!mounted){
+          timer.cancel();
+          return;
+        }
         setState((){
           Pending_Order=value['Pending_Order'];
           Active_Order=value['Active_Orders'];

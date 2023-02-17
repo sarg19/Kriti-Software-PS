@@ -11,14 +11,19 @@ import 'package:upi_india/upi_india.dart';
 // };
 
 class PaymentPage extends StatefulWidget {
+  final String upi_id;
+  final String payment_amount;
+  final String shop_name;
+  PaymentPage({Key? key,required this.upi_id, required this.payment_amount, required this.shop_name}) : super(key: key);
+
   @override
   _PaymentPageState createState() => _PaymentPageState();
 }
 
 class _PaymentPageState extends State<PaymentPage> {
-  var receiverupiid;
-  var receiverupiname;
-  var amount;
+  // var receiverupiid;
+  // var receiverupiname;
+  // var amount;
   Future<UpiResponse>? _transaction;
   UpiIndia _upiIndia = UpiIndia();
   List<UpiApp>? apps;
@@ -48,26 +53,26 @@ class _PaymentPageState extends State<PaymentPage> {
   Future<UpiResponse> initiateTransaction(UpiApp app) async {
     return _upiIndia.startTransaction(
       app: app,
-      receiverUpiId: receiverupiid,
-      receiverName: receiverupiname,
+      receiverUpiId: widget.upi_id,
+      receiverName: widget.shop_name,
       transactionRefId: 'TestingUpiIndiaPlugin',
-      transactionNote: 'Not actual. Just an example.',
+      transactionNote: 'Paying to merchant',
       flexibleAmount: false,
-      amount: int.parse(amount).toDouble(),
+      amount: int.parse(widget.payment_amount).toDouble(),
     );
   }
 
   Widget displayUpiApps() {
-    if (apps == null)
-      return Center(child: CircularProgressIndicator());
-    else if (apps!.length == 0)
+    if (apps == null) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (apps!.length == 0) {
       return Center(
         child: Text(
           "No apps found to handle transaction.",
           style: header,
         ),
       );
-    else
+    } else {
       return Align(
         alignment: Alignment.topCenter,
         child: SingleChildScrollView(
@@ -100,6 +105,7 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ),
       );
+    }
   }
 
   String _upiErrorHandler(error) {
@@ -232,7 +238,9 @@ class _PaymentPageState extends State<PaymentPage> {
                                         borderRadius: BorderRadius.all(Radius.circular(20))
                                     ),
                                     child: TextButton(
-                                      onPressed: ()=>print("Gone to the order status page"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
                                       child: Text("Order status",style:TextStyle(color:Color.fromRGBO(
                                           255, 255, 255, 1.0),),),
                                     )

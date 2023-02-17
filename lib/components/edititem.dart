@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../database.dart';
 
@@ -53,11 +54,11 @@ class _EditItemState extends State<EditItem> {
       child: Column(
         children: [
           SizedBox(
-            height: 10,
+            height: 10.h,
           ),
           Container(
-            padding: EdgeInsets.only(left: 10),
-            height: 50,
+            padding: EdgeInsets.only(left: 10.w),
+            height: 50.h,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,9 +69,9 @@ class _EditItemState extends State<EditItem> {
                     Navigator.pop(context);
                   },
                 ),
-                const Text(
+                Text(
                   'Edit Item',
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: 24.sp),
                 ),
                 GestureDetector(
                   onTap: (){
@@ -80,8 +81,8 @@ class _EditItemState extends State<EditItem> {
                   },
                   child: Image.asset(
                     _value ? 'assets/icons/Toggle-on.png' : 'assets/icons/Toggle-off.png',
-                    height: 50,
-                    width: 63,
+                    height: 50.h,
+                    width: 63.w,
                   ),
                 ),
               ],
@@ -94,11 +95,11 @@ class _EditItemState extends State<EditItem> {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: Text(
                               'Item',
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 13.sp,
                                 fontFamily: 'DMSans'
                               ),
                           ),
@@ -106,7 +107,7 @@ class _EditItemState extends State<EditItem> {
                       ],
                     ),
                     Container(
-                      height: 50,
+                      height: 50.h,
                       child: TextField(
                         controller: NameController,
                         decoration: InputDecoration(
@@ -119,16 +120,16 @@ class _EditItemState extends State<EditItem> {
                       ),
                     ),
                     SizedBox(
-                      height: 14,
+                      height: 14.h,
                     ),
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: Text(
                               'Price',
                                style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 13.sp,
                                 fontFamily: 'DMSans'
                             ),
                           ),
@@ -136,7 +137,7 @@ class _EditItemState extends State<EditItem> {
                       ],
                     ),
                     Container(
-                      height: 50,
+                      height: 50.h,
                       child: TextField(
                         keyboardType: TextInputType.number,
                         controller: PriceController,
@@ -150,7 +151,7 @@ class _EditItemState extends State<EditItem> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     // ElevatedButton(
                     //   onPressed: () {},
                     //   child: Container(
@@ -166,7 +167,7 @@ class _EditItemState extends State<EditItem> {
                     //   // child: Text('OK'),
                     // ),
                     Container(
-                      width: 100,
+                      width: 100.w,
                       child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(Color.fromRGBO(188, 156, 255, 1)),

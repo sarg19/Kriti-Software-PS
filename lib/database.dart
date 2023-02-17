@@ -464,6 +464,7 @@ class Databases{
         'Email': email,
         'Number': p_number,
         'Verified':0,
+        'UPI_id':upi_id,
         'Pending_Order': [],
         'ShopName': shop_name,
         'UserName': user_name,

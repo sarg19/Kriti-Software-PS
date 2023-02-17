@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../database.dart';
 
@@ -41,17 +42,17 @@ class _AddItemState extends State<AddItem> {
       child: Column(
         children: [
           SizedBox(
-            height: 10,
+            height: 10.h,
           ),
           Container(
-            padding: EdgeInsets.only(left: 5,right: 50),
-            height: 50,
+            padding: EdgeInsets.only(left: 5.w,right: 50.w),
+            height: 50.h,
             width: double.infinity,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const ImageIcon(AssetImage('assets/icons/back.png')),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -61,7 +62,7 @@ class _AddItemState extends State<AddItem> {
                     alignment: Alignment.center,
                     child: Text(
                       'Add Item',
-                      style: TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: 24.sp),
                     ),
                   ),
                 ),
@@ -75,11 +76,11 @@ class _AddItemState extends State<AddItem> {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.only(left: 20.w),
                           child: Text(
                             'Item',
                             style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 13.sp,
                                 fontFamily: 'DMSans'
                             ),
                           ),
@@ -87,7 +88,7 @@ class _AddItemState extends State<AddItem> {
                       ],
                     ),
                     Container(
-                      height: 50,
+                      height: 50.h,
                       child: TextField(
                         controller: NameController,
                         decoration: InputDecoration(
@@ -100,7 +101,7 @@ class _AddItemState extends State<AddItem> {
                       ),
                     ),
                     SizedBox(
-                      height: 14,
+                      height: 14.h,
                     ),
                     Row(
                       children: [
@@ -109,7 +110,7 @@ class _AddItemState extends State<AddItem> {
                           child: Text(
                             'Price',
                             style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 13.sp,
                                 fontFamily: 'DMSans'
                             ),
                           ),
@@ -117,7 +118,7 @@ class _AddItemState extends State<AddItem> {
                       ],
                     ),
                     Container(
-                      height: 50,
+                      height: 50.h,
                       child: TextField(
                         controller: PriceController,
                         keyboardType: TextInputType.number,
@@ -131,9 +132,9 @@ class _AddItemState extends State<AddItem> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     Container(
-                      width: 100,
+                      width: 100.w,
                       child: ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Color.fromRGBO(188, 156, 255, 1)),

@@ -70,7 +70,7 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
           coltype = value;
         });
       });
-      await Future.delayed(const Duration(seconds: 10), () {});
+      await Future.delayed(const Duration(seconds: 5), () {});
       print("coltype: $coltype");
       if(coltype=="users"){
         Navigator.pop(context);
