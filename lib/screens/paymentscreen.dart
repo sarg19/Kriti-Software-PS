@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/database.dart';
 import 'package:kriti/popups/profilepopup.dart';
 import 'package:kriti/popups/showPopUp.dart';
 import 'package:upi_india/upi_india.dart';
@@ -11,10 +12,11 @@ import 'package:upi_india/upi_india.dart';
 // };
 
 class PaymentPage extends StatefulWidget {
+  final String order_key;
   final String upi_id;
   final String payment_amount;
   final String shop_name;
-  PaymentPage({Key? key,required this.upi_id, required this.payment_amount, required this.shop_name}) : super(key: key);
+  PaymentPage({Key? key,required this.upi_id, required this.payment_amount, required this.shop_name, required this.order_key}) : super(key: key);
 
   @override
   _PaymentPageState createState() => _PaymentPageState();
@@ -38,6 +40,12 @@ class _PaymentPageState extends State<PaymentPage> {
     fontSize: 14,
   );
 
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
+
   @override
   void initState() {
     _upiIndia.getAllUpiApps(mandatoryTransactionId: false).then((value) {
@@ -48,6 +56,7 @@ class _PaymentPageState extends State<PaymentPage> {
       apps = [];
     });
     super.initState();
+    initialise();
   }
 
   Future<UpiResponse> initiateTransaction(UpiApp app) async {
@@ -229,16 +238,17 @@ class _PaymentPageState extends State<PaymentPage> {
                               displayTransactionData('Reference Id', txnRef),
                               displayTransactionData('Status', status.toUpperCase()),
                               displayTransactionData('Approval No', approvalRef),
-                              status.toUpperCase()=="SUCCESS" ?Text("Payment not Completed"):Center(
+                              status.toUpperCase()=="FAILURE" ?Text("Payment not Completed"):Center(
                                 child: Container(
-                                    width:MediaQuery.of(context).size.width*0.7,
-                                    height: MediaQuery.of(context).size.height*0.1,
-                                    color:Color.fromRGBO(188, 157, 255, 1.0),
+                                    width:160.w,
+                                    height: 50.h,
                                     decoration: BoxDecoration(
+                                        color:Color.fromRGBO(188, 157, 255, 1.0),
                                         borderRadius: BorderRadius.all(Radius.circular(20))
                                     ),
                                     child: TextButton(
                                       onPressed: () {
+                                        db.PaymentSuccess(widget.order_key);
                                         Navigator.pop(context);
                                       },
                                       child: Text("Order status",style:TextStyle(color:Color.fromRGBO(

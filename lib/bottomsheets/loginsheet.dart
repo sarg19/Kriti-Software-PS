@@ -66,15 +66,9 @@ class _LoginSheetState extends State<LoginSheet> {
               print(user_info);
             });
       });
-      db.getUserType(FirebaseAuth.instance.currentUser!.uid).then((value) {
-        setState(() {
-          type = value;
-        });
-      });
       if (!mounted) return;
-      // if (!FirebaseAuth.instance.currentUser!.emailVerified) return;
-      await Future.delayed(const Duration(seconds: 2), () {});
-      if(type=="users"){
+      print(FirebaseAuth.instance.currentUser!.displayName);
+      if(FirebaseAuth.instance.currentUser!.displayName=="users"){
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => CustomerTabs(currentIndex: 0)),
                 (Route route) => false);

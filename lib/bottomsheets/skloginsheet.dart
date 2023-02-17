@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
 import 'package:kriti/popups/changepassword.dart';
 import 'package:kriti/popups/showPopUp.dart';
+import 'package:kriti/screens/choicescreen.dart';
 import 'package:kriti/screens/shopkeepertabs.dart';
 import 'package:kriti/widgets/textfield.dart';
 import 'package:kriti/screens/stationarytabs.dart';
@@ -63,37 +64,40 @@ class _SkLoginSheetState extends State<SkLoginSheet> {
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      db.getUserType(FirebaseAuth.instance.currentUser!.uid).then((value) {
-        if (!mounted) return;
-        print("object");
-        setState(() {
-          coltype = value;
-        });
-      });
-      await Future.delayed(const Duration(seconds: 5), () {});
-      print("coltype: $coltype");
-      if(coltype=="users"){
+      // db.getUserType(FirebaseAuth.instance.currentUser!.uid).then((value) {
+      //   if (!mounted) return;
+      //   print("object");
+      //   setState(() {
+      //     coltype = value;
+      //   });
+      // });
+      // await Future.delayed(const Duration(seconds: 5), () {});
+      // print("coltype: $coltype");
+      if(FirebaseAuth.instance.currentUser!.displayName=="users"){
         Navigator.pop(context);
         FirebaseAuth.instance.signOut();
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text(
                 "This email is registered as a customer.")));
         return;
-      } else if(coltype=="stationary"){
+      } else if(FirebaseAuth.instance.currentUser!.displayName=="stationary"){
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => StationaryTabs(coltype: coltype,)),
+            MaterialPageRoute(builder: (context) => StationaryTabs(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),)),
                 (Route route) => false);
 
-      } else if(coltype=="grocery" || coltype=="miscellaneous"){
+      } else if(FirebaseAuth.instance.currentUser!.displayName=="grocery" || FirebaseAuth.instance.currentUser!.displayName=="miscellaneous"){
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => groceryandmiscellaneous(coltype: coltype,)),
+            MaterialPageRoute(builder: (context) => groceryandmiscellaneous(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),)),
                 (Route route) => false);
 
-      } else if(coltype=="none"){
-
+      } else if(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 3)=="food"){
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) =>  ShopkeeperTabs(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),)),
+                (Route route) => false);
       } else {
+        FirebaseAuth.instance.signOut();
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) =>  ShopkeeperTabs(coltype: coltype,)),
+            MaterialPageRoute(builder: (context) =>  ChoiceScreen()),
                 (Route route) => false);
       }
     } on FirebaseAuthException catch (e) {

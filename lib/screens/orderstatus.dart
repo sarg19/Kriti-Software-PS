@@ -29,6 +29,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
   String upi_id = "";
   String payment_amount = "";
   String shop_name = "";
+  String order_key = "";
   late Timer timer;
   late Databases db;
   late Map user_info;
@@ -46,7 +47,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
   }
 
   bool requestApproved = false;
-  // bool requestRejected = !requestApproved;
+  bool requestRejected = false;
   bool showMakePaymentButton = false;
   bool paymentSuccessful = false;
   bool orderProcessing = false;
@@ -237,7 +238,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                   ],
                 ),
                 Visibility(
-                  visible: requestApproved,
+                  visible: requestApproved | requestRejected,
                   child: Padding(
                     padding: EdgeInsets.only(right: 220.w),
                     child: Container(
@@ -281,37 +282,37 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                     ],
                   ),
                 ),
-                // Visibility(
-                //   visible: requestRejected,
-                //   child: Row(
-                //     children: [
-                //       SizedBox(
-                //         width: w/7,
-                //       ),
-                //       Container(
-                //         height: 40.h,
-                //         width: 40.h,
-                //         decoration: BoxDecoration(
-                //           color: Color.fromRGBO(188,157,255,1),
-                //           shape: BoxShape.circle,
-                //         ),
-                //       ),
-                //       SizedBox(
-                //         width: w/20,
-                //       ),
-                //       Text(
-                //         'Request Rejected',
-                //         style: TextStyle(
-                //             color: Colors.black,
-                //             fontSize: 20.sp,
-                //             fontFamily: 'DMSans',
-                //             fontWeight: FontWeight.normal,
-                //             decoration: TextDecoration.none
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                Visibility(
+                  visible: requestRejected,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: w/7,
+                      ),
+                      Container(
+                        height: 40.h,
+                        width: 40.h,
+                        decoration: BoxDecoration(
+                          color: Color.fromRGBO(188,157,255,1),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(
+                        width: w/20,
+                      ),
+                      Text(
+                        'Request Rejected',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20.sp,
+                            fontFamily: 'DMSans',
+                            fontWeight: FontWeight.normal,
+                            decoration: TextDecoration.none
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Visibility(
                   visible: requestApproved & showMakePaymentButton,
                   child: Padding(
@@ -372,7 +373,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                         ),
                         onPressed: () {
                           // db.PaymentSuccess(widget.order_uid);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name,)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name, order_key: '',)));
                         },
                         child: Text(
                           'Make Payment',
@@ -536,6 +537,32 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: (requestRejected | requestApproved) & !paymentSuccessful,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(
+                          Color.fromRGBO(188,157,255,1),
+                        ),
+                        shape: MaterialStatePropertyAll(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            )
+                        )
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      'Cancel Order',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.sp,
+                          fontFamily: 'DMSans',
+                          fontWeight: FontWeight.normal,
+                          decoration: TextDecoration.none
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -559,16 +586,29 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
       setState(() {
         order_status = value['Status'];
       });
+      setState(() {
+        order_key = widget.order_uid;
+      });
       // print(order_status);
+      if(order_status=="Rejected"){
+        setState(() {
+          requestRejected = true;
+        });
+      }
       if(order_status=="Approved"){
         setState(() {
           requestApproved = true;
+          requestRejected = false;
           special = true;
           showMakePaymentButton = true;
         });
       }
       if(order_status=="Successful"){
         setState(() {
+          requestApproved = true;
+          requestRejected = false;
+          special = true;
+          showMakePaymentButton = true;
           paymentSuccessful = true;
           orderProcessing = true;
         });
@@ -576,6 +616,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
       if(order_status=="Ready"){
         setState(() {
           requestApproved = true;
+          requestRejected = false;
           special = true;
           showMakePaymentButton = true;
           paymentSuccessful = true;

@@ -44,39 +44,38 @@ class _SplashScreenState extends State<SplashScreen> {
           PageTransition(
               child: const ChoiceScreen(), type: PageTransitionType.fade));
     } else {
-      db.getUserType(FirebaseAuth.instance.currentUser!.uid).then((value) {
-        setState(() {
-          type = value;
-        });
-      });
-      await Future.delayed(const Duration(seconds: 5), () {});
-      print(type);
-      if(type=="users"){
+      if(FirebaseAuth.instance.currentUser!.displayName=="users"){
         Navigator.pushReplacement(
             context,
             PageTransition(
                 child: const CustomerTabs(currentIndex: 0),
                 type: PageTransitionType.fade));
-      } else if(type=="stationary"){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => StationaryTabs(coltype: type,)));
+      } else if(FirebaseAuth.instance.currentUser!.displayName=="stationary"){
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: StationaryTabs(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),),
+                type: PageTransitionType.fade));
 
-      } else if(type=="grocery" || type=="miscellaneous"){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => groceryandmiscellaneous(coltype: type,)));
-
-      } else if(type=="none"){
+      } else if(FirebaseAuth.instance.currentUser!.displayName=="grocery" || FirebaseAuth.instance.currentUser!.displayName=="miscellaneous"){
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: groceryandmiscellaneous(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),),
+                type: PageTransitionType.fade));
+      } else if(FirebaseAuth.instance.currentUser!.displayName?.substring(0, 3)=="food"){
+        Navigator.pushReplacement(
+            context,
+            PageTransition(
+                child: ShopkeeperTabs(coltype: FirebaseAuth.instance.currentUser!.displayName.toString(),),
+                type: PageTransitionType.fade));
+      } else {
         FirebaseAuth.instance.signOut();
         Navigator.pushReplacement(
             context,
             PageTransition(
                 child: const ChoiceScreen(), type: PageTransitionType.fade));
-      } else {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ShopkeeperTabs(coltype: type,)));
       }
-      // Navigator.pushReplacement(
-      //     context,
-      //     PageTransition(
-      //         child: const CustomerTabs(currentIndex: 0),
-      //         type: PageTransitionType.fade));
     }
   }
 

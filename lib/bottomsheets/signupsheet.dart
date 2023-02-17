@@ -114,6 +114,12 @@ class _SignUpSheetState extends State<SignUpSheet> {
       FocusManager.instance.primaryFocus?.unfocus();
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password).then((value){
+        value.user?.updateDisplayName("users").then((value){
+          FirebaseAuth.instance.currentUser?.reload().then((value){
+            print(FirebaseAuth.instance.currentUser);
+            print(FirebaseAuth.instance.currentUser?.displayName);
+          });
+        });
             db.create_user(value.user?.uid,email ,name, num.tryParse(phone));
       });
       if (!mounted) return;
