@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../database.dart';
 
@@ -27,8 +28,8 @@ class _RemoveItemState extends State<RemoveItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 146,
-      width: 304,
+      height: 146.h,
+      width: 304.w,
       decoration:  const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color.fromRGBO(253, 243, 223, 1.0),
@@ -36,7 +37,7 @@ class _RemoveItemState extends State<RemoveItem> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 20.0,bottom: 12),
+            padding: EdgeInsets.only(top: 20.0.h,bottom: 12.h),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,7 +51,7 @@ class _RemoveItemState extends State<RemoveItem> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
-                width: 90,
+                width: 90.w,
                 child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -68,7 +69,7 @@ class _RemoveItemState extends State<RemoveItem> {
                 ),
               ),
               SizedBox(
-                width: 90,
+                width: 90.w,
                 child: ElevatedButton(
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(

@@ -16,7 +16,7 @@ class _QRCardState extends State<QRCard> {
     return Container(
       width: 300.w,
       height: 300.h,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Color.fromRGBO(253, 243, 223, 1.0),
           borderRadius: BorderRadius.all(Radius.circular(20))
       ),
@@ -24,7 +24,7 @@ class _QRCardState extends State<QRCard> {
         child: QrImage(
           data:widget.order_key,
           size: 280.h,
-          backgroundColor: Color.fromRGBO(253, 243, 223, 1.0),
+          backgroundColor: const Color.fromRGBO(253, 243, 223, 1.0),
         ),
       ),
     );

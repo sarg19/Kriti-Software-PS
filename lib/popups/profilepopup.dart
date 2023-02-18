@@ -38,7 +38,7 @@ class _ProfileState extends State<Profile> {
       Email=widget.Email;
       Phone=widget.Phone;
     });
-    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+    timer=Timer.periodic(const Duration(milliseconds: 100), (timer) {
       Reload();
     });
   }
@@ -157,6 +157,7 @@ class _ProfileState extends State<Profile> {
   }
   Future<void> Reload() async {
     if(!mounted){
+      timer.cancel();
       return;
     }
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
