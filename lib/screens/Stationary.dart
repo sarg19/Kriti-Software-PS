@@ -140,7 +140,9 @@ class _StationaryScreenState extends State<StationaryScreen> {
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
                             onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => uploadscreen(shop_key: stationary[index]['id'])));
+                              if(stationary[index]['open']==1){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => uploadscreen(shop_key: stationary[index]['id'])));
+                              }
                               // print(stationary);
                             },
                             child: Container(
