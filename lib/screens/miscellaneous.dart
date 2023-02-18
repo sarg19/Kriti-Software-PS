@@ -131,6 +131,9 @@ class _MiscState extends State<Misc> {
                         if(!Misc[index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
                           return Container();
                         }
+                        if(Misc[index]['Verified']==0){
+                          return Container();
+                        }
                         return Padding(
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
