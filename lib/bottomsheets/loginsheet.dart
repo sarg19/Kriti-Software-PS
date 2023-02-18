@@ -217,7 +217,7 @@ class _LoginSheetState extends State<LoginSheet> {
                           style:
                               TextStyle(color: Colors.white, fontSize: 15.sp)),
                       TextSpan(
-                          text: 'signup',
+                          text: 'Signup',
                           style:
                               TextStyle(color: Colors.black, fontSize: 15.sp),
                           recognizer: TapGestureRecognizer()

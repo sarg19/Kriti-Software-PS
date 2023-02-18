@@ -107,31 +107,25 @@ class _ShopkeeperProfileState extends State<ShopkeeperProfile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 5.0.h),
-                              child: Text(username,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 20.sp)),
-                            ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 5.0.h),
+                            child: Text(username,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 20.sp)),
                           ),
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 10.0.h, bottom: 10.0.h),
-                              child: Text(shopname,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: const Color.fromRGBO(114, 114, 114, 1.0))),
-                            ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.0.h, bottom: 10.0.h),
+                            child: Text(shopname,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: const Color.fromRGBO(114, 114, 114, 1.0))),
                           ),
-                          Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 5.0.h),
-                              child: Text(Phone.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 20.sp)),
-                            ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 5.0.h),
+                            child: Text(Phone.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 20.sp)),
                           ),
                         ],
                       ),
