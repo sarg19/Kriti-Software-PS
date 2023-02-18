@@ -134,6 +134,9 @@ class _JuiceState extends State<JuiceCenter> {
                         if(!juicecenter[index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
                           return Container();
                         }
+                        if(juicecenter[index]['Verified']==0){
+                          return Container();
+                        }
                         return Padding(
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
