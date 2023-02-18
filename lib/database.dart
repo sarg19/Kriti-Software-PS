@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -218,7 +219,8 @@ class Databases{
       shops.add({
         'id':shop.id,
         'Name':shop['ShopName'],
-        'open':shop['open']
+        'open':shop['open'],
+        'Verified':shop['Verified']
       });
     }
     return shops;
@@ -848,5 +850,13 @@ class Databases{
       'Number':p_number,
       'UPI_id':upiid,
     });
+  }
+  void trending(String collection) async {
+    final CollectionReference shopsCollection = firestore.collection(collection);
+    final QuerySnapshot snapshots=await shopsCollection.get();
+    List shops=[];
+    for(var shop in snapshots.docs.toList()){
+
+    }
   }
 }
