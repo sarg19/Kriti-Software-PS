@@ -52,6 +52,7 @@ class _homescreenState extends State<homescreen> {
     var size = MediaQuery.of(context).size;
     var width = size.width;
     var height = size.height;
+    var imagelist =['assets/icons/food.png.png','assets/icons/printer.png','assets/icons/grocery and juice.png','assets/icons/more-horizontal.png'];
     return Stack(
       children: [
         Padding(
@@ -118,6 +119,7 @@ class _homescreenState extends State<homescreen> {
                     color: Colors.white,
                     shape: BoxShape.circle,
                   ),
+
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => nextscreens[index]));
@@ -127,7 +129,10 @@ class _homescreenState extends State<homescreen> {
                       padding: EdgeInsets.all(width / 6),
                       backgroundColor: Colors.white,
                     ),
-                    child: null,
+                    child: Center(
+                      child: Image(
+                          image: AssetImage(imagelist[index])),
+                    ),
                   ),
                 );
               }),
