@@ -893,7 +893,7 @@ class Databases{
       return trending_shop;
     }
   }
-  void add_print (String shop_key,String userId,num total) async {
+  void add_print (String shop_key,String? userId,num total) async {
     final CollectionReference usersCollection = firestore.collection('users');
     final CollectionReference shopsCollection = firestore.collection('stationary');
     late Map? user_info;
