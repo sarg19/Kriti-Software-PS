@@ -16,6 +16,8 @@ class ShopDetails extends StatefulWidget {
 class _ShopDetailsState extends State<ShopDetails> {
   String Name="UserName";
   String ShopName="ShopName";
+  String Email="email";
+  num Ratings = 0;
   int Phone=1234567890;
   int counter=0;
   late Databases db;
@@ -28,6 +30,8 @@ class _ShopDetailsState extends State<ShopDetails> {
         ShopName=value['ShopName'];
         Name=value['UserName'];
         Phone=value['Number'];
+        Email=value['Email'];
+        Ratings=value['current_rating'];
       });
     });
   }
@@ -39,7 +43,7 @@ class _ShopDetailsState extends State<ShopDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 231.h,
+      height: 300.h,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color.fromRGBO(253, 243, 223, 1.0),
@@ -78,15 +82,15 @@ class _ShopDetailsState extends State<ShopDetails> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 8.0.h, bottom: 2.0.h),
-                  child: Text(widget.shop_key, style: TextStyle(
+                  padding: EdgeInsets.only(top: 10.0.h, bottom: 2.0.h),
+                  child: Text(Email, style: TextStyle(
                     fontSize: 20.sp,
                   )),
                 ),
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(left: 22.0.w, top: 8.h),
+              padding: EdgeInsets.only(left: 22.0.w, top: 10.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -103,6 +107,19 @@ class _ShopDetailsState extends State<ShopDetails> {
                         color: const Color.fromRGBO(
                             114, 114, 114, 1.0)
                     )),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0.h, bottom: 20.0.h, right: 25.0.w),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Ratings < 1 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                          Icon(Ratings < 2 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                          Icon(Ratings < 3 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                          Icon(Ratings < 4 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                          Icon(Ratings < 5 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
+                        ]
+                    ),
                   ),
                 ],
               ),
