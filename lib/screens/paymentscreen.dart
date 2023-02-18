@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
@@ -23,6 +25,7 @@ class PaymentPage extends StatefulWidget {
 }
 
 class _PaymentPageState extends State<PaymentPage> {
+  String status="";
   // var receiverupiid;
   // var receiverupiname;
   // var amount;
@@ -45,9 +48,15 @@ class _PaymentPageState extends State<PaymentPage> {
     db = Databases();
     db.initialise();
   }
-
+  late Timer timer;
   @override
   void initState() {
+    timer=Timer.periodic(Duration(milliseconds: 10), (timer) {
+      if(status.toUpperCase()=="SUCCESS"){
+        db.PaymentSuccess(widget.order_key);
+        timer.cancel();
+      }
+    });
     _upiIndia.getAllUpiApps(mandatoryTransactionId: false).then((value) {
       setState(() {
         apps = value;
@@ -191,13 +200,13 @@ class _PaymentPageState extends State<PaymentPage> {
             body: Column(
               children:[
                 SizedBox(
-                  height: 30,
+                  height: 30.h,
                 ),
                 Container(
                   child: Text("Payment Gateway",textAlign: TextAlign.center,style: TextStyle(fontSize: 25)),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 50.h,
                 ),
                 Expanded(
                   child: displayUpiApps(),
@@ -224,7 +233,7 @@ class _PaymentPageState extends State<PaymentPage> {
                         String txnId = _upiResponse.transactionId ?? 'N/A';
                         String resCode = _upiResponse.responseCode ?? 'N/A';
                         String txnRef = _upiResponse.transactionRefId ?? 'N/A';
-                        String status = _upiResponse.status ?? 'N/A';
+                        status = _upiResponse.status ?? 'N/A';
                         String approvalRef = _upiResponse.approvalRefNo ?? 'N/A';
                         _checkTxnStatus(status);
 
@@ -248,7 +257,6 @@ class _PaymentPageState extends State<PaymentPage> {
                                     ),
                                     child: TextButton(
                                       onPressed: () {
-                                        db.PaymentSuccess(widget.order_key);
                                         Navigator.pop(context);
                                       },
                                       child: Text("Order status",style:TextStyle(color:Color.fromRGBO(
