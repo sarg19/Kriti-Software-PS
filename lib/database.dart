@@ -896,6 +896,8 @@ class Databases{
       if(shop['Verified']==1){
         num rating=2*shop['Last7'][0]+2*shop['Last7'][1]+2*shop['Last7'][2]+shop['Last7'][3]+shop['Last7'][4]+shop['Last7'][5]+shop['Last7'][6];
         shops.add({
+          'open':shop['open'],
+          'Shop_Id':shop.id,
           'ShopName':shop['ShopName'],
           'rating':rating
         });
