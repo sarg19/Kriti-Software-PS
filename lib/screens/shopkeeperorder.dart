@@ -342,13 +342,15 @@ class _shopkeeper_active_card extends State<ShopkeeperActiveCard> {
     try{
       final qrCode = await FlutterBarcodeScanner.scanBarcode('#BC9DFF', 'Cancel', true, ScanMode.QR);
       if (!mounted) return;
-      setState(() {
+      setState(() async {
         getResult = qrCode;
         if(getResult==widget.items['Order_Key']){
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text(
                   "Order completed.")));
+          db.add_to_recent(widget.items['Order_Key']);
           db.update_last_7(FirebaseAuth.instance.currentUser?.displayName, FirebaseAuth.instance.currentUser?.uid, widget.items['Total_Amount']);
+          await Future.delayed(Duration(milliseconds: 1000));
           db.OrderDelete(widget.items['Order_Key']);
         } else{
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
