@@ -904,7 +904,7 @@ class Databases{
     shop_info=snapshot2.data();
     final CollectionReference ordersCollection = firestore.collection('orders');
     var Order_Key;
-    ordersCollection.add({
+    await ordersCollection.add({
       'Name':user_info!["Name"],
       'User_Key':userId,
       'Status':'Requested',
