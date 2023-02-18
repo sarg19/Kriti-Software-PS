@@ -851,12 +851,29 @@ class Databases{
       'UPI_id':upiid,
     });
   }
-  void trending(String collection) async {
+  Future trending(String collection) async {
     final CollectionReference shopsCollection = firestore.collection(collection);
     final QuerySnapshot snapshots=await shopsCollection.get();
     List shops=[];
     for(var shop in snapshots.docs.toList()){
-
+      num rating=2*shop['Last7'][0]+2*shop['Last7'][1]+2*shop['Last7'][2]+shop['Last7'][3]+shop['Last7'][4]+shop['Last7'][5]+shop['Last7'][6];
+      shops.add({
+        'ShopName':shop['ShopName'],
+        'rating':rating
+      });
+    }
+    shops.sort((a,b)=>a['rating'].compareTo(b['rating']));
+    // print(shops);
+    if(shops.length<=5){
+      return shops;
+    }else{
+      List trending_shop=[];
+      trending_shop.add(shops[shops.length-5]);
+      trending_shop.add(shops[shops.length-4]);
+      trending_shop.add(shops[shops.length-3]);
+      trending_shop.add(shops[shops.length-2]);
+      trending_shop.add(shops[shops.length-1]);
+      return trending_shop;
     }
   }
 }

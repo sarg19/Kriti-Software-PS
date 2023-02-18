@@ -24,6 +24,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
   late List khokhashop;
   late List foodcourtshop;
   late List canteenshop;
+  List background=["assets/images/first.png","assets/images/second.png","assets/images/third.png","assets/images/fourth.png","assets/images/fifth.png"];
   int marketcomplexsize=0;
   int khokhasize=0;
   int foodcourtsize=0;
@@ -33,10 +34,42 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
   String Name='User';
   String Email='abc@example.com';
   int Phone=1234567890;
+  int trending_market_length=0;
+  int trending_khokha_length=0;
+  int trending_food_court_length=0;
+  int trending_canteen_length=0;
+  List trending_marketcomplex=[];
+  List trending_khokha=[];
+  List trending_food_court=[];
+  List trending_canteen=[];
   final SearchController = TextEditingController();
   initialise(){
     db=Databases();
     db.initialise();
+    db.trending("food-foodcourt").then((value){
+      setState(() {
+        trending_food_court=value;
+        trending_food_court_length=value.length;
+      });
+    });
+    db.trending("food-canteen").then((value){
+      setState(() {
+        trending_canteen=value;
+        trending_canteen_length=value.length;
+      });
+    });
+    db.trending("food-khokha").then((value){
+      setState(() {
+        trending_khokha=value;
+        trending_khokha_length=value.length;
+      });
+    });
+    db.trending("food-marketcomplex").then((value){
+      setState(() {
+        trending_marketcomplex=value;
+        trending_market_length=value.length;
+      });
+    });
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
       setState((){
         Name=value['Name'];
@@ -275,18 +308,28 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                             height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: 5,
+                                              itemCount: trending_market_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(10.0),
                                                   child: Container(
                                                     height: 141.h,
-                                                    width: 150.w
-                                                    ,
+                                                    width: 141.w,
+                                                    child: Center(child: Text(
+                                                      trending_marketcomplex[trending_market_length-ind-1]['ShopName'],
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                      ),
+                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
+                                                      image: DecorationImage(
+                                                          image: AssetImage(background[ind]),
+                                                          fit:BoxFit.cover
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -375,17 +418,28 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                             height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: 5,
+                                              itemCount: trending_khokha_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(10.0),
                                                   child: Container(
                                                     height: 141.h,
-                                                    width: 150.w,
+                                                    width: 141.w,
+                                                    child: Center(child: Text(
+                                                      trending_khokha[trending_khokha_length-ind-1]['ShopName'],
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                      ),
+                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
+                                                      image: DecorationImage(
+                                                          image: AssetImage(background[ind]),
+                                                          fit:BoxFit.cover
+                                                      ),
                                                     ),
                                                   ),
                                                 );
@@ -474,17 +528,30 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                             height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: 5,
+                                              itemCount: trending_food_court_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(10.0),
                                                   child: Container(
                                                     height: 141.h,
-                                                    width: 150.w,
+                                                    width: 141.w,
+                                                    child: Center(child: Text(
+                                                        trending_food_court[trending_food_court_length-ind-1]['ShopName'],
+                                                        style: TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                        ),
+                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
+                                                      // color: const Color.fromRGBO(188, 157, 255, 1.0),
+                                                      image: DecorationImage(
+                                                        image: AssetImage(background[ind]),
+                                                        fit:BoxFit.cover
+                                                      ),
+
                                                     ),
                                                   ),
                                                 );
@@ -573,17 +640,28 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                             height : 150.h,
                                             child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
-                                              itemCount: 5,
+                                              itemCount: trending_canteen_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
                                                 return Padding(
                                                   padding: const EdgeInsets.all(10.0),
                                                   child: Container(
-                                                    height: 141,
-                                                    width: 150,
+                                                    height: 141.h,
+                                                    width: 141.w,
+                                                    child: Center(child: Text(
+                                                      trending_canteen[trending_canteen_length-ind-1]['ShopName'],
+                                                      style: TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                      ),
+                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
-                                                      color: const Color.fromRGBO(188, 157, 255, 1.0),
+                                                      image: DecorationImage(
+                                                          image: AssetImage(background[ind]),
+                                                          fit:BoxFit.cover
+                                                      ),
                                                     ),
                                                   ),
                                                 );
