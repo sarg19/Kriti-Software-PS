@@ -70,7 +70,7 @@ class _AddItemState extends State<AddItem> {
             ),
           ),
           Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                   children: [
                     Row(
@@ -87,7 +87,7 @@ class _AddItemState extends State<AddItem> {
                         ),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 50.h,
                       child: TextField(
                         controller: NameController,
@@ -117,7 +117,7 @@ class _AddItemState extends State<AddItem> {
                         ),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 50.h,
                       child: TextField(
                         controller: PriceController,
@@ -133,11 +133,11 @@ class _AddItemState extends State<AddItem> {
                       ),
                     ),
                     SizedBox(height: 20.h),
-                    Container(
+                    SizedBox(
                       width: 100.w,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Color.fromRGBO(188, 156, 255, 1)),
+                            backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 156, 255, 1)),
                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
@@ -156,7 +156,7 @@ class _AddItemState extends State<AddItem> {
                           }
                           Navigator.pop(context);
                         },
-                        child: Text('OK'),
+                        child: const Text('OK'),
                       ),
                     ),
                   ]

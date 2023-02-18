@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,7 +12,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // body: Center(child: MyCard(items: GrandList[1])),
       body: ListView.builder(
           itemCount: GrandList.length,
           itemBuilder: (BuildContext context, int index){
@@ -35,7 +32,7 @@ class MyCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 15),
         // width: 280,
         height: items.length*25+145,
         // decoration: BoxDecoration(
@@ -48,15 +45,15 @@ class MyCard extends StatelessWidget {
               //padding: EdgeInsets.fromLTRB(20, 0, right, bottom),
               height: 55,
               width: 280,
-              padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.fromLTRB(20, 15, 0, 0),
+              decoration: const BoxDecoration(
                   color: Color.fromRGBO(188, 157, 255, 1.0),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15),
                   )
               ),
-              child: Text(
+              child: const Text(
                 'Kapili Canteen',
                 style: TextStyle(
                     fontSize: 25,

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -89,7 +87,7 @@ class _EditItemState extends State<EditItem> {
             ),
           ),
           Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                   children: [
                     Row(
@@ -106,7 +104,7 @@ class _EditItemState extends State<EditItem> {
                         ),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 50.h,
                       child: TextField(
                         controller: NameController,
@@ -136,7 +134,7 @@ class _EditItemState extends State<EditItem> {
                         ),
                       ],
                     ),
-                    Container(
+                    SizedBox(
                       height: 50.h,
                       child: TextField(
                         keyboardType: TextInputType.number,
@@ -145,32 +143,18 @@ class _EditItemState extends State<EditItem> {
                           filled: true,
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                             borderRadius: BorderRadius.circular(35),
                           ),
                         ),
                       ),
                     ),
                     SizedBox(height: 20.h),
-                    // ElevatedButton(
-                    //   onPressed: () {},
-                    //   child: Container(
-                    //     height: 25,
-                    //     width: 75,
-                    //     decoration: BoxDecoration(
-                    //       color: Color.fromRGBO(188, 157, 255, 1)
-                    //     ),
-                    //     child: Center(
-                    //       child: Text('OK'),
-                    //     ),
-                    //   ),
-                    //   // child: Text('OK'),
-                    // ),
-                    Container(
+                    SizedBox(
                       width: 100.w,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(Color.fromRGBO(188, 156, 255, 1)),
+                          backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 156, 255, 1)),
                           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
@@ -178,13 +162,10 @@ class _EditItemState extends State<EditItem> {
                           )
                         ),
                         onPressed: () {
-                          // print(NameController.text);
-                          // print(num.tryParse(PriceController.text));
-                          // print(_value);
                           db.update_menu(widget.Shop_Key, widget.index, widget.Menu, NameController.text, num.tryParse(PriceController.text),_value?1:0,widget.Collection);
                           Navigator.pop(context);
                         },
-                        child: Text('OK'),
+                        child: const Text('OK'),
                       ),
                     ),
                   ]
