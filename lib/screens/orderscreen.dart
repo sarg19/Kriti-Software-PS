@@ -160,8 +160,12 @@ class _OrderPageState extends State<OrderPage> {
                         physics: const BouncingScrollPhysics(),
                         itemCount: activelength,
                         itemBuilder: (context, index) {
-                          return customer_order_active_card(
-                              item: user_info['Active_Orders'][index]);
+                          if(user_info['Active_Orders'][index]["Collection"]=="stationary"){
+                            return customer_order_active_card_stationary(item: user_info['Active_Orders'][index]);
+                          }else{
+                            return customer_order_active_card(
+                                item: user_info['Active_Orders'][index]);
+                          }
                         }),
                   ),
           ],
@@ -360,7 +364,169 @@ class _CustomerOrderActiveCard extends State<customer_order_active_card> {
     );
   }
 }
+class customer_order_active_card_stationary extends StatefulWidget {
+  final Map item;
 
+  customer_order_active_card_stationary({required this.item});
+
+  @override
+  State<customer_order_active_card_stationary> createState() => _CustomerOrderActiveCardStationary();
+}
+
+class _CustomerOrderActiveCardStationary extends State<customer_order_active_card_stationary> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 0, 15),
+        // width: 280,
+        height: 22.h + 160.h,
+        // decoration: BoxDecoration(
+        //   color: Color.fromRGBO(255, 249, 240, 1.0),
+        //   borderRadius: BorderRadius.circular(15),
+        // ),
+        child: Column(
+          children: [
+            Container(
+              //padding: EdgeInsets.fromLTRB(20, 0, right, bottom),
+              height: 55.h,
+              width: 280.w,
+              padding: EdgeInsets.fromLTRB(20, 15, 0, 0),
+              decoration: const BoxDecoration(
+                  color: Color.fromRGBO(188, 157, 255, 1.0),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  )),
+              child: Text(
+                widget.item['Shop_Name'],
+                style: TextStyle(
+                    fontSize: 25.sp,
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'DMSans'),
+              ),
+            ),
+            Container(
+              color: Color.fromRGBO(255, 249, 240, 1.0),
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+              height:22.h + 50.h,
+              // height: items.length == 1 ? 60 : items.length*33,
+              width: 280.w,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Expanded(
+                    child:Text(
+                        'Printing Order',
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          fontFamily: 'DMSans',
+                          color: Color.fromRGBO(58, 58, 58, 1.0)),
+                    )
+                  ),
+                  Align(
+                    heightFactor: 1.3,
+                    alignment: Alignment.topRight,
+                    child: Text(
+                      widget.item['Status']=="Requested"?"":"Rs. ${widget.item['Total_Amount']}",
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          fontFamily: 'DMSans',
+                          color: Color.fromRGBO(114, 114, 114, 1.0)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              // margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                height: 55.h,
+                width: 280.w,
+                decoration: BoxDecoration(
+                    color: Color.fromRGBO(255, 249, 240, 1.0),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15),
+                        bottomRight: Radius.circular(15))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: widget.item['Status']=="Ready"?Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const ImageIcon(
+                            AssetImage('assets/icons/qrcode.png'),
+                            color: Colors.transparent,
+                          ),
+                          iconSize: 0,
+                          onPressed: () {},
+                          // color: Colors.red,
+                        ),
+                        Container(
+                          width: 120.w,
+                          // padding: EdgeInsets.fromLTRB(73, 0, 0, 7),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                elevation: 0,
+                                shape: StadiumBorder(),
+                                primary: Color.fromRGBO(188, 157, 255, 1),
+                                onPrimary: Color.fromRGBO(255, 255, 255, 1.0)),
+                            child: Text(
+                              'Show Status',
+                              style: TextStyle(
+                                fontFamily: 'DMSans',
+                                fontSize: 15.sp,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(order_uid: widget.item['Order_Key'])));
+                            },
+                          ),
+                        ),
+                        IconButton(
+                          icon:
+                          ImageIcon(AssetImage('assets/icons/qrcode.png')),
+                          iconSize: 30.sp,
+                          onPressed: () {
+                            showDialog(context: context, builder: (BuildContext context){
+                              return ShowPopUp(widgetcontent: QRCard(order_key: widget.item['Order_Key'],));
+                            });
+                          },
+                          // color: Colors.red,
+                        )
+                      ]):Center(
+                    child: Container(
+                      width: 120.w,
+                      // padding: EdgeInsets.fromLTRB(73, 0, 0, 7),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: StadiumBorder(),
+                            primary: Color.fromRGBO(188, 157, 255, 1),
+                            onPrimary: Color.fromRGBO(255, 255, 255, 1.0)),
+                        child: Text(
+                          'Show Status',
+                          style: TextStyle(
+                            fontFamily: 'DMSans',
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(order_uid: widget.item['Order_Key'])));
+                        },
+                      ),
+                    ),
+                  ),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+}
 class _OrderCardState extends State<OrderCard> {
   late Databases db;
   initialise() {
