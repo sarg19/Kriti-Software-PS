@@ -133,6 +133,9 @@ class _StationaryScreenState extends State<StationaryScreen> {
                         if(!stationary[index]['Name'].toString().toLowerCase().contains(SearchController.text.toLowerCase())){
                           return Container();
                         }
+                        if(stationary[index]['Verified']==0){
+                          return Container();
+                        }
                         return Padding(
                           padding: EdgeInsets.fromLTRB(45.w, 10.h, 45.w, 10.h),
                           child: GestureDetector(
