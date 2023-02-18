@@ -216,12 +216,14 @@ class Databases{
     final QuerySnapshot snapshots=await shopsCollection.get();
     List shops=[];
     for(var shop in snapshots.docs.toList()){
-      shops.add({
-        'id':shop.id,
-        'Name':shop['ShopName'],
-        'open':shop['open'],
-        'Verified':shop['Verified']
-      });
+      if(shop['Verified']==1){
+        shops.add({
+          'id':shop.id,
+          'Name':shop['ShopName'],
+          'open':shop['open'],
+          'Verified':shop['Verified']
+        });
+      }
     }
     return shops;
   }
@@ -856,11 +858,13 @@ class Databases{
     final QuerySnapshot snapshots=await shopsCollection.get();
     List shops=[];
     for(var shop in snapshots.docs.toList()){
-      num rating=2*shop['Last7'][0]+2*shop['Last7'][1]+2*shop['Last7'][2]+shop['Last7'][3]+shop['Last7'][4]+shop['Last7'][5]+shop['Last7'][6];
-      shops.add({
-        'ShopName':shop['ShopName'],
-        'rating':rating
-      });
+      if(shop['Verified']==1){
+        num rating=2*shop['Last7'][0]+2*shop['Last7'][1]+2*shop['Last7'][2]+shop['Last7'][3]+shop['Last7'][4]+shop['Last7'][5]+shop['Last7'][6];
+        shops.add({
+          'ShopName':shop['ShopName'],
+          'rating':rating
+        });
+      }
     }
     shops.sort((a,b)=>a['rating'].compareTo(b['rating']));
     // print(shops);
