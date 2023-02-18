@@ -289,7 +289,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                 height: 420.h,
                                 child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount: marketcomplexsize+1,
+                                  itemCount: trending_market_length==0?marketcomplexsize:marketcomplexsize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
@@ -399,7 +399,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                 height: 420.h,
                                 child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount: khokhasize+1,
+                                  itemCount: trending_khokha_length==0?khokhasize:khokhasize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
@@ -509,7 +509,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                 height: 420.h,
                                 child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount: foodcourtsize+1,
+                                  itemCount: trending_food_court_length==0?foodcourtsize:foodcourtsize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
@@ -621,7 +621,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                 height: 420.h,
                                 child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount: canteensize+1,
+                                  itemCount: trending_canteen_length==0?canteensize:canteensize+1,
                                   itemBuilder: (BuildContext context, int index)
                                   {
                                     if(index==0)
