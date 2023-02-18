@@ -472,6 +472,11 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
       if (!mounted) return;
       setState(() {
         getResult = qrCode;
+        if(getResult==widget.items['Order_Key']){
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text(
+                  "Order completed.")));
+          db.OrderDelete(widget.items['Order_Key']);
       });
     }catch(e){
       print(e);
