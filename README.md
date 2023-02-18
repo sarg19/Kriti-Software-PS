@@ -1,4 +1,4 @@
-# Know Shop
+# KnowShop
 This is a sample application designed to streamline the process of shopping for the campus junta. It has interfaces for both the customer and the shopkeeper. The customer can check if a particular shop is open or not, view it's menu, contact details and top shops of the week category wise. Also there is an option to favourite an item, add to cart and place the order.The shopkeeper can update his shop's status whether open or closed, edit his menu and his earnings over the past week.
 
 # User Research
@@ -61,6 +61,16 @@ We had planned the following features for future Updates:
 # User Interface
 [Click here to open figma file](https://www.figma.com/file/yleq06SJFDa2P7JOJuud2H/KRITI-SOFTWARE?node-id=0%3A1&t=c8loi0acXoobQauX-1)
 
+# Apk Drive Link
+[Click here to download apk](https://drive.google.com/file/d/1kd5lJE9X4TWQdbKabiR8sq6pmB6JF_6W/view?usp=share_link)
+
+## Installation
+Download the apk from the link above in your android device and click install. The app will be installed in the mobile.
+
+# Video demonstration of the app
+[Click here for video link](https://drive.google.com/file/d/1xtJWnrAg8HkdciFDgmpQDREzvQJvjIU3/view?usp=share_link)
+
+
 
 
 # Contributers
@@ -70,5 +80,5 @@ We had planned the following features for future Updates:
   * [Shivam Agarwal](https://github.com/shivaga)
   * [Yash Kataria](https://github.com/yashhkataria)
   * [Piyush Gautam](https://github.com/py-2312)
-  * [Tarun Kumar](https://github.com/tarunnn3301)
   * [Sarvesh Gholap](https://github.com/sarg19)
+  * [Tarun Kumar](https://github.com/tarunnn3301)
