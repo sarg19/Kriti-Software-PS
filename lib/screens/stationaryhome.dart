@@ -24,6 +24,7 @@ class _StationaryHomePage extends State<StationaryHomePage> {
   var size, height, width;
   late Timer timer;
   late Databases db;
+  String open="Close";
   initialise() {
     db = Databases();
     db.initialise();
@@ -40,6 +41,7 @@ class _StationaryHomePage extends State<StationaryHomePage> {
         shopname=value['ShopName'];
         email=value['Email'];
         Phone=value['Number'];
+        open=value['open']==1?"Open":"Close";
       });
     });
     timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
@@ -63,7 +65,7 @@ class _StationaryHomePage extends State<StationaryHomePage> {
                   SizedBox(height: 20.h,),
 
                   Center(child: Text(shopname,textAlign:TextAlign.center,style:TextStyle(fontSize: 37.sp,))),
-                  Text("Now closed",textAlign: TextAlign.left,style: TextStyle(fontSize: 20,color: Color.fromRGBO(
+                  Text("Now "+open,textAlign: TextAlign.left,style: TextStyle(fontSize: 20,color: Color.fromRGBO(
                       114, 114, 114, 1.0)),),
                   SizedBox(height: 45.h,),
                   Text(email,style: TextStyle(fontSize: 22.sp),),
@@ -149,7 +151,7 @@ class _StationaryHomePage extends State<StationaryHomePage> {
         Phone=value['Number'];
         upiid=value['UPI_id'];
         email=value['Email'];
-
+        open=value['open']==1?"Open":"Close";
       });
     });
   }

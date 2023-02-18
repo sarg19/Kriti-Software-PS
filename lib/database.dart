@@ -454,7 +454,8 @@ class Databases{
         'UserName':user_name,
         'collection':collection,
         'open':0,
-        'type':"Grocery"
+        'type':"Grocery",
+        'UPI_id':upi_id
       });
     }
     else if(collection=='miscellaneous'){
@@ -466,7 +467,8 @@ class Databases{
         'UserName':user_name,
         'collection':collection,
         'open':0,
-        'type':"Miscellaneous"
+        'type':"Miscellaneous",
+        'UPI_id':upi_id
       });
     }
     final CollectionReference shopCollection7 = firestore.collection('stationary');

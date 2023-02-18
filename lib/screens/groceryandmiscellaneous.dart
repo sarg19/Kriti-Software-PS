@@ -27,6 +27,7 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
   late Databases db;
   late Timer timer;
   bool _isopen=true;
+  String open="Close";
   var selected=0;
   var size, height, width;
   initialise(){
@@ -37,7 +38,8 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
   void initState() {
     super.initState();
     initialise();
-    db.retrieve_shop_info(widget.coltype,FirebaseAuth.instance.currentUser?.uid).then((value){
+    print(FirebaseAuth.instance.currentUser?.displayName);
+    db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName,FirebaseAuth.instance.currentUser?.uid).then((value){
       if(!mounted)return;
       setState(() {
         upiid=value['UPI_id'];
@@ -46,6 +48,8 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
         shopname=value['ShopName'];
         email=value['Email'];
         Phone=value['Number'];
+        _isopen=value['open']==1?true:false;
+        open=value['open']==1?"Open":"Close";
       });
     });
     timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
@@ -78,7 +82,7 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
             leading: GestureDetector(
               onTap: (){
                 setState(() {
-                  _isopen = !_isopen;
+                  db.shopToggle(FirebaseAuth.instance.currentUser?.uid, FirebaseAuth.instance.currentUser?.displayName);
                 });
               },
               child: Image.asset(
@@ -114,7 +118,7 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
                   SizedBox(height: 20.h,),
 
                   Center(child: Text(shopname,textAlign:TextAlign.center,style:TextStyle(fontSize: 37.sp,))),
-                  Text("Now closed",textAlign: TextAlign.left,style: TextStyle(fontSize: 20,color: Color.fromRGBO(
+                  Text("Now "+open,textAlign: TextAlign.left,style: TextStyle(fontSize: 20,color: Color.fromRGBO(
                       114, 114, 114, 1.0)),),
                   SizedBox(height: 45.h,),
                   Text(email,style: TextStyle(fontSize: 22.sp),),
@@ -192,7 +196,7 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
     if(!mounted){
       return;
     }
-    db.retrieve_shop_info(widget.coltype,FirebaseAuth.instance.currentUser?.uid).then((value){
+    db.retrieve_shop_info(FirebaseAuth.instance.currentUser?.displayName,FirebaseAuth.instance.currentUser?.uid).then((value){
       if(!mounted){
         return;
       }
@@ -203,6 +207,8 @@ class _groceryandmiscellaneous extends State<groceryandmiscellaneous> {
         shopname=value['ShopName'];
         email=value['Email'];
         Phone=value['Number'];
+        open=value['open']==1?"Open":"Close";
+        _isopen=value['open']==1?true:false;
       });
     });
   }

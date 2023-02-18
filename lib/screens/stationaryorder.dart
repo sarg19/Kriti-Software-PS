@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
+import '../database.dart';
 
 class StationaryOrderPage extends StatefulWidget {
   const StationaryOrderPage({Key? key}) : super(key: key);
@@ -21,7 +26,23 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
     ["Sent an image on your Gmail"]];
   var selected = 1;
   var size, height, width;
+  late Timer timer;
+  List Active_Orders=[];
+  List Pending_Order=[];
+  int activelength=0;
+  int pendinglength=0;
+  late Databases db;
+  initialise() {
+    db = Databases();
+    db.initialise();
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+    timer = Timer.periodic(Duration(milliseconds: 1000), (timer) { Reload();});
+  }
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -114,18 +135,18 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
                     height: 500.h,
                     child: ListView.builder(
                       physics: BouncingScrollPhysics(),
-                        itemCount: GrandList.length,
+                        itemCount: pendinglength,
                         itemBuilder: (context, index) {
-                          return StationaryPendingCard(items: GrandList[index]);
+                          return StationaryPendingCard(items: Pending_Order[index]);
                         }),
                   )
                       : Container(
                     height: 500.h,
                     child: ListView.builder(
                       physics: BouncingScrollPhysics(),
-                        itemCount: GandList.length,
+                        itemCount: activelength,
                         itemBuilder: (context, index) {
-                          return StationaryActiveCard(items: GandList[index]);
+                          return StationaryActiveCard(items: Active_Orders[index]);
                         }),
                   ),
                 ],
@@ -135,6 +156,19 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
         ),
       ],
     );
+  }
+  Future<void> Reload() async {
+    db.retrieve_shop_info("stationary", FirebaseAuth.instance.currentUser?.uid).then((value){
+      if(!mounted){
+        return;
+      }
+      setState(() {
+        Active_Orders=value['Active_Orders'];
+        Pending_Order=value['Pending_Order'];
+        activelength=Active_Orders.length;
+        pendinglength=Pending_Order.length;
+      });
+    });
   }
 }
 
@@ -147,15 +181,15 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
 //   State<OrderCard> createState() => _OrderCardState();
 // }
 class StationaryPendingCard extends StatefulWidget {
-  final List<String> items;
-  StationaryPendingCard({this.items = const []});
+  final Map items;
+  StationaryPendingCard({required this.items});
 
   @override
   State<StationaryPendingCard> createState() => _StationaryPendingCard();
 }
 class StationaryActiveCard extends StatefulWidget {
-  final List<String> items;
-  StationaryActiveCard({this.items = const []});
+  final Map items;
+  StationaryActiveCard({required this.items});
 
   @override
   State<StationaryActiveCard> createState() => _StationaryActiveCard();
@@ -212,7 +246,7 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: widget.items.length,
                       itemBuilder: (context,index){
-                        return Text(widget.items[index],textAlign: TextAlign.center, style: TextStyle(fontSize: 18.sp,fontFamily: 'DMSans',),);
+                        return Text("Sent on your Email",textAlign: TextAlign.center, style: TextStyle(fontSize: 18.sp,fontFamily: 'DMSans',),);
                       },
                     ),
                   ),
@@ -345,7 +379,7 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: widget.items.length,
                       itemBuilder: (context,index){
-                        return Text(widget.items[index],textAlign: TextAlign.center, style: TextStyle(fontSize: 18,fontFamily: 'DMSans',),);
+                        return Text("Sent on your Email",textAlign: TextAlign.center, style: TextStyle(fontSize: 18,fontFamily: 'DMSans',),);
                       },
                     ),
                   ),
