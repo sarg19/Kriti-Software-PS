@@ -111,7 +111,7 @@ class _CustomerTabsState extends State<CustomerTabs> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                       color: _currentIndex == 0
-                          ? const Color.fromRGBO(164, 146, 203, 1.0)
+                          ? const Color.fromRGBO(255, 235, 198, 1.0)
                           : Colors.transparent,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10))),
@@ -132,7 +132,7 @@ class _CustomerTabsState extends State<CustomerTabs> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                       color: _currentIndex == 1
-                          ? const Color.fromRGBO(164, 146, 203, 1.0)
+                          ? const Color.fromRGBO(255, 235, 198, 1.0)
                           : Colors.transparent,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10))),
@@ -153,7 +153,7 @@ class _CustomerTabsState extends State<CustomerTabs> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                       color: _currentIndex == 2
-                          ? const Color.fromRGBO(164, 146, 203, 1.0)
+                          ? const Color.fromRGBO(255, 235, 198, 1.0)
                           : Colors.transparent,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10))),
@@ -175,7 +175,7 @@ class _CustomerTabsState extends State<CustomerTabs> {
                   width: double.maxFinite,
                   decoration: BoxDecoration(
                       color: _currentIndex == 3
-                          ? const Color.fromRGBO(164, 146, 203, 1.0)
+                          ? const Color.fromRGBO(255, 235, 198, 1.0)
                           : Colors.transparent,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10))),

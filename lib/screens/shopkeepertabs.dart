@@ -160,7 +160,8 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
                       width: double.maxFinite,
                       // height: double.maxFinite,
                       decoration: BoxDecoration(
-                          color: _currentIndex == 0 ? Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
+                          color: _currentIndex == 0 ? Color.fromRGBO(
+                              255, 235, 198, 1.0) : Colors.transparent,
                           borderRadius: BorderRadius.all(Radius.circular(10))
                       ),
                       child: IconButton(
@@ -181,7 +182,8 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
                       width: double.maxFinite,
                       // height: double.maxFinite,
                       decoration: BoxDecoration(
-                          color: _currentIndex == 1 ? Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
+                          color: _currentIndex == 1 ? Color.fromRGBO(
+                              255, 235, 198, 1.0) : Colors.transparent,
                           borderRadius: BorderRadius.all(Radius.circular(10))
                       ),
                       child: IconButton(
@@ -202,7 +204,8 @@ class _ShopkeeperTabsState extends State<ShopkeeperTabs> {
                       width: double.maxFinite,
                       // height: double.maxFinite,
                       decoration: BoxDecoration(
-                          color: _currentIndex == 2 ? Color.fromRGBO(164, 146, 203, 1.0) : Colors.transparent,
+                          color: _currentIndex == 2 ? Color.fromRGBO(
+                              255, 235, 198, 1.0) : Colors.transparent,
                           borderRadius: BorderRadius.all(Radius.circular(10))
                       ),
                       child: IconButton(

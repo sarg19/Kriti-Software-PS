@@ -39,7 +39,7 @@ class _homescreenState extends State<homescreen> {
       });
     });
     initialise();
-    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+    timer=Timer.periodic(const Duration(milliseconds: 100), (timer) {
       Reload();
     });
   }
@@ -55,35 +55,16 @@ class _homescreenState extends State<homescreen> {
     List imagelist =['assets/icons/food.png.png','assets/icons/printer.png','assets/icons/grocery and juice.png','assets/icons/more-horizontal.png'];
     return Stack(
       children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(70.0.w, 10.0.h, 70.0.w, 10.0.h),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
-            height: 40.h,
-            child: TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(0, 7.h, 0, 5.h),
-                prefixIcon:
-                    const Icon(Icons.search_outlined, color: Colors.black),
-                border: InputBorder.none,
-                fillColor: Colors.white,
-                hintText: 'Search...',
-              ),
-            ),
-          ),
-        ),
         Container(
-          margin: EdgeInsets.fromLTRB(width * 0.06, height / 7.4, 0, 0),
+          margin: EdgeInsets.fromLTRB(width * 0.06, 20.h, 0, 0),
           child: Text(
-            "Hello There, "+Name,
+            "Hello There, $Name",
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(fontSize: 24.sp, letterSpacing: 2),
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(0, height / 6.3, 0, 0),
+          margin: EdgeInsets.fromLTRB(0, 50.h, 0, 0),
           height: height * 0.31,
           child: PageView.builder(
             scrollDirection: Axis.horizontal,
@@ -103,7 +84,7 @@ class _homescreenState extends State<homescreen> {
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(30, height / 1.9, 30, 0),
+          margin: EdgeInsets.fromLTRB(30.w, 350.h, 30.w, 0),
           child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -120,7 +101,7 @@ class _homescreenState extends State<homescreen> {
                       width: 100.w,
                       alignment: Alignment.center,
                       decoration: const BoxDecoration(
-                        color: Color.fromRGBO(219, 202, 255, 1.0),
+                        color: Color.fromRGBO(188, 157, 255, 1.0),
                         borderRadius: BorderRadius.all(Radius.circular(50)),
                         // shape: BoxShape.circle,
                       ),
@@ -137,9 +118,7 @@ class _homescreenState extends State<homescreen> {
                         icon: Image.asset(imagelist[index],color: Colors.white,scale: 0.1),
                       ),
                     ),
-                    Container(
-                      child: Text(categories[index],style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15.sp),),
-                    ),
+                    Text(categories[index],style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15.sp),),
                   ],
                 );
               }),

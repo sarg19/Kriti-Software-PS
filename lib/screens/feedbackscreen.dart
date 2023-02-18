@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kriti/components/bottom_nav_bar.dart';
+import 'package:kriti/screens/customertabs.dart';
 
 import '../database.dart';
 
@@ -169,7 +170,63 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               ],
             ),
           ),
-          bottomNavigationBar: const BottomNavBar(),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
+            selectedItemColor: Colors.black54,
+            unselectedItemColor: Colors.black54,
+            selectedFontSize: 0,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/home.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 0)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/bag.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 1)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/favorite.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 2)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: IconButton(
+                  icon: const ImageIcon(AssetImage('assets/icons/cart.png')),
+                  onPressed: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const CustomerTabs(currentIndex: 3)),
+                            (Route<dynamic> route) => false);
+                  },
+                ),
+                label: '',
+              ),
+            ],
+          ),
         ),
       ],
 

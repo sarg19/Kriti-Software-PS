@@ -24,6 +24,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
   late List khokhashop;
   late List foodcourtshop;
   late List canteenshop;
+  // var tab = 0;
   List background=["assets/images/first.png","assets/images/second.png","assets/images/third.png","assets/images/fourth.png","assets/images/fifth.png"];
   int marketcomplexsize=0;
   int khokhasize=0;
@@ -316,14 +317,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   child: Container(
                                                     height: 141.h,
                                                     width: 141.w,
-                                                    child: Center(child: Text(
-                                                      trending_marketcomplex[trending_market_length-ind-1]['ShopName'],
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
-                                                      ),
-                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
                                                       image: DecorationImage(
@@ -331,6 +324,15 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                           fit:BoxFit.cover
                                                       ),
                                                     ),
+                                                    child: Center(child: Text(
+                                                      trending_marketcomplex[trending_market_length-ind-1]['ShopName'],
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                      ),
+                                                    )),
                                                   ),
                                                 );
                                               },
@@ -370,6 +372,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 children: [
                                                   Text(
                                                     marketcomplexshop[index-1]['Name'],
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
@@ -379,6 +382,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   ),
                                                   Text(
                                                     marketcomplexshop[index-1]['open']==1?'Open':'Close',
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 13.sp,
                                                       color: Colors.white,
@@ -426,14 +430,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   child: Container(
                                                     height: 141.h,
                                                     width: 141.w,
-                                                    child: Center(child: Text(
-                                                      trending_khokha[trending_khokha_length-ind-1]['ShopName'],
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
-                                                      ),
-                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
                                                       image: DecorationImage(
@@ -441,6 +437,15 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                           fit:BoxFit.cover
                                                       ),
                                                     ),
+                                                    child: Center(child: Text(
+                                                      trending_khokha[trending_khokha_length-ind-1]['ShopName'],
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                      ),
+                                                    )),
                                                   ),
                                                 );
                                               },
@@ -480,6 +485,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 children: [
                                                   Text(
                                                     khokhashop[index-1]['Name'],
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
@@ -489,6 +495,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   ),
                                                   Text(
                                                     khokhashop[index-1]['open']==1?'Open':'Close',
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 13.sp,
                                                       color: Colors.white,
@@ -536,14 +543,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   child: Container(
                                                     height: 141.h,
                                                     width: 141.w,
-                                                    child: Center(child: Text(
-                                                        trending_food_court[trending_food_court_length-ind-1]['ShopName'],
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
-                                                        ),
-                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
                                                       // color: const Color.fromRGBO(188, 157, 255, 1.0),
@@ -553,6 +552,15 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                       ),
 
                                                     ),
+                                                    child: Center(child: Text(
+                                                        trending_food_court[trending_food_court_length-ind-1]['ShopName'],
+                                                      overflow: TextOverflow.ellipsis,
+                                                        style: const TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                        ),
+                                                    )),
                                                   ),
                                                 );
                                               },
@@ -592,6 +600,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 children: [
                                                   Text(
                                                     foodcourtshop[index-1]['Name'],
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
@@ -601,6 +610,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   ),
                                                   Text(
                                                     foodcourtshop[index-1]['open']==1?'Open':'Close',
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 13.sp,
                                                       color: Colors.white,
@@ -648,14 +658,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   child: Container(
                                                     height: 141.h,
                                                     width: 141.w,
-                                                    child: Center(child: Text(
-                                                      trending_canteen[trending_canteen_length-ind-1]['ShopName'],
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
-                                                      ),
-                                                    )),
                                                     decoration: BoxDecoration(
                                                       borderRadius: BorderRadius.circular(20),
                                                       image: DecorationImage(
@@ -663,6 +665,15 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                           fit:BoxFit.cover
                                                       ),
                                                     ),
+                                                    child: Center(child: Text(
+                                                      trending_canteen[trending_canteen_length-ind-1]['ShopName'],
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontWeight: FontWeight.w700,
+                                                          fontSize: 16,
+                                                          fontFamily: 'DM Sans'
+                                                      ),
+                                                    )),
                                                   ),
                                                 );
                                               },
@@ -701,6 +712,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 children: [
                                                   Text(
                                                     canteenshop[index-1]['Name'],
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 20.sp,
                                                       fontWeight: FontWeight.bold,
@@ -710,6 +722,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                   ),
                                                   Text(
                                                     canteenshop[index-1]['open']==1?'Open':'Close',
+                                                    overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 13.sp,
                                                       color: Colors.white,
@@ -736,18 +749,6 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                     ),
                   ),
                 ),
-
-
-                // new TabBarView(
-                //   controller: tabController,
-                //   children: myTabs.map((Tab tab) {
-                //     return new Center(child: new Text(tab.text!));
-                //   }).toList(),
-                // ),
-                // floatingActionButton: new FloatingActionButton(
-                //   onPressed: () => tabController.animateTo((tabController.index + 1) % 2), // Switch tabs
-                //   child: new Icon(Icons.swap_horiz),
-                // ),
                 bottomNavigationBar: BottomNavigationBar(
                   backgroundColor: const Color.fromRGBO(219, 202, 255, 1.0),
                   selectedItemColor: Colors.black54,
@@ -814,6 +815,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
   Future<void> Reload() async {
     db.getfoodshop('food-marketcomplex').then((value){
       if(!mounted) {
+        timer.cancel();
         return;
       }
       setState((){
@@ -823,6 +825,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
     });
     db.getfoodshop('food-canteen').then((value){
       if(!mounted) {
+        timer.cancel();
         return;
       }
       setState((){
@@ -832,6 +835,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
     });
     db.getfoodshop('food-foodcourt').then((value){
       if(!mounted) {
+        timer.cancel();
         return;
       }
       setState((){
@@ -841,6 +845,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
     });
     db.getfoodshop('food-khokha').then((value){
       if(!mounted) {
+        timer.cancel();
         return;
       }
       setState((){
