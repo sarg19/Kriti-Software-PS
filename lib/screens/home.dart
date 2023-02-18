@@ -47,12 +47,12 @@ class _homescreenState extends State<homescreen> {
   @override
   Widget build(BuildContext context) {
     var discountlist = ['1', '2', '3', '4', '5'];
-    var categories = ['Food', 'Stationary', 'Juice center', 'Others'];
+    var categories = ['Food', 'Stationary', 'Grocery', 'Miscellaneous'];
     var nextscreens = [const MyTabbedPage(), const StationaryScreen(), const JuiceCenter(), const Misc()];
     var size = MediaQuery.of(context).size;
     var width = size.width;
     var height = size.height;
-    var imagelist =['assets/icons/food.png.png','assets/icons/printer.png','assets/icons/grocery and juice.png','assets/icons/more-horizontal.png'];
+    List imagelist =['assets/icons/food.png.png','assets/icons/printer.png','assets/icons/grocery and juice.png','assets/icons/more-horizontal.png'];
     return Stack(
       children: [
         Padding(
@@ -103,37 +103,44 @@ class _homescreenState extends State<homescreen> {
           ),
         ),
         Container(
-          margin: EdgeInsets.fromLTRB(0, height / 2.2, 0, 0),
+          margin: EdgeInsets.fromLTRB(30, height / 1.9, 30, 0),
           child: GridView.builder(
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20),
+                  childAspectRatio: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 32),
               itemCount: categories.length,
               itemBuilder: (BuildContext ctx, index) {
-                return Container(
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
+                return Column(
+                  children: [
+                    Container(
+                      height: 50.h,
+                      width: 100.w,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(219, 202, 255, 1.0),
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        // shape: BoxShape.circle,
+                      ),
 
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => nextscreens[index]));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: EdgeInsets.all(width / 6),
-                      backgroundColor: Colors.white,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => nextscreens[index]));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          padding: EdgeInsets.all(width / 6),
+
+                        ),
+                        icon: Image.asset(imagelist[index],color: Colors.white,scale: 0.1),
+                      ),
                     ),
-                    child: Center(
-                      child: Image(
-                          image: AssetImage(imagelist[index])),
+                    Container(
+                      child: Text(categories[index],style: TextStyle(color: Colors.black,fontWeight: FontWeight.w600,fontSize: 15.sp),),
                     ),
-                  ),
+                  ],
                 );
               }),
         ),
