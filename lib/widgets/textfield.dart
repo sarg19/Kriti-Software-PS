@@ -12,8 +12,9 @@ class CustomTextField extends StatelessWidget {
   final TextInputType inputType;
   final String? errorText;
   final bool? obscureText;
+  final bool? enabled;
 
-  const CustomTextField({Key? key, required this.controller, required this.labelText, required this.hintText, required this.inputType, this.errorText, this.obscureText, this.labelColor, this.padding}) : super(key: key);
+  const CustomTextField({Key? key, required this.controller, required this.labelText, required this.hintText, required this.inputType, this.errorText, this.obscureText, this.labelColor, this.padding, this.enabled}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class CustomTextField extends StatelessWidget {
             child: SizedBox(
               height: errorText==""? 35.h : 50.h,
               child: TextField(
+                enabled: enabled,
                 textAlignVertical: TextAlignVertical.center,
                 controller: controller,
                 obscureText: obscureText??false,

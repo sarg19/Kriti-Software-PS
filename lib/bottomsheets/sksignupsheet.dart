@@ -9,6 +9,8 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
 import 'package:kriti/widgets/textfield.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 import 'skloginsheet.dart';
 
 class SkSignupSheet extends StatefulWidget {
@@ -223,20 +225,12 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
             num.tryParse(phone), email, name, upi, ownerName, collection_name);
       });
       if (!mounted) return;
-      final Email send_email = Email(
-        body:
-            'Verify the following account \nShop Name: $name\nOwner Name: $ownerName\n Email: $email\n Phone Number: $phone',
-        subject: 'Verification of account',
-        recipients: ['myakesh7@gmail.com'],
-        isHTML: false,
-      );
-
-      await FlutterEmailSender.send(send_email);
+      FirebaseAuth.instance.signOut();
+      sendmail("knowshopkapili@gmail.com", "Verification of account", "Verify the following account \nShop Name: $name\nOwner Name: $ownerName\n Email: $email\n Phone Number: $phone\n UPI ID: $upi\n Type of shop: $collection_name");
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
               "We've received your request. Wait for your verification.")));
-      Navigator.pop(context);
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const homescreen()));
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         setState(() {
@@ -251,6 +245,30 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
       print(e);
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Some error occurred")));
+    }
+  }
+
+  Future<String> sendmail(String email, String subject, String body) async {
+    String username = 'knowshopkapili@gmail.com';
+    String password = 'kcihnoydluldsgcm';
+    // String password = String.fromEnvironment('name');
+    final smtpServer = gmail(username, password);
+    // Create our message.
+    final message = Message()
+      ..from = Address(username, 'KnowShop')
+      ..recipients.add(Address(email))
+      ..subject = subject
+      ..text = body;
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: $sendReport');
+      return sendReport.toString();
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+      return "Fail";
     }
   }
 

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
@@ -7,6 +8,8 @@ import 'package:kriti/bottomsheets/loginsheet.dart';
 import 'package:kriti/screens/customertabs.dart';
 import 'package:kriti/screens/home.dart';
 import 'package:kriti/widgets/textfield.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
 import '../database.dart';
 
@@ -23,12 +26,18 @@ class _SignUpSheetState extends State<SignUpSheet> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _otpController = TextEditingController();
 
   String _nameError = "";
   String _emailError = "";
   String _phoneError = "";
   String _passwordError = "";
   String _confirmError = "";
+  String _otpError = "";
+  bool verified = false;
+  bool otpsent = false;
+  String otp = "";
+  String otp2 = "";
   late Databases db;
   initialise(){
     db=Databases();
@@ -39,23 +48,10 @@ class _SignUpSheetState extends State<SignUpSheet> {
     super.initState();
     initialise();
   }
-  Future<void> signup() async {
-    String name = _nameController.text;
-    String email = _emailController.text;
-    String phone = _phoneController.text;
-    String password = _passwordController.text;
-    String confirm = _confirmPasswordController.text;
-
-    if (name.isEmpty) {
-      setState(() {
-        _nameError = "Name is required.";
-      });
-      return;
-    } else {
-      setState(() {
-        _nameError = "";
-      });
-    }
+  Random random = Random();
+  String email = "";
+  void sendOTP() async {
+    email = _emailController.text;
     if (email.isEmpty) {
       setState(() {
         _emailError = "Email is required.";
@@ -71,6 +67,71 @@ class _SignUpSheetState extends State<SignUpSheet> {
     } else {
       setState(() {
         _emailError = "";
+      });
+    }
+    for(var i=0; i<6; i++){
+      var temp = random.nextInt(10);
+      otp = otp+temp.toString();
+    }
+    print(otp);
+    sendmail(_emailController.text, "Email verification for KnowShop", "Enter the following OTP for verifying your email in KnowShop\n$otp");
+    setState(() {
+      otp2 = otp;
+      otp = "";
+    });
+  }
+
+  void verifyOTP() async {
+    if(_otpController.text==otp2) {
+      setState(() {
+        verified = true;
+        otpsent = true;
+      });
+    } else {
+      setState(() {
+        _otpError = "Wrong OTP";
+      });
+    }
+  }
+
+  Future<String> sendmail(String email, String subject, String body) async {
+    String username = 'knowshopkapili@gmail.com';
+    String password = 'kcihnoydluldsgcm';
+    // String password = String.fromEnvironment('name');
+    final smtpServer = gmail(username, password);
+    // Create our message.
+    final message = Message()
+      ..from = Address(username, 'KnowShop')
+      ..recipients.add(Address(email))
+      ..subject = subject
+      ..text = body;
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: $sendReport');
+      return sendReport.toString();
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+      return "Fail";
+    }
+  }
+
+  Future<void> signup() async {
+    String name = _nameController.text;
+    String phone = _phoneController.text;
+    String password = _passwordController.text;
+    String confirm = _confirmPasswordController.text;
+
+    if (name.isEmpty) {
+      setState(() {
+        _nameError = "Name is required.";
+      });
+      return;
+    } else {
+      setState(() {
+        _nameError = "";
       });
     }
     if (phone.isEmpty) {
@@ -109,6 +170,9 @@ class _SignUpSheetState extends State<SignUpSheet> {
         _confirmError = "Passwords don't match.";
       });
       return;
+    } else {
+      _passwordError = "";
+      _confirmError = "";
     }
     try {
       FocusManager.instance.primaryFocus?.unfocus();
@@ -123,11 +187,10 @@ class _SignUpSheetState extends State<SignUpSheet> {
             db.create_user(value.user?.uid,email ,name, num.tryParse(phone));
       });
       if (!mounted) return;
-      FirebaseAuth.instance.currentUser?.sendEmailVerification();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("An email verification link has been sent. Verify to proceed.")));
+      FirebaseAuth.instance.signOut();
       Navigator.pop(context);
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const CustomerTabs(currentIndex: 0)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("SignUp successful. Login to proceed.")));
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         setState(() {
@@ -135,11 +198,14 @@ class _SignUpSheetState extends State<SignUpSheet> {
         });
       } else if (e.code == "email-already-in-use") {
         setState(() {
+          otpsent = !otpsent;
+          verified = !verified;
           _emailError = "Email already registered.";
         });
       }
     } catch (e) {
       print(e);
+      Navigator.pop(context);
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Some error occurred")));
     }
@@ -183,29 +249,85 @@ class _SignUpSheetState extends State<SignUpSheet> {
                     ),
                   ),
                   CustomTextField(controller: _nameController, labelText: "Name", hintText: "", inputType: TextInputType.text, errorText: _nameError,),
-                  CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError,),
+                  CustomTextField(controller: _emailController, labelText: "Email", hintText: "", inputType: TextInputType.emailAddress, errorText: _emailError, enabled: !otpsent),
                   CustomTextField(controller: _phoneController, labelText: "Phone number", hintText: "", inputType: TextInputType.phone, errorText: _phoneError,),
                   CustomTextField(controller: _passwordController, labelText: "Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _passwordError,),
                   CustomTextField(controller: _confirmPasswordController, labelText: "Confirm Password", hintText: "", inputType: TextInputType.text, obscureText: true, errorText: _confirmError,),
-                  ElevatedButton(
-                    onPressed: () {
-                      signup();
-                    },
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(const Color(0xFFBC9DFF)),
-                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(22.0),
-                            )),
-                        textStyle: MaterialStateProperty.all(
-                            const TextStyle(fontWeight: FontWeight.w600))),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
+                  Visibility(
+                    visible: !verified,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        sendOTP();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(const Color(0xFFBC9DFF)),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(22.0),
+                              )),
+                          textStyle: MaterialStateProperty.all(
+                              const TextStyle(fontWeight: FontWeight.w600))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Send OTP',
+                          style: TextStyle(
                             fontSize: 20.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(visible: !verified, child: CustomTextField(controller: _otpController, labelText: "OTP", hintText: "", inputType: TextInputType.number, obscureText: true, errorText: _otpError,)),
+                  Visibility(
+                    visible: !verified,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        verifyOTP();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(const Color(0xFFBC9DFF)),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(22.0),
+                              )),
+                          textStyle: MaterialStateProperty.all(
+                              const TextStyle(fontWeight: FontWeight.w600))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Verify OTP',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: verified,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        signup();
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(const Color(0xFFBC9DFF)),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(22.0),
+                              )),
+                          textStyle: MaterialStateProperty.all(
+                              const TextStyle(fontWeight: FontWeight.w600))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              fontSize: 20.sp,
+                          ),
                         ),
                       ),
                     ),
