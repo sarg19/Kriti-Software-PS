@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kriti/popups/qr.dart';
+import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/feedbackscreen.dart';
 import 'package:kriti/screens/orderstatus.dart';
 
@@ -284,7 +286,7 @@ class _CustomerOrderActiveCard extends State<customer_order_active_card> {
                         bottomRight: Radius.circular(15))),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
+                  child: widget.item['Status']=="Ready"?Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
@@ -321,10 +323,36 @@ class _CustomerOrderActiveCard extends State<customer_order_active_card> {
                           icon:
                               ImageIcon(AssetImage('assets/icons/qrcode.png')),
                           iconSize: 30.sp,
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(context: context, builder: (BuildContext context){
+                              return ShowPopUp(widgetcontent: QRCard(order_key: widget.item['Order_Key'],));
+                            });
+                          },
                           // color: Colors.red,
                         )
-                      ]),
+                      ]):Center(
+                    child: Container(
+                      width: 120.w,
+                      // padding: EdgeInsets.fromLTRB(73, 0, 0, 7),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            shape: StadiumBorder(),
+                            primary: Color.fromRGBO(188, 157, 255, 1),
+                            onPrimary: Color.fromRGBO(255, 255, 255, 1.0)),
+                        child: Text(
+                          'Show Status',
+                          style: TextStyle(
+                            fontFamily: 'DMSans',
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => OrderStatusScreen(order_uid: widget.item['Order_Key'])));
+                        },
+                      ),
+                    ),
+                  ),
                 ))
           ],
         ),
