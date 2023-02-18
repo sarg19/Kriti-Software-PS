@@ -1,11 +1,7 @@
-import 'dart:ffi';
 import 'dart:ui';
-
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kriti/database.dart';
 import 'package:kriti/widgets/textfield.dart';
@@ -38,27 +34,12 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
   String _passwordError = "";
   String _confirmError = "";
   String _regionError = "";
-  String _hostelError = "";
   String _shopTypeError = "";
   int region = 0;
   int shopType = 0;
   String collection_name = "";
 
   String? dropdownvalue;
-  final items = [
-    "Kapili",
-    "Lohit",
-    "Disang",
-    "Brahmaputra",
-    "Manas",
-    "Siang",
-    "Dihing",
-    "Barak",
-    "Umiam",
-    "Kameng",
-    "Subansiri",
-    "Dhansiri"
-  ];
 
   late Databases db;
 
@@ -215,18 +196,19 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
-            value.user?.updateDisplayName(collection_name.toString()).then((value){
-              FirebaseAuth.instance.currentUser?.reload().then((value){
-                print(FirebaseAuth.instance.currentUser);
-                print(FirebaseAuth.instance.currentUser?.displayName);
-              });
-            });
+        value.user?.updateDisplayName(collection_name.toString()).then((value) {
+          FirebaseAuth.instance.currentUser?.reload().then((value) {
+            print(FirebaseAuth.instance.currentUser);
+            print(FirebaseAuth.instance.currentUser?.displayName);
+          });
+        });
         db.create_shop_user(FirebaseAuth.instance.currentUser!.uid,
             num.tryParse(phone), email, name, upi, ownerName, collection_name);
       });
       if (!mounted) return;
       FirebaseAuth.instance.signOut();
-      sendmail("knowshopkapili@gmail.com", "Verification of account", "Verify the following account \nShop Name: $name\nOwner Name: $ownerName\n Email: $email\n Phone Number: $phone\n UPI ID: $upi\n Type of shop: $collection_name");
+      sendmail("knowshopkapili@gmail.com", "Verification of account",
+          "Verify the following account \nShop Name: $name\nOwner Name: $ownerName\n Email: $email\n Phone Number: $phone\n UPI ID: $upi\n Type of shop: $collection_name");
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
@@ -251,9 +233,7 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
   Future<String> sendmail(String email, String subject, String body) async {
     String username = 'knowshopkapili@gmail.com';
     String password = 'kcihnoydluldsgcm';
-    // String password = String.fromEnvironment('name');
     final smtpServer = gmail(username, password);
-    // Create our message.
     final message = Message()
       ..from = Address(username, 'KnowShop')
       ..recipients.add(Address(email))
@@ -275,7 +255,6 @@ class _SkSignupSheetState extends State<SkSignupSheet> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    // double height = MediaQuery.of(context).size.height;
     return ClipRRect(
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
