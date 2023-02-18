@@ -753,14 +753,25 @@ class Databases{
         break;
       }
     }
-    shop_info!['Active_Orders'].add({
-      "Name":order_info['Name'],
-      "Order_Items":order_info['Order_Items'],
-      "Order_Key":order_key,
-      "Status":"Successful",
-      "Total_Amount":order_info['Total_Amount'],
-      "User_Key":order_info['User_Key']
-    });
+    if(order_info['Collection'] != 'stationary'){
+      shop_info!['Active_Orders'].add({
+        "Name":order_info['Name'],
+        "Order_Items":order_info['Order_Items'],
+        "Order_Key":order_key,
+        "Status":"Successful",
+        "Total_Amount":order_info['Total_Amount'],
+        "User_Key":order_info['User_Key']
+      });
+    }
+    else{
+      shop_info!['Active_Orders'].add({
+        "Name":order_info['Name'],
+        "Order_Key":order_key,
+        "Status":"Successful",
+        "Total_Amount":order_info['Total_Amount'],
+        "User_Key":order_info['User_Key']
+      });
+    }
     firestore.collection("users").doc(order_info!['User_Key']).update({
       'Active_Orders':user_info['Active_Orders']
     });
@@ -921,5 +932,55 @@ class Databases{
     });
     usersCollection.doc(userId).update({'Active_Orders':user_info['Active_Orders']});
     shopsCollection.doc(shop_key).update({'Pending_Order':shop_info['Pending_Order']});
+  }
+
+  void accepted_for_stationary(String userId,String? shop_key,String order_key,String? collection , num total) async {
+    late Map? user_info;
+    var snapshot=await firestore.collection("users").doc(userId).get();
+    user_info=snapshot.data();
+
+
+
+    for(var item in user_info!['Active_Orders']){
+      if(item['Order_Key'] == order_key){
+        item['Status'] = "Approved";
+        item['Total_Amount'] = total;
+        break;
+      }
+    }
+
+    firestore.collection("users").doc(userId).update({
+      'Active_Orders':user_info['Active_Orders']
+    });
+
+    late Map? shop_info;
+    var snapshot2=await firestore.collection(collection!).doc(shop_key).get();
+    shop_info=snapshot2.data();
+    print(shop_info);
+    var index = 0;
+    Map temp={};
+    for(var item in shop_info!['Pending_Order']){
+      if(item['Order_Key'] == order_key){
+        temp=item;
+        break;
+      }
+    }
+
+    shop_info['Pending_Order'].remove(temp);
+
+    firestore.collection(collection).doc(shop_key).update({
+      'Pending_Order':shop_info['Pending_Order']
+    });
+
+    late Map? order_info;
+    var snapshot3=await firestore.collection('orders').doc(order_key).get();
+    order_info=snapshot3.data();
+
+    order_info!['Status'] = "Approved";
+
+    firestore.collection("orders").doc(order_key).update({
+      'Status':order_info['Status'],
+      'Total_Amount':total
+    });
   }
 }
