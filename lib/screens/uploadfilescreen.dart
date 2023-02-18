@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -30,15 +32,32 @@ class _uploadscreenState extends State<uploadscreen> {
   String email='abc@example.com';
   String stat_email = 'stationary@gmail.con';
   int Phone=1234567890;
+  String ShopName="Shop";
+  String open="Open";
   late Databases db;
+  late Timer timer;
   initialise() {
     db = Databases();
     db.initialise();
     db.retrieve_shop_info('stationary', widget.shop_key).then((value){
       setState(() {
         stat_email = value['Email'];
-        print(widget.shop_key);
       });
+    });
+    void Reload() async {
+      db.retrieve_shop_info('stationary', widget.shop_key).then((value){
+        if(!mounted){
+          return;
+        }
+        setState(() {
+          stat_email = value['Email'];
+          open=value['open']==1?"Open":"Close";
+          ShopName=value['ShopName'];
+        });
+      });
+    }
+    timer=Timer.periodic(Duration(milliseconds: 100), (timer) {
+      Reload();
     });
     db.retrieve_user_info(FirebaseAuth.instance.currentUser?.uid).then((value){
       setState((){
@@ -188,7 +207,7 @@ class _uploadscreenState extends State<uploadscreen> {
                     Padding(
                       padding: EdgeInsets.only(left: width/6),
                       child: Text(
-                        'Kapili Stationary',  //change to ShopName
+                        ShopName,  //change to ShopName
                         style: TextStyle(
                             fontSize: 25.sp,
                             fontFamily: 'DM-Sans'
@@ -200,7 +219,7 @@ class _uploadscreenState extends State<uploadscreen> {
                         Padding(
                           padding: EdgeInsets.only(left: width/6),
                           child: Text(
-                            'Now Open',
+                            'Now '+open,
                             style: TextStyle(
                                 color: const Color.fromRGBO(114, 114, 114, 1.0),
                                 fontSize: 15.sp,

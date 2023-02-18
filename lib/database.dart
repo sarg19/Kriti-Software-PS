@@ -882,4 +882,44 @@ class Databases{
       return trending_shop;
     }
   }
+  void add_print (String shop_key,String userId,num total) async {
+    final CollectionReference usersCollection = firestore.collection('users');
+    final CollectionReference shopsCollection = firestore.collection('stationary');
+    late Map? user_info;
+    var snapshot=await firestore.collection("users").doc(userId).get();
+    user_info=snapshot.data();
+    late Map? shop_info;
+    var snapshot2=await firestore.collection("stationary").doc(shop_key).get();
+    shop_info=snapshot2.data();
+    final CollectionReference ordersCollection = firestore.collection('orders');
+    var Order_Key;
+    ordersCollection.add({
+      'Name':user_info!["Name"],
+      'User_Key':userId,
+      'Status':'Requested',
+      'Shop_Name':shop_info!['ShopName'],
+      'Shop_Key':shop_key,
+      'Total_Amount':total,
+      'Collection':"stationary"
+    }).then((value){
+      Order_Key=value.id;
+    });
+    shop_info!['Pending_Order'].add({
+      'Name':user_info["Name"],
+      'Order_Key':Order_Key,
+      'Status':'Requested',
+      'User_Key':userId,
+      'Total_Amount':total
+    });
+    user_info['Active_Orders'].add({
+      'Total_Amount':total,
+      'Status':'Requested',
+      'Shop_Name':shop_info!["ShopName"],
+      'Shop_Key':shop_key,
+      'Order_Key':Order_Key,
+      'Collection':"stationary"
+    });
+    usersCollection.doc(userId).update({'Active_Orders':user_info['Active_Orders']});
+    shopsCollection.doc(shop_key).update({'Pending_Order':shop_info['Pending_Order']});
+  }
 }
