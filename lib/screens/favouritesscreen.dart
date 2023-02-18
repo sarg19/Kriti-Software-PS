@@ -184,6 +184,8 @@ class FavouritesCard extends StatelessWidget {
                       onPressed: () {
                         db.Add_to_Cart(name, price, Shop_Key, shopName,
                             FirebaseAuth.instance.currentUser?.uid,collection);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(content: Text("Item added to cart.")));
                       },
                     ),
                   )

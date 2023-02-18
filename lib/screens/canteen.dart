@@ -312,27 +312,34 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                               itemCount: trending_market_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(10.0),
-                                                  child: Container(
-                                                    height: 141.h,
-                                                    width: 141.w,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(20),
-                                                      image: DecorationImage(
-                                                          image: AssetImage(background[ind]),
-                                                          fit:BoxFit.cover
+                                                return GestureDetector(
+                                                  onTap: (){
+                                                    if(trending_marketcomplex[trending_market_length-ind-1]['open']==1){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_marketcomplex[trending_market_length-ind-1]['id'],collection_name: "food-marketcomplex")));
+                                                    }
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(10.0),
+                                                    child: Container(
+                                                      height: 141.h,
+                                                      width: 141.w,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                        image: DecorationImage(
+                                                            image: AssetImage(background[ind]),
+                                                            fit:BoxFit.cover
+                                                        ),
                                                       ),
+                                                      child: Center(child: Text(
+                                                        trending_marketcomplex[trending_market_length-ind-1]['ShopName'],
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: const TextStyle(
+                                                            fontWeight: FontWeight.w700,
+                                                            fontSize: 16,
+                                                            fontFamily: 'DM Sans'
+                                                        ),
+                                                      )),
                                                     ),
-                                                    child: Center(child: Text(
-                                                      trending_marketcomplex[trending_market_length-ind-1]['ShopName'],
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
-                                                      ),
-                                                    )),
                                                   ),
                                                 );
                                               },
@@ -425,27 +432,34 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                               itemCount: trending_khokha_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(10.0),
-                                                  child: Container(
-                                                    height: 141.h,
-                                                    width: 141.w,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(20),
-                                                      image: DecorationImage(
-                                                          image: AssetImage(background[ind]),
-                                                          fit:BoxFit.cover
+                                                return GestureDetector(
+                                                  onTap: (){
+                                                    if(trending_khokha[trending_khokha_length-ind-1]['open']==1){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_khokha[trending_khokha_length-ind-1]['id'],collection_name: "food-khokha")));
+                                                    }
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(10.0),
+                                                    child: Container(
+                                                      height: 141.h,
+                                                      width: 141.w,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                        image: DecorationImage(
+                                                            image: AssetImage(background[ind]),
+                                                            fit:BoxFit.cover
+                                                        ),
                                                       ),
+                                                      child: Center(child: Text(
+                                                        trending_khokha[trending_khokha_length-ind-1]['ShopName'],
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: const TextStyle(
+                                                            fontWeight: FontWeight.w700,
+                                                            fontSize: 16,
+                                                            fontFamily: 'DM Sans'
+                                                        ),
+                                                      )),
                                                     ),
-                                                    child: Center(child: Text(
-                                                      trending_khokha[trending_khokha_length-ind-1]['ShopName'],
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
-                                                      ),
-                                                    )),
                                                   ),
                                                 );
                                               },
@@ -538,29 +552,36 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                               itemCount: trending_food_court_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(10.0),
-                                                  child: Container(
-                                                    height: 141.h,
-                                                    width: 141.w,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(20),
-                                                      // color: const Color.fromRGBO(188, 157, 255, 1.0),
-                                                      image: DecorationImage(
-                                                        image: AssetImage(background[ind]),
-                                                        fit:BoxFit.cover
-                                                      ),
-
-                                                    ),
-                                                    child: Center(child: Text(
-                                                        trending_food_court[trending_food_court_length-ind-1]['ShopName'],
-                                                      overflow: TextOverflow.ellipsis,
-                                                        style: const TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
+                                                return GestureDetector(
+                                                  onTap: (){
+                                                    if(trending_food_court[trending_food_court_length-ind-1]['open']==1){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_food_court[trending_food_court_length-ind-1]['id'],collection_name: "food-foodcourt")));
+                                                    }
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(10.0),
+                                                    child: Container(
+                                                      height: 141.h,
+                                                      width: 141.w,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                        // color: const Color.fromRGBO(188, 157, 255, 1.0),
+                                                        image: DecorationImage(
+                                                          image: AssetImage(background[ind]),
+                                                          fit:BoxFit.cover
                                                         ),
-                                                    )),
+
+                                                      ),
+                                                      child: Center(child: Text(
+                                                          trending_food_court[trending_food_court_length-ind-1]['ShopName'],
+                                                        overflow: TextOverflow.ellipsis,
+                                                          style: const TextStyle(
+                                                            fontWeight: FontWeight.w700,
+                                                            fontSize: 16,
+                                                            fontFamily: 'DM Sans'
+                                                          ),
+                                                      )),
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -653,27 +674,34 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                               itemCount: trending_canteen_length,
                                               itemBuilder: (BuildContext context,int ind)
                                               {
-                                                return Padding(
-                                                  padding: const EdgeInsets.all(10.0),
-                                                  child: Container(
-                                                    height: 141.h,
-                                                    width: 141.w,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(20),
-                                                      image: DecorationImage(
-                                                          image: AssetImage(background[ind]),
-                                                          fit:BoxFit.cover
+                                                return GestureDetector(
+                                                  onTap: (){
+                                                    if(trending_canteen[trending_canteen_length-ind-1]['open']==1){
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_canteen[trending_canteen_length-ind-1]['id'],collection_name: "food-canteen")));
+                                                    }
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(10.0),
+                                                    child: Container(
+                                                      height: 141.h,
+                                                      width: 141.w,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(20),
+                                                        image: DecorationImage(
+                                                            image: AssetImage(background[ind]),
+                                                            fit:BoxFit.cover
+                                                        ),
                                                       ),
+                                                      child: Center(child: Text(
+                                                        trending_canteen[trending_canteen_length-ind-1]['ShopName'],
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: const TextStyle(
+                                                            fontWeight: FontWeight.w700,
+                                                            fontSize: 16,
+                                                            fontFamily: 'DM Sans'
+                                                        ),
+                                                      )),
                                                     ),
-                                                    child: Center(child: Text(
-                                                      trending_canteen[trending_canteen_length-ind-1]['ShopName'],
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          fontWeight: FontWeight.w700,
-                                                          fontSize: 16,
-                                                          fontFamily: 'DM Sans'
-                                                      ),
-                                                    )),
                                                   ),
                                                 );
                                               },
