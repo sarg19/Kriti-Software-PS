@@ -17,6 +17,7 @@ class _ShopDetailsState extends State<ShopDetails> {
   String Name="UserName";
   String ShopName="ShopName";
   String Email="email";
+  String Collections = "collection";
   num Ratings = 0;
   int Phone=1234567890;
   int counter=0;
@@ -32,6 +33,7 @@ class _ShopDetailsState extends State<ShopDetails> {
         Phone=value['Number'];
         Email=value['Email'];
         Ratings=value['current_rating'];
+        Collections=value['collection'];
       });
     });
   }
@@ -43,7 +45,7 @@ class _ShopDetailsState extends State<ShopDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300.h,
+      height: Collections.substring(0,4)=='food'? 300.h:230.h,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color.fromRGBO(253, 243, 223, 1.0),
@@ -108,7 +110,7 @@ class _ShopDetailsState extends State<ShopDetails> {
                             114, 114, 114, 1.0)
                     )),
                   ),
-                  Padding(
+                  Collections.substring(0,4)=='food'? Padding(
                     padding: EdgeInsets.only(top: 10.0.h, bottom: 20.0.h, right: 25.0.w),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -120,7 +122,7 @@ class _ShopDetailsState extends State<ShopDetails> {
                           Icon(Ratings < 5 ? Icons.star_border_rounded : Icons.star_rate_rounded , size: 35.sp),
                         ]
                     ),
-                  ),
+                  ):Container(),
                 ],
               ),
             ),
