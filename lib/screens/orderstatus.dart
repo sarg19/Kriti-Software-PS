@@ -25,7 +25,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
   var size,
       height,
       width;
-
+  int counter=0;
   String order_status = "";
   String upi_id = "";
   String payment_amount = "";
@@ -376,7 +376,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                           )
                         ),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name, order_key: widget.order_uid,)));
+                          if(counter==1){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name, order_key: widget.order_uid,)));
+                          }
                         },
                         child: Text(
                           'Make Payment',
@@ -644,6 +646,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
           if(!mounted) return;
           setState(() {
             upi_id = shopinfo['UPI_id'];
+            counter=1;
           });
         });
       });
