@@ -326,6 +326,7 @@ class _uploadscreenState extends State<uploadscreen> {
                           if(pickedfile.isEmpty) return;
                           var result=await sendmail(email,paths,stat_email);
                           if(result=="SUCCESS"){
+                            db.add_print(widget.shop_key, FirebaseAuth.instance.currentUser?.uid, 0);
                             setState((){
                               pickedfile=[];
                               thumbnail=[];
