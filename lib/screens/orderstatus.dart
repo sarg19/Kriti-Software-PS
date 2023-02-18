@@ -111,6 +111,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
             elevation: 0,
             leading: IconButton(
               onPressed: (){
+                if(order_status=="Rejected"){
+                  db.OrderDelete(widget.order_uid);
+                }
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back_ios_new , color: Colors.black ),
