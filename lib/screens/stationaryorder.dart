@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:kriti/popups/addamount.dart';
+import 'package:kriti/popups/showPopUp.dart';
 
 import '../database.dart';
 
@@ -103,7 +105,7 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
                           // Perform action
                         },
                         child: Text(
-                          "Completed",
+                          "Pending",
                           style: TextStyle(
                             // decoration: selected == 1
                             //     ? TextDecoration.underline
@@ -167,6 +169,7 @@ class _StationaryOrderPageState extends State<StationaryOrderPage> {
         Pending_Order=value['Pending_Order'];
         activelength=Active_Orders.length;
         pendinglength=Pending_Order.length;
+        print(Pending_Order);
       });
     });
   }
@@ -195,6 +198,16 @@ class StationaryActiveCard extends StatefulWidget {
   State<StationaryActiveCard> createState() => _StationaryActiveCard();
 }
 class _StationaryPendingCard extends State<StationaryPendingCard> {
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -222,7 +235,7 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                   )
               ),
               child: Text(
-                'Tarun',
+                widget.items["Name"],
                 style: TextStyle(
                     fontSize: 25.sp,
                     color: Color.fromRGBO(255, 255, 255, 1),
@@ -242,14 +255,8 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                 children: <Widget>[
                   SizedBox(height: 20.h,),
                   Expanded(
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: widget.items.length,
-                      itemBuilder: (context,index){
-                        return Text("Sent on your Email",textAlign: TextAlign.center, style: TextStyle(fontSize: 18.sp,fontFamily: 'DMSans',),);
-                      },
+                    child:  Text("Sent on your Email",textAlign: TextAlign.center, style: TextStyle(fontSize: 18.sp,fontFamily: 'DMSans',),),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -285,7 +292,11 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                                 fontSize: 15.sp,
                               ),
                             ),
-                            onPressed: (){},
+                            onPressed: (){
+                              showDialog(context: context, builder: (BuildContext context){
+                                return ShowPopUp(widgetcontent: AddAmount(userId: widget.items['User_Key'],order_key: widget.items['Order_Key']));
+                              });
+                            },
                           ),
                         ),
                         Container(
@@ -305,7 +316,9 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
                                 fontSize: 15.sp,
                               ),
                             ),
-                            onPressed: (){},
+                            onPressed: (){
+                              db.rejected(widget.items['User_Key'], FirebaseAuth.instance.currentUser?.uid, widget.items['Order_Key'], 'stationary');
+                            },
                           ),
                         )
 
@@ -328,6 +341,16 @@ class _StationaryPendingCard extends State<StationaryPendingCard> {
 
 class _StationaryActiveCard extends State<StationaryActiveCard>{
   var getResult;
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -355,7 +378,7 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                   )
               ),
               child: Text(
-                'Tarun',
+                widget.items['Name'],
                 style: TextStyle(
                     fontSize: 25.sp,
                     color: Color.fromRGBO(255, 255, 255, 1),
@@ -375,13 +398,7 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                 children: <Widget>[
                   SizedBox(height: 20.h,),
                   Expanded(
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: widget.items.length,
-                      itemBuilder: (context,index){
-                        return Text("Sent on your Email",textAlign: TextAlign.center, style: TextStyle(fontSize: 18,fontFamily: 'DMSans',),);
-                      },
-                    ),
+                    child:  Text("Sent on your Email",textAlign: TextAlign.center, style: TextStyle(fontSize: 18,fontFamily: 'DMSans',),),
                   ),
                 ],
               ),
@@ -400,15 +417,8 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                          icon: const ImageIcon(AssetImage('assets/icons/scan.png'), color: Colors.transparent,),
-                          iconSize: 0,
-                          onPressed: (){
-                          },
-                          // color: Colors.red,
-                        ),
                         Container(
                           width: 120.w,
                           // padding: EdgeInsets.fromLTRB(73, 0, 0, 7),
@@ -420,42 +430,28 @@ class _StationaryActiveCard extends State<StationaryActiveCard>{
                                 onPrimary: Color.fromRGBO(255, 255, 255, 1.0)
                             ),
                             child: Text(
-                              'Ready',
+                              widget.items['Status']=='Ready'?'Scan QR':'Ready',
                               style: TextStyle(
                                 fontFamily: 'DMSans',
-                                fontSize: 15.sp,
+                                fontSize: 16.sp,
                               ),
                             ),
-                            onPressed: (){},
+                            onPressed: (){
+                              if(widget.items['Status']=='Ready'){
+                                scanQRCode();
+                              }else{
+                                db.Ready(widget.items['Order_Key']);
+                              }
+                            },
                           ),
                         ),
-                        IconButton(
-                          icon: ImageIcon(AssetImage('assets/icons/scan.png')),
-                          iconSize: 30,
-                          onPressed: (){
-                            scanQRCode();
-                          },
-                          // color: Colors.red,
-                        )
-                        // Container(
-                        //   width: 140,
-                        //   padding: EdgeInsets.fromLTRB(20, 0, 20, 7),
-                        //   child: ElevatedButton(
-                        //     style: ElevatedButton.styleFrom(
-                        //         elevation: 0,
-                        //         shape: StadiumBorder(),
-                        //         primary: Color.fromRGBO(188, 157, 255, 1),
-                        //         onPrimary: Color.fromRGBO(255, 255, 255, 1.0)
-                        //     ),
-                        //     child: Text(
-                        //       'Reorder',
-                        //       style: TextStyle(
-                        //         fontFamily: 'DMSans',
-                        //         fontSize: 15,
-                        //       ),
-                        //     ),
-                        //     onPressed: (){},
-                        //   ),
+                        // IconButton(
+                        //   icon: ImageIcon(AssetImage('assets/icons/scan.png')),
+                        //   iconSize: 30,
+                        //   onPressed: (){
+                        //     scanQRCode();
+                        //   },
+                        //   // color: Colors.red,
                         // )
 
                       ]

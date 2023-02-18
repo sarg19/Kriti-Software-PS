@@ -956,7 +956,7 @@ class Databases{
     shopsCollection.doc(shop_key).update({'Pending_Order':shop_info['Pending_Order']});
   }
 
-  void accepted_for_stationary(String userId,String? shop_key,String order_key,String? collection , num total) async {
+  void accepted_for_stationary(String userId,String? shop_key,String order_key,String? collection , num? total) async {
     late Map? user_info;
     var snapshot=await firestore.collection("users").doc(userId).get();
     user_info=snapshot.data();

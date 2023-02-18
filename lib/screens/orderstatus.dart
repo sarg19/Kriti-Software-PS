@@ -373,7 +373,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                           )
                         ),
                         onPressed: () {
-                          // db.PaymentSuccess(widget.order_uid);
+                          db.PaymentSuccess(widget.order_uid);
                           Navigator.push(context, MaterialPageRoute(builder: (context) => PaymentPage(upi_id: upi_id, payment_amount: payment_amount, shop_name: shop_name, order_key: widget.order_uid,)));
                         },
                         child: Text(

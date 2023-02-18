@@ -1,16 +1,30 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../database.dart';
 import '../widgets/textfield.dart';
 
 class AddAmount extends StatefulWidget {
-  const AddAmount({Key? key}) : super(key: key);
+  String userId;
+  String order_key;
+  AddAmount({Key? key,required this.userId,required this.order_key}) : super(key: key);
 
   @override
   State<AddAmount> createState() => _AddAmountState();
 }
 
 class _AddAmountState extends State<AddAmount> {
+  late Databases db;
+  initialise(){
+    db=Databases();
+    db.initialise();
+  }
+  @override
+  void initState() {
+    super.initState();
+    initialise();
+  }
   TextEditingController nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -41,7 +55,17 @@ class _AddAmountState extends State<AddAmount> {
                         ),
                         backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(188, 157, 255, 1.0)),
                       ),
-                      onPressed: (){},
+                      onPressed: (){
+                        if( num.tryParse(nameController.text).runtimeType==null){
+                          print('wrong input');
+                        }else if( num.tryParse(nameController.text)==null){
+                          print('wrong input');
+                        }else{
+                          db.accepted_for_stationary(widget.userId, FirebaseAuth.instance.currentUser?.uid, widget.order_key, "stationary", num.tryParse(nameController.text));
+                          Navigator.pop(context);
+                        }
+
+                      },
                       child: Text('Add',style: TextStyle(fontSize: 13.sp),)
                   ),
                 ),
