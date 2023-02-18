@@ -315,7 +315,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 return GestureDetector(
                                                   onTap: (){
                                                     if(trending_marketcomplex[trending_market_length-ind-1]['open']==1){
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_marketcomplex[trending_market_length-ind-1]['id'],collection_name: "food-marketcomplex")));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_marketcomplex[trending_market_length-ind-1]['Shop_Id'],collection_name: "food-marketcomplex")));
                                                     }else{
                                                       ScaffoldMessenger.of(context)
                                                           .showSnackBar(const SnackBar(content: Text("Shop is closed.")));
@@ -438,7 +438,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 return GestureDetector(
                                                   onTap: (){
                                                     if(trending_khokha[trending_khokha_length-ind-1]['open']==1){
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_khokha[trending_khokha_length-ind-1]['id'],collection_name: "food-khokha")));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_khokha[trending_khokha_length-ind-1]['Shop_Id'],collection_name: "food-khokha")));
                                                     }else{
                                                       ScaffoldMessenger.of(context)
                                                           .showSnackBar(const SnackBar(content: Text("Shop is closed.")));
@@ -561,7 +561,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 return GestureDetector(
                                                   onTap: (){
                                                     if(trending_food_court[trending_food_court_length-ind-1]['open']==1){
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_food_court[trending_food_court_length-ind-1]['id'],collection_name: "food-foodcourt")));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_food_court[trending_food_court_length-ind-1]['Shop_Id'],collection_name: "food-foodcourt")));
                                                     }else{
                                                       ScaffoldMessenger.of(context)
                                                           .showSnackBar(const SnackBar(content: Text("Shop is closed.")));
@@ -686,7 +686,7 @@ class _MyTabbedPageState extends State<MyTabbedPage> with TickerProviderStateMix
                                                 return GestureDetector(
                                                   onTap: (){
                                                     if(trending_canteen[trending_canteen_length-ind-1]['open']==1){
-                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_canteen[trending_canteen_length-ind-1]['id'],collection_name: "food-canteen")));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>menuscreen(shop_key: trending_canteen[trending_canteen_length-ind-1]['Shop_Id'],collection_name: "food-canteen")));
                                                     }else{
                                                       ScaffoldMessenger.of(context)
                                                           .showSnackBar(const SnackBar(content: Text("Shop is closed.")));
