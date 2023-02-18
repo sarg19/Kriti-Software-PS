@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -10,6 +9,8 @@ import 'package:kriti/popups/showPopUp.dart';
 import 'package:kriti/screens/customertabs.dart';
 import 'dart:io';
 import 'package:open_file/open_file.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:file_previewer/file_previewer.dart';
@@ -323,17 +324,18 @@ class _uploadscreenState extends State<uploadscreen> {
                     child: TextButton(
                         onPressed: () async {
                           if(pickedfile.isEmpty) return;
-                          final Email send_email = Email(
-                            body: 'Print the files attached in the mail below. ',
-                            subject: 'Request for print',
-                            recipients: [stat_email],
-                            attachmentPaths: paths,
-                            isHTML: false,
-                          );
-                          try {
-                            await FlutterEmailSender.send(send_email);
-                          } catch (e) {
-                            print(e);
+                          var result=await sendmail(email,paths,stat_email);
+                          if(result=="SUCCESS"){
+                            setState((){
+                              pickedfile=[];
+                              thumbnail=[];
+                              paths=[];
+                            });
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(content: Text("Email sent successfully")));
+                          }else if(result=="FAIL"){
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(content: Text("Some error occurred")));
                           }
                         },
                         child: Text("Request Print",style: TextStyle(color: Colors.white,fontSize: 16.sp),)
@@ -404,5 +406,34 @@ class _uploadscreenState extends State<uploadscreen> {
 
       ],
     );
+  }
+  Future<String> sendmail(String email,List<String> paths,String stationaryemail) async {
+    List <Attachment> attachments=[];
+    for(var i=0;i<paths.length;i++){
+      attachments.add(FileAttachment(File(paths[i]))
+        ..location = Location.inline
+        ..cid = '<myimg@3.141>');
+    }
+    String username = 'knowshopkapili@gmail.com';
+    String password = 'kcihnoydluldsgcm';
+    final smtpServer = gmail(username, password);
+    // Create our message.
+    final message = Message()
+      ..from = Address(username, 'KnowShop')
+      ..recipients.add(stationaryemail)
+      ..subject = 'Request for print from ${email}'
+      ..html = 'Print the file attached in the mail below.\nPlease accept the print request on the app\n'
+    ..attachments = attachments;
+    try {
+      final sendReport = await send(message, smtpServer);
+      // print('Message sent: ' + sendReport.toString());
+      return "SUCCESS";
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+      return "FAIL";
+    }
   }
 }
