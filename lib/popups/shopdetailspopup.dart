@@ -32,8 +32,10 @@ class _ShopDetailsState extends State<ShopDetails> {
         Name=value['UserName'];
         Phone=value['Number'];
         Email=value['Email'];
-        Ratings=value['current_rating'];
         Collections=value['collection'];
+        if(Collections.substring(0,4)=='food') {
+          Ratings=value['current_rating'];
+        }
       });
     });
   }
