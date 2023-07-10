@@ -59,6 +59,7 @@ We had planned the following features for future Updates:
 * For juice centers and miscellaneous shops one can edit the profile and set whether the shop is open or not.
 
 # User Interface
+![splash (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/3bbdfcf7-5ec8-4f57-a8cb-1aef185dcef5)
 ![splash (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/02584495-3a85-4afb-a89b-005d10b2fe69)
 ![WhatsApp Image 2023-07-11 at 02 28 54](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/64ac8ba8-dc74-4958-88c8-9e5c63b3676d)
 
