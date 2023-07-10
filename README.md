@@ -59,11 +59,14 @@ We had planned the following features for future Updates:
 * For juice centers and miscellaneous shops one can edit the profile and set whether the shop is open or not.
 
 # User Interface
-![splash (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/3bbdfcf7-5ec8-4f57-a8cb-1aef185dcef5)
-![splash (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/02584495-3a85-4afb-a89b-005d10b2fe69)
-![WhatsApp Image 2023-07-11 at 02 28 54](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/64ac8ba8-dc74-4958-88c8-9e5c63b3676d)
+<div style="display: inline-block;">
+  <img src="https://user-images.githubusercontent.com/95137162/252489225-02584495-3a85-4afb-a89b-005d10b2fe69.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252490153-64ac8ba8-dc74-4958-88c8-9e5c63b3676d.jpeg" width="200" height="400"/>
+</div>
 
 ## Customer Side:
+![splash (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/02584495-3a85-4afb-a89b-005d10b2fe69)
+![WhatsApp Image 2023-07-11 at 02 28 54](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/64ac8ba8-dc74-4958-88c8-9e5c63b3676d)
 ![welcome (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/d7888038-3afc-47f9-8184-dddc567c2543)
 ![WhatsApp Image 2023-07-11 at 02 28 55](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/234439cc-883e-4720-bc2a-c52c2a887772)
 ![Login (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/04906df4-634a-4dcd-a468-a054a0c67748)
