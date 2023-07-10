@@ -59,6 +59,33 @@ We had planned the following features for future Updates:
 * For juice centers and miscellaneous shops one can edit the profile and set whether the shop is open or not.
 
 # User Interface
+![splash (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/02584495-3a85-4afb-a89b-005d10b2fe69)
+![WhatsApp Image 2023-07-11 at 02 28 54](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/64ac8ba8-dc74-4958-88c8-9e5c63b3676d)
+
+## Customer Side:
+![welcome (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/d7888038-3afc-47f9-8184-dddc567c2543)
+![WhatsApp Image 2023-07-11 at 02 28 55](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/234439cc-883e-4720-bc2a-c52c2a887772)
+![Login (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/04906df4-634a-4dcd-a468-a054a0c67748)
+![Home (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/9e98a51a-8478-439f-a7c9-5ee6bab08292)
+![Food (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/0fd442e5-289b-4dbc-bbeb-9bb4efc2ca7a)
+![Profile (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/d285c90b-a3ab-49e3-bf75-12680fdaed05)
+![Menu (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/0b044a70-c6a7-4628-9c98-115e565610f1)
+![Fav (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/6a410e2f-0d28-4cca-aa83-22bce450676c)
+![Shop detail (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/f8b742d8-617d-4382-a8d3-b4cfce24dd9f)
+![Cart (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/29570936-3dd2-470f-b769-eb3d1910b8f9)
+![Feedback (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/fed3ff1a-be45-4673-ac81-9bda00400ee9)
+![edit Profile (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/2ca29b17-b93f-45ed-9998-5a450de926a9)
+![Pop-up (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/62c4e770-a09d-45ce-bcff-c7f08ecd241e)
+![Stationary (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/999f6781-4f1d-4772-a67a-42734516ef42)
+![Stationary (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/e45f78f2-d265-4a26-a41a-d717deb74298)
+![status (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/11cd81c2-87b6-4a71-8f7b-99b0ad876c62)
+![status2 (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/36940e43-78f8-4183-a067-9b5511eeea39)
+![Order (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/05845b62-ff19-4434-8766-84168f8cd2f3)
+![Order active (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/f4413bd4-7ab2-426b-aaab-5a24f1a3a850)
+## Shopkeeper side:
+
+
+# UI Figma File
 [Click here to open figma file](https://www.figma.com/file/yleq06SJFDa2P7JOJuud2H/KRITI-SOFTWARE?node-id=0%3A1&t=c8loi0acXoobQauX-1)
 
 # Apk Drive Link
