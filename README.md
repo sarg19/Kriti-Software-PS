@@ -64,7 +64,10 @@ We had planned the following features for future Updates:
   <img src="https://user-images.githubusercontent.com/95137162/252490153-64ac8ba8-dc74-4958-88c8-9e5c63b3676d.jpeg" width="200" height="400"/>
 </div>
 
+
+
 ## Customer Side:
+
 <div style="display: inline-block;">
   <img src="https://user-images.githubusercontent.com/95137162/252490281-d7888038-3afc-47f9-8184-dddc567c2543.jpg" width="200" height="400"/>
   <img src="https://user-images.githubusercontent.com/95137162/252490333-234439cc-883e-4720-bc2a-c52c2a887772.jpeg" width="200" height="400"/>
@@ -98,9 +101,9 @@ We had planned the following features for future Updates:
   <img src="https://user-images.githubusercontent.com/95137162/252804601-63fdb8ea-308f-4d95-a5e2-f32a6358f9eb.jpeg" width="200" height="400"/>
   <img src="https://user-images.githubusercontent.com/95137162/252804161-be2a135f-78d8-402b-9bc6-88620f4dcb66.jpg" width="200" height="400"/>
 
- <img src="https://user-images.githubusercontent.com/95137162/252804175-44c6e5c0-2695-464b-bbbf-fedfd124a480.jpg" width="200" height="400"/>
-  <img src="https://user-images.githubusercontent.com/95137162/252804187-f3aa5eb9-f5f5-4de1-91d2-7038f15c69c8.jpg" width="200" height="400"/>
-  <img src="https://user-images.githubusercontent.com/95137162/252804244-8e42f747-7322-4e07-a61c-af34f5b27c65.jpg" width="200" height="400"/>
+ <img src="https://user-images.githubusercontent.com/95137162/252806582-8a888b6c-1507-42b2-9b54-c3198613f0cc.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252806589-eb0c6880-f42a-4f06-8f83-10b6f58280ac.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252806549-ea2a103f-4ce3-42d6-9608-f53f81abcf74.jpg" width="200" height="400"/>
   <img src="https://user-images.githubusercontent.com/95137162/252804275-6bd41870-5581-45ab-be22-1824b0ec09f4.jpg" width="200" height="400"/>
   <img src="https://user-images.githubusercontent.com/95137162/252804287-9981deda-5fc0-4d3b-9f5e-364f232a1a03.jpg" width="200" height="400"/>
 
