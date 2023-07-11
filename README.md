@@ -90,6 +90,14 @@ We had planned the following features for future Updates:
 </div>
 
 ## Shopkeeper side:
+
+<div style="display: inline-block;">
+ <img src="https://user-images.githubusercontent.com/95137162/252804120-b6e42830-f2e2-441d-b3a2-2d462e4e422f.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252804139-b52be5f3-f93b-4249-9614-5840c4f5ab80.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252804586-2f99e50a-e47d-4f61-a97e-758f654e5775.jpeg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252804601-63fdb8ea-308f-4d95-a5e2-f32a6358f9eb.jpeg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252804161-be2a135f-78d8-402b-9bc6-88620f4dcb66.jpg" width="200" height="400"/>
+</div>
 ![welcome (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/b6e42830-f2e2-441d-b3a2-2d462e4e422f)
 ![Login (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/b52be5f3-f93b-4249-9614-5840c4f5ab80)
 
