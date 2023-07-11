@@ -109,6 +109,7 @@ We had planned the following features for future Updates:
   <img src="https://user-images.githubusercontent.com/95137162/252804352-14ea4931-9654-4567-b3c8-44c950f4f236.jpg" width="200" height="400"/>
   <img src="https://user-images.githubusercontent.com/95137162/252804363-ffae812e-abef-4334-9664-390b6b2caa1b.jpg" width="200" height="400"/>
 </div>
+
 # UI Figma File
 [Click here to open figma file](https://www.figma.com/file/yleq06SJFDa2P7JOJuud2H/KRITI-SOFTWARE?node-id=0%3A1&t=c8loi0acXoobQauX-1)
 
