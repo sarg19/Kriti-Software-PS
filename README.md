@@ -103,6 +103,11 @@ We had planned the following features for future Updates:
   <img src="https://user-images.githubusercontent.com/95137162/252804244-8e42f747-7322-4e07-a61c-af34f5b27c65.jpg" width="200" height="400"/>
   <img src="https://user-images.githubusercontent.com/95137162/252804275-6bd41870-5581-45ab-be22-1824b0ec09f4.jpg" width="200" height="400"/>
   <img src="https://user-images.githubusercontent.com/95137162/252804287-9981deda-5fc0-4d3b-9f5e-364f232a1a03.jpg" width="200" height="400"/>
+
+   <img src="https://user-images.githubusercontent.com/95137162/252804308-9f516a8d-43be-4fcf-b1f3-ff777e7762bc.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252804340-cbd2991e-2737-4a0c-9b21-ab5ee3e7d0ec.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252804352-14ea4931-9654-4567-b3c8-44c950f4f236.jpg" width="200" height="400"/>
+  <img src="https://user-images.githubusercontent.com/95137162/252804363-ffae812e-abef-4334-9664-390b6b2caa1b.jpg" width="200" height="400"/>
 </div>
 ![welcome (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/b6e42830-f2e2-441d-b3a2-2d462e4e422f)
 ![Login (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/b52be5f3-f93b-4249-9614-5840c4f5ab80)
