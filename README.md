@@ -90,8 +90,31 @@ We had planned the following features for future Updates:
 </div>
 
 ## Shopkeeper side:
-coming soon
+![welcome (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/b6e42830-f2e2-441d-b3a2-2d462e4e422f)
+![Login (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/b52be5f3-f93b-4249-9614-5840c4f5ab80)
 
+![WhatsApp Image 2023-07-12 at 03 22 22](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/2f99e50a-e47d-4f61-a97e-758f654e5775)
+
+![WhatsApp Image 2023-07-12 at 03 22 22 (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/63fdb8ea-308f-4d95-a5e2-f32a6358f9eb)
+
+
+![Home (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/be2a135f-78d8-402b-9bc6-88620f4dcb66)
+![Orders pending food (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/44c6e5c0-2695-464b-bbbf-fedfd124a480)
+![Orders acti food (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/f3aa5eb9-f5f5-4de1-91d2-7038f15c69c8)
+
+![menu (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/8e42f747-7322-4e07-a61c-af34f5b27c65)
+
+
+
+![menu add item (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/6bd41870-5581-45ab-be22-1824b0ec09f4)
+
+
+![profile (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/9981deda-5fc0-4d3b-9f5e-364f232a1a03)
+![edit Profile (Piyush) (1)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/9f516a8d-43be-4fcf-b1f3-ff777e7762bc)
+
+![Home (Piyush) (2)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/cbd2991e-2737-4a0c-9b21-ab5ee3e7d0ec)
+![Orders pending station (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/14ea4931-9654-4567-b3c8-44c950f4f236)
+![Orders acti stationary (Piyush)](https://github.com/sarg19/Kriti-Software-PS/assets/95137162/ffae812e-abef-4334-9664-390b6b2caa1b)
 
 # UI Figma File
 [Click here to open figma file](https://www.figma.com/file/yleq06SJFDa2P7JOJuud2H/KRITI-SOFTWARE?node-id=0%3A1&t=c8loi0acXoobQauX-1)
