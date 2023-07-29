@@ -128,7 +128,7 @@ Download the apk from the link above in your android device and click install. T
 
 
 
-# Contributers
+# Contributors
   * [Priyanshu Mahawar](https://github.com/Perseus29)
   * [Sparsh Mittal](https://github.com/Sparsh752)
   * [Abhinav Kumar](https://github.com/Abhinav1-Kumar)
